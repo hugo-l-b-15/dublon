@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contato – DUBLON Palmilhas Industriais</title>
+  <meta name="description" content="Entre em contato com a equipe DUBLON. E-mail, telefone e formulário de mensagem." />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 56px);
+    }
+
+    /* LEFT – Dark panel */
+    .split-left {
+      background: linear-gradient(145deg, var(--blue-dark) 0%, #0D2046 50%, #0F2D6B 100%);
+      padding: 60px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .split-left::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(30,64,175,0.4) 0%, transparent 70%);
+      top: -100px;
+      right: -150px;
+      pointer-events: none;
+    }
+
+    .split-left::after {
+      content: '';
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(34,211,238,0.08) 0%, transparent 70%);
+      bottom: 80px;
+      left: 20px;
+      pointer-events: none;
+    }
+
+    .split-left-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .split-left-logo span {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .split-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 100px;
+      padding: 6px 14px;
+      color: rgba(255,255,255,0.8);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+
+    .split-title {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .split-title .highlight {
+      color: var(--cyan-accent);
+    }
+
+    .split-desc {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+      margin-bottom: 48px;
+      max-width: 380px;
+    }
+
+    .contact-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .contact-info-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.08);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .contact-info-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-info-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 2px;
+    }
+
+    .contact-info-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* RIGHT – Form panel */
+    .split-right {
+      background: var(--white);
+      padding: 40px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .split-right-top-link {
+      text-align: right;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+    }
+
+    .split-right-top-link a {
+      color: var(--blue-vibrant);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .split-right-top-link a:hover {
+      text-decoration: underline;
+    }
+
+    .form-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .form-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 480px;
+    }
+
+    .form-footer-note {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#1B3A6E"/>
+          <path d="M8 20 L16 10 L24 20 L16 30 Z" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M20 10 L32 16 L32 24 L20 30" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linejoin="round"/>
+          <line x1="16" y1="10" x2="28" y2="10" stroke="#22D3EE" stroke-width="1.5"/>
+          <circle cx="28" cy="10" r="2" fill="#22D3EE"/>
+        </svg>
+        <span style="font-size:18px;font-weight:800;color:#1B3A6E;letter-spacing:-0.02em;">DUBLON</span>
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html">Produtos</a></li>
+        <li><a href="sobre.html">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+      </ul>
+      <div class="navbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Buscar produto..." />
+      </div>
+      <div class="navbar-actions">
+        <a href="contato.html" class="navbar-btn-contact" style="background:#EFF6FF;color:#2563EB;border-color:#DBEAFE;">Contato</a>
+        <a href="login.html" class="navbar-btn-login"><span>👤</span> Entrar</a>
+        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
+        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SPLIT LAYOUT -->
+  <div class="split-layout">
+
+    <!-- LEFT -->
+    <div class="split-left">
+      <div class="split-left-logo">
+        <svg width="36" height="36" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="rgba(255,255,255,0.12)"/><path d="M8 20 L16 10 L24 20 L16 30 Z" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linejoin="round"/><path d="M20 10 L32 16 L32 24 L20 30" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linejoin="round"/><circle cx="28" cy="10" r="2" fill="#22D3EE"/></svg>
+        <span>DUBLON</span>
+      </div>
+
+      <span class="split-tag">✉ Fale Conosco</span>
+
+      <h1 class="split-title">
+        Entre em<br>
+        <span class="highlight">contato</span> com<br>
+        nossa equipe
+      </h1>
+
+      <p class="split-desc">
+        Tire suas dúvidas sobre produtos, solicite orçamentos ou fale diretamente com um de nossos especialistas.
+      </p>
+
+      <div class="contact-info-list">
+        <div class="contact-info-item">
+          <div class="contact-info-icon">✉</div>
+          <div class="contact-info-content">
+            <span class="contact-info-label">E-MAIL</span>
+            <span class="contact-info-value">contato@dublon.com.br</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">📞</div>
+          <div class="contact-info-content">
+            <span class="contact-info-label">TELEFONE</span>
+            <span class="contact-info-value">(11) 4002-8922</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon">📍</div>
+          <div class="contact-info-content">
+            <span class="contact-info-label">ENDEREÇO</span>
+            <span class="contact-info-value">Franca, SP — Brasil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="split-right">
+      <div class="split-right-top-link">
+        Ainda não tem uma conta? <a href="cadastro.html">Criar conta</a>
+      </div>
+
+      <h2 class="form-title">Enviar mensagem</h2>
+      <p class="form-subtitle">
+        Acesse nossa área exclusiva para acompanhar<br>
+        pedidos, orçamentos e muito mais.
+      </p>
+
+      <form class="contact-form" onsubmit="handleContactSubmit(event)" id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">NOME</label>
+            <input type="text" class="form-control" placeholder="Seu nome" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">SOBRENOME</label>
+            <input type="text" class="form-control" placeholder="Sobrenome" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">E-MAIL</label>
+          <input type="email" class="form-control" placeholder="seu@email.com" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">TELEFONE</label>
+          <input type="tel" class="form-control" placeholder="EX: (11) 99999-9999" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">ASSUNTO</label>
+          <select class="form-control" required>
+            <option value="" disabled selected>Selecione um assunto</option>
+            <option>Solicitação de Orçamento</option>
+            <option>Dúvidas sobre Produtos</option>
+            <option>Suporte Técnico</option>
+            <option>Parceria Comercial</option>
+            <option>Outros</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">MENSAGEM</label>
+          <textarea class="form-control" rows="4" placeholder="Descreva sua necessidade em detalhes..." style="min-height:110px;"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" style="padding:14px;font-size:15px;" id="contact-submit">
+          → Enviar mensagem
+        </button>
+
+        <p class="form-footer-note">🔒 Seus dados estão protegidos com segurança</p>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

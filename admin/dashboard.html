@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Admin – DUBLON</title>
+  <meta name="description" content="Painel de controle administrativo da DUBLON Palmilhas Industriais." />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/sidebar.css" />
+  <style>
+    /* Custom Admin Sidebar Modifications */
+    .admin-layout {
+      display: flex;
+      min-height: 100vh;
+      background: var(--gray-50);
+    }
+    
+    .admin-sidebar {
+      width: 240px;
+      background: var(--blue-dark);
+      color: var(--white);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .admin-sidebar-header {
+      padding: 24px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .admin-sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 20px 12px;
+      flex: 1;
+    }
+
+    .admin-sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      color: rgba(255,255,255,0.7);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      transition: all var(--transition);
+    }
+
+    .admin-sidebar-item:hover {
+      background: rgba(255,255,255,0.05);
+      color: var(--white);
+    }
+
+    .admin-sidebar-item.active {
+      background: var(--blue-vibrant);
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .admin-sidebar-item .icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .admin-sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .admin-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    .admin-header {
+      height: 64px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+    }
+
+    .admin-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .admin-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .admin-avatar {
+      width: 36px;
+      height: 36px;
+      background: var(--cyan-accent);
+      color: var(--blue-dark);
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .admin-content {
+      padding: 32px;
+      flex: 1;
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .metric-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background: var(--blue-vibrant);
+    }
+
+    .metric-card.success::after { background: var(--green-success); }
+    .metric-card.warning::after { background: var(--yellow-warn); }
+    .metric-card.info::after { background: var(--cyan-accent); }
+
+    .metric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .metric-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+    }
+
+    .metric-icon {
+      font-size: 20px;
+    }
+
+    .metric-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .metric-change {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .metric-change.positive { color: var(--green-success); }
+    .metric-change.negative { color: var(--red-error); }
+
+    /* Dashboard Layout Split */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+
+    .chart-container {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .chart-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: 240px;
+    }
+
+    /* Table styling card */
+    .table-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .table-card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Activities panel */
+    .activity-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      height: fit-content;
+    }
+
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .activity-item {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .activity-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .activity-info {
+      flex: 1;
+    }
+
+    .activity-time {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-layout">
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <svg class="logo-icon" width="32" height="32" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1E3A8A"/>
+          <path d="M8 20 L16 10 L24 20 L16 30 Z" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M20 10 L32 16 L32 24 L20 30" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        <span style="font-size:18px;font-weight:800;color:var(--white);letter-spacing:-0.02em;">DUBLON <span style="font-size:10px;color:var(--cyan-accent);font-weight:500;vertical-align:super;">PAINEL</span></span>
+      </div>
+      <nav class="admin-sidebar-nav">
+        <a href="dashboard.html" class="admin-sidebar-item active">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </a>
+        <a href="produtos.html" class="admin-sidebar-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          Produtos
+        </a>
+        <a href="produto-novo.html" class="admin-sidebar-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Novo Produto
+        </a>
+        <a href="pedidos.html" class="admin-sidebar-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Pedidos
+        </a>
+      </nav>
+      <div class="admin-sidebar-footer">
+        <a href="../index.html" class="admin-sidebar-item" style="color:var(--cyan-accent);">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          Voltar ao site
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+      <!-- HEADER -->
+      <header class="admin-header">
+        <div class="admin-header-title">
+          <h2 style="font-size:18px;font-weight:700;color:var(--text-primary);">Visão Geral</h2>
+        </div>
+        <div class="admin-header-actions">
+          <div class="admin-user">
+            <div class="admin-avatar">AD</div>
+            <span style="font-size:14px;font-weight:600;color:var(--text-primary);">Administrador</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <div class="admin-content">
+        <!-- METRICS -->
+        <section class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Faturamento Mensal</span>
+              <span class="metric-icon">💰</span>
+            </div>
+            <div class="metric-value">R$ 142.840</div>
+            <span class="metric-change positive">▲ +12.5% vs mês anterior</span>
+          </div>
+          <div class="metric-card success">
+            <div class="metric-header">
+              <span class="metric-title">Pedidos Ativos</span>
+              <span class="metric-icon">📦</span>
+            </div>
+            <div class="metric-value">24</div>
+            <span class="metric-change positive">▲ 4 novos hoje</span>
+          </div>
+          <div class="metric-card warning">
+            <div class="metric-header">
+              <span class="metric-title">Novos Orçamentos</span>
+              <span class="metric-icon">📄</span>
+            </div>
+            <div class="metric-value">12</div>
+            <span class="metric-change positive" style="color:var(--yellow-warn);">● 3 pendentes de resposta</span>
+          </div>
+          <div class="metric-card info">
+            <div class="metric-header">
+              <span class="metric-title">Produtos Ativos</span>
+              <span class="metric-icon">👟</span>
+            </div>
+            <div class="metric-value">18</div>
+            <span class="metric-change" style="color:var(--text-secondary);">✓ Catálogo atualizado</span>
+          </div>
+        </section>
+
+        <!-- GRID GRAPHICS & ACTIVITY -->
+        <div class="dashboard-grid">
+          <div>
+            <!-- GRAPHICS -->
+            <div class="chart-container">
+              <div class="chart-header">
+                <h3 class="chart-title">Desempenho de Vendas (Últimos 6 meses)</h3>
+                <span class="text-sm text-muted">Valores em milhares de R$</span>
+              </div>
+              <!-- Premium SVG Area Chart -->
+              <svg class="chart-svg" viewBox="0 0 600 240">
+                <defs>
+                  <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#2563EB" stop-opacity="0.3"></stop>
+                    <stop offset="100%" stop-color="#2563EB" stop-opacity="0.0"></stop>
+                  </linearGradient>
+                </defs>
+                <!-- Grid Lines -->
+                <line x1="50" y1="30" x2="550" y2="30" stroke="#F1F5F9" stroke-width="1.5"></line>
+                <line x1="50" y1="80" x2="550" y2="80" stroke="#F1F5F9" stroke-width="1.5"></line>
+                <line x1="50" y1="130" x2="550" y2="130" stroke="#F1F5F9" stroke-width="1.5"></line>
+                <line x1="50" y1="180" x2="550" y2="180" stroke="#F1F5F9" stroke-width="1.5"></line>
+                <line x1="50" y1="210" x2="550" y2="210" stroke="#E2E8F0" stroke-width="2"></line>
+                
+                <!-- Y-Axis labels -->
+                <text x="35" y="34" font-size="10" fill="#94A3B8" text-anchor="end">160k</text>
+                <text x="35" y="84" font-size="10" fill="#94A3B8" text-anchor="end">120k</text>
+                <text x="35" y="134" font-size="10" fill="#94A3B8" text-anchor="end">80k</text>
+                <text x="35" y="184" font-size="10" fill="#94A3B8" text-anchor="end">40k</text>
+                
+                <!-- Area path -->
+                <path d="M 50 210 L 50 160 L 150 140 L 250 170 L 350 110 L 450 90 L 550 50 L 550 210 Z" fill="url(#chartGradient)"></path>
+                
+                <!-- Line path -->
+                <path d="M 50 160 L 150 140 L 250 170 L 350 110 L 450 90 L 550 50" fill="none" stroke="#2563EB" stroke-width="3" stroke-linecap="round"></path>
+                
+                <!-- Dots & Hover elements -->
+                <circle cx="50" cy="160" r="5" fill="#2563EB" stroke="#FFFFFF" stroke-width="2"></circle>
+                <circle cx="150" cy="140" r="5" fill="#2563EB" stroke="#FFFFFF" stroke-width="2"></circle>
+                <circle cx="250" cy="170" r="5" fill="#2563EB" stroke="#FFFFFF" stroke-width="2"></circle>
+                <circle cx="350" cy="110" r="5" fill="#2563EB" stroke="#FFFFFF" stroke-width="2"></circle>
+                <circle cx="450" cy="90" r="5" fill="#2563EB" stroke="#FFFFFF" stroke-width="2"></circle>
+                <circle cx="550" cy="50" r="5" fill="#2563EB" stroke="#FFFFFF" stroke-width="2"></circle>
+                
+                <!-- X-Axis labels -->
+                <text x="50" y="230" font-size="10" fill="#94A3B8" text-anchor="middle">Dez</text>
+                <text x="150" y="230" font-size="10" fill="#94A3B8" text-anchor="middle">Jan</text>
+                <text x="250" y="230" font-size="10" fill="#94A3B8" text-anchor="middle">Fev</text>
+                <text x="350" y="230" font-size="10" fill="#94A3B8" text-anchor="middle">Mar</text>
+                <text x="450" y="230" font-size="10" fill="#94A3B8" text-anchor="middle">Abr</text>
+                <text x="550" y="230" font-size="10" fill="#94A3B8" text-anchor="middle">Mai</text>
+              </svg>
+            </div>
+
+            <!-- TABLE: RECENTS -->
+            <div class="table-card">
+              <div class="table-card-header">
+                <h3 class="chart-title">Últimos Pedidos</h3>
+                <a href="pedidos.html" class="btn btn-ghost btn-sm" style="color:var(--blue-vibrant);">Ver todos</a>
+              </div>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Cliente</th>
+                      <th>Data</th>
+                      <th>Valor</th>
+                      <th>Status</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>#DBL-2024-04850</strong></td>
+                      <td>SportFactory Ltda</td>
+                      <td>Hoje, 14:32</td>
+                      <td>R$ 12.450,00</td>
+                      <td><span class="badge badge-blue">Processando</span></td>
+                      <td><a href="pedidos.html" class="btn btn-white btn-sm">Editar</a></td>
+                    </tr>
+                    <tr>
+                      <td><strong>#DBL-2024-04849</strong></td>
+                      <td>Calçados Silva Eireli</td>
+                      <td>Hoje, 11:15</td>
+                      <td>R$ 3.840,00</td>
+                      <td><span class="badge badge-yellow">Produção</span></td>
+                      <td><a href="pedidos.html" class="btn btn-white btn-sm">Editar</a></td>
+                    </tr>
+                    <tr>
+                      <td><strong>#DBL-2024-04848</strong></td>
+                      <td>João Silva (Premium)</td>
+                      <td>Ontem, 18:20</td>
+                      <td>R$ 289,70</td>
+                      <td><span class="badge badge-green">Entregue</span></td>
+                      <td><a href="pedidos.html" class="btn btn-white btn-sm">Editar</a></td>
+                    </tr>
+                    <tr>
+                      <td><strong>#DBL-2024-04847</strong></td>
+                      <td>VipFoot Industrial</td>
+                      <td>Ontem, 09:40</td>
+                      <td>R$ 8.930,00</td>
+                      <td><span class="badge badge-blue">Em Trânsito</span></td>
+                      <td><a href="pedidos.html" class="btn btn-white btn-sm">Editar</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ACTIVITIES -->
+          <div>
+            <div class="activity-card">
+              <h3 class="chart-title">Atividades em Tempo Real</h3>
+              <div class="activity-list">
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:var(--blue-vibrant);"></div>
+                  <div class="activity-info">
+                    <strong>Novo orçamento solicitado</strong>
+                    <p style="color:var(--text-secondary);">Calçados Silva solicitou cotação para 1.500 pares de Palmilha EVA Pro.</p>
+                    <div class="activity-time">Há 12 minutos</div>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:var(--green-success);"></div>
+                  <div class="activity-info">
+                    <strong>Pagamento aprovado</strong>
+                    <p style="color:var(--text-secondary);">Pedido #DBL-2024-04850 de SportFactory Ltda teve o pagamento confirmado.</p>
+                    <div class="activity-time">Há 45 minutos</div>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:var(--red-error);"></div>
+                  <div class="activity-info">
+                    <strong>Alerta de Estoque Baixo</strong>
+                    <p style="color:var(--text-secondary);">"Palmilha EVA Pro D45 - Tamanho 41" atingiu o estoque mínimo de segurança.</p>
+                    <div class="activity-time">Há 2 horas</div>
+                  </div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot" style="background:var(--yellow-warn);"></div>
+                  <div class="activity-info">
+                    <strong>Pedido enviado</strong>
+                    <p style="color:var(--text-secondary);">Pedido #DBL-2024-04847 foi despachado via transportadora parceira.</p>
+                    <div class="activity-time">Hoje, 08:30</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

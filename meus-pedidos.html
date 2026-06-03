@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meus Pedidos – DUBLON</title>
+  <meta name="description" content="Acompanhe todos os seus pedidos DUBLON. Status, rastreio e histórico completo." />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <style>
+    /* ── Filter tabs ───────────────────────────────────────── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 12px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 4px;
+    }
+
+    .filter-tab {
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border: 1.5px solid var(--border-color);
+      background: var(--white);
+      transition: all var(--transition);
+    }
+
+    .filter-tab.active {
+      background: var(--blue-dark);
+      color: var(--white);
+      border-color: var(--blue-dark);
+      font-weight: 600;
+    }
+
+    .filter-tab:hover:not(.active) {
+      border-color: var(--blue-vibrant);
+      color: var(--blue-vibrant);
+    }
+
+    .filter-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 7px 14px;
+      font-size: 13px;
+      color: var(--gray-400);
+      cursor: pointer;
+    }
+
+    /* ── Order cards ───────────────────────────────────────── */
+    .orders-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .order-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .order-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .order-id {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .order-date {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .order-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .order-status-entregue {
+      background: var(--green-bg);
+      color: #16A34A;
+    }
+
+    .order-status-transito {
+      background: #FEF3C7;
+      color: #B45309;
+    }
+
+    .order-status-processando {
+      background: var(--blue-info-bg);
+      color: var(--blue-vibrant);
+    }
+
+    .order-card-body {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .order-thumb {
+      width: 52px;
+      height: 52px;
+      background: var(--gray-100);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      border: 1px solid var(--border-color);
+    }
+
+    .order-info {
+      flex: 1;
+    }
+
+    .order-product-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+
+    .order-product-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .order-price {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-primary);
+      flex-shrink: 0;
+    }
+
+    .order-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .order-progress-wrap {
+      flex: 1;
+    }
+
+    .order-progress-bar {
+      height: 4px;
+      background: var(--gray-200);
+      border-radius: 4px;
+      overflow: visible;
+      position: relative;
+      display: flex;
+      gap: 0;
+    }
+
+    .order-progress-seg {
+      height: 100%;
+      position: relative;
+    }
+
+    .order-progress-seg.filled {
+      background: var(--blue-vibrant);
+    }
+
+    .order-progress-seg.active {
+      background: var(--blue-vibrant);
+    }
+
+    .order-progress-dot {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue-vibrant);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 2px var(--blue-vibrant);
+    }
+
+    .order-status-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+    }
+
+    .order-status-label strong { color: var(--text-primary); }
+
+    .order-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-detalhes {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--white);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+    }
+    .btn-detalhes:hover {
+      border-color: var(--blue-vibrant);
+      color: var(--blue-vibrant);
+    }
+
+    .btn-recomprar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--blue-dark);
+      color: var(--white);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+      border: none;
+    }
+    .btn-recomprar:hover { background: #0D1F3C; }
+
+    .btn-rastrear {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--blue-vibrant);
+      color: var(--white);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+      border: none;
+    }
+    .btn-rastrear:hover { background: var(--blue-vivid); }
+
+    .btn-cancelar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border: 1.5px solid #FECACA;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      color: #DC2626;
+      background: var(--white);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+    }
+    .btn-cancelar:hover { background: #FEE2E2; }
+
+    /* ── Right Panel ───────────────────────────────────────── */
+    .orders-right {
+      width: 220px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .orders-content-row {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .orders-main {
+      flex: 1;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-card-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-card-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .stat-card-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat-mini {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .stat-mini-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .stat-mini-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .delivery-card {
+      background: linear-gradient(135deg, #1B3A6E 0%, #2563EB 100%);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      color: var(--white);
+    }
+
+    .delivery-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+    }
+
+    .delivery-date {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .delivery-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 16px;
+    }
+
+    .delivery-track-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 16px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--radius-md);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background var(--transition);
+    }
+    .delivery-track-btn:hover { background: rgba(255,255,255,0.25); }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1B3A6E"/>
+          <path d="M8 20 L16 10 L24 20 L16 30 Z" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M20 10 L32 16 L32 24 L20 30" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linejoin="round"/>
+          <line x1="16" y1="10" x2="28" y2="10" stroke="#22D3EE" stroke-width="1.5"/>
+          <circle cx="28" cy="10" r="2" fill="#22D3EE"/>
+        </svg>
+        <span style="font-size:18px;font-weight:800;color:#1B3A6E;letter-spacing:-0.02em;">DUBLON</span>
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html">Produtos</a></li>
+        <li><a href="sobre.html">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+      </ul>
+      <div class="navbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Buscar produto..." />
+      </div>
+      <div class="navbar-actions">
+        <a href="contato.html" class="navbar-btn-contact">Contato</a>
+        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
+        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
+        <a href="perfil.html" class="navbar-user">
+          <div class="user-avatar">JS</div>
+          <span class="navbar-user-name">João Silva</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CLIENT LAYOUT -->
+  <div class="client-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">JS</div>
+        <div class="sidebar-name">João Silva</div>
+        <div class="sidebar-email">joao@empresa.com.br</div>
+        <span class="sidebar-badge-premium">★ Cliente Premium</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="perfil.html" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Visão geral
+        </a>
+        <a href="meus-pedidos.html" class="sidebar-nav-item active">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Meus pedidos
+          <span class="sidebar-nav-badge">3</span>
+        </a>
+        <a href="perfil.html" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Meu perfil
+        </a>
+        <a href="perfil.html" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
+          Endereços
+        </a>
+        <a href="#" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Pagamentos
+        </a>
+        <a href="#" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Segurança
+        </a>
+        <a href="#" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Ajuda
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="client-content" style="padding:32px 28px;">
+      <div class="page-header">
+        <h1>Meus Pedidos</h1>
+        <p>3 pedidos encontrados</p>
+      </div>
+
+      <div class="orders-content-row">
+        <!-- Orders list -->
+        <div class="orders-main">
+          <!-- Filter bar -->
+          <div class="filter-bar">
+            <div class="filter-tabs">
+              <button class="filter-tab active" onclick="filterOrders('all', this)">Todos</button>
+              <button class="filter-tab" onclick="filterOrders('andamento', this)">Em andamento</button>
+              <button class="filter-tab" onclick="filterOrders('entregues', this)">Entregues</button>
+              <button class="filter-tab" onclick="filterOrders('cancelados', this)">Cancelados</button>
+            </div>
+            <div class="filter-search">
+              🔍 Buscar por número ou produto...
+            </div>
+          </div>
+
+          <div class="orders-list">
+            <!-- ORDER 1 – Entregue -->
+            <div class="order-card" data-status="entregues">
+              <div class="order-card-header">
+                <div>
+                  <div class="order-id">#DBL-2024-04821</div>
+                  <div class="order-date">01 de janeiro de 2026</div>
+                </div>
+                <span class="order-status-badge order-status-entregue">✓ Entregue</span>
+              </div>
+              <div class="order-card-body">
+                <div class="order-thumb">👟</div>
+                <div class="order-info">
+                  <div class="order-product-name">Palmilha EVA Pro D45 ×350, Sport Runner X ×250</div>
+                  <div class="order-product-sub">Entregue para: Rua das Indústrias, 1240 · São Paulo, SP</div>
+                </div>
+                <div class="order-price">R$ 439,60</div>
+              </div>
+              <div class="order-card-footer">
+                <div class="order-progress-wrap">
+                  <!-- 5 steps – all complete -->
+                  <div style="display:flex;align-items:center;gap:0;position:relative;">
+                    <div style="height:4px;background:#22C55E;flex:1;border-radius:4px 0 0 4px;"></div>
+                    <div style="width:10px;height:10px;background:#22C55E;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #22C55E;flex-shrink:0;z-index:1;"></div>
+                    <div style="height:4px;background:#22C55E;flex:1;"></div>
+                    <div style="width:10px;height:10px;background:#22C55E;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #22C55E;flex-shrink:0;z-index:1;"></div>
+                    <div style="height:4px;background:#22C55E;flex:1;"></div>
+                    <div style="width:10px;height:10px;background:#22C55E;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #22C55E;flex-shrink:0;z-index:1;"></div>
+                    <div style="height:4px;background:#22C55E;flex:1;"></div>
+                    <div style="width:10px;height:10px;background:#22C55E;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #22C55E;flex-shrink:0;z-index:1;"></div>
+                    <div style="height:4px;background:#22C55E;flex:1;border-radius:0 4px 4px 0;"></div>
+                  </div>
+                  <div class="order-status-label"><strong>Entregue em 05/01</strong></div>
+                </div>
+                <div class="order-actions">
+                  <a href="#" class="btn-detalhes">⊙ Detalhes</a>
+                  <a href="catalogo.html" class="btn-recomprar">→ Recomprar</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDER 2 – Em Trânsito -->
+            <div class="order-card" data-status="andamento">
+              <div class="order-card-header">
+                <div>
+                  <div class="order-id">#DBL-2024-04756</div>
+                  <div class="order-date">18 de maio de 2026</div>
+                </div>
+                <span class="order-status-badge order-status-transito">⟳ Em Trânsito</span>
+              </div>
+              <div class="order-card-body">
+                <div class="order-thumb" style="background:#1B3A6E;color:#22D3EE;font-size:22px;">👟</div>
+                <div class="order-info">
+                  <div class="order-product-name">Palmilha Premium +600</div>
+                  <div class="order-product-sub">Entregue para: Rua das Indústrias, 1240 · São Paulo, SP</div>
+                </div>
+                <div class="order-price">R$ 359,70</div>
+              </div>
+              <div class="order-card-footer">
+                <div class="order-progress-wrap">
+                  <div style="display:flex;align-items:center;gap:0;position:relative;">
+                    <div style="height:4px;background:#2563EB;flex:1;border-radius:4px 0 0 4px;"></div>
+                    <div style="width:10px;height:10px;background:#2563EB;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #2563EB;flex-shrink:0;z-index:1;"></div>
+                    <div style="height:4px;background:#2563EB;flex:1;"></div>
+                    <div style="width:10px;height:10px;background:#2563EB;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #2563EB;flex-shrink:0;z-index:1;"></div>
+                    <div style="height:4px;background:#2563EB;flex:1;"></div>
+                    <div style="width:10px;height:10px;background:#2563EB;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #2563EB;flex-shrink:0;z-index:1;animation:pulse 2s infinite;"></div>
+                    <div style="height:4px;background:#E2E8F0;flex:1;"></div>
+                    <div style="width:10px;height:10px;background:#E2E8F0;border-radius:50%;border:2px solid #fff;flex-shrink:0;z-index:1;"></div>
+                    <div style="height:4px;background:#E2E8F0;flex:1;border-radius:0 4px 4px 0;"></div>
+                  </div>
+                  <div class="order-status-label">Em trânsito · prev. 22/05</div>
+                </div>
+                <div class="order-actions">
+                  <a href="#" class="btn-detalhes">Detalhes</a>
+                  <a href="rastreamento.html?code=DBL-2024-04756" class="btn-rastrear">⊙ Rastrear</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDER 3 – Processando -->
+            <div class="order-card" data-status="andamento">
+              <div class="order-card-header">
+                <div>
+                  <div class="order-id">#DBL-2024-04690</div>
+                  <div class="order-date">20 de maio de 2026</div>
+                </div>
+                <span class="order-status-badge order-status-processando">● Processando</span>
+              </div>
+              <div class="order-card-body">
+                <div class="order-thumb">👟</div>
+                <div class="order-info">
+                  <div class="order-product-name">Palmilha Esportiva Runner +600</div>
+                  <div class="order-product-sub">Pagamento confirmado · Aguardando produção</div>
+                </div>
+                <div class="order-price">R$ 289,70</div>
+              </div>
+              <div class="order-card-footer">
+                <div class="order-progress-wrap">
+                  <div style="display:flex;align-items:center;gap:0;position:relative;">
+                    <div style="height:4px;background:#2563EB;flex:1;border-radius:4px 0 0 4px;"></div>
+                    <div style="width:10px;height:10px;background:#2563EB;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #2563EB;flex-shrink:0;z-index:1;"></div>
+                    <div style="height:4px;background:#2563EB;flex:1;"></div>
+                    <div style="width:10px;height:10px;background:#2563EB;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px #2563EB;flex-shrink:0;z-index:1;animation:pulse 2s infinite;"></div>
+                    <div style="height:4px;background:#E2E8F0;flex:1;"></div>
+                    <div style="width:10px;height:10px;background:#E2E8F0;border-radius:50%;border:2px solid #fff;flex-shrink:0;z-index:1;"></div>
+                    <div style="height:4px;background:#E2E8F0;flex:1;"></div>
+                    <div style="width:10px;height:10px;background:#E2E8F0;border-radius:50%;border:2px solid #fff;flex-shrink:0;z-index:1;"></div>
+                    <div style="height:4px;background:#E2E8F0;flex:1;border-radius:0 4px 4px 0;"></div>
+                  </div>
+                  <div class="order-status-label" style="color:#2563EB;font-weight:600;">Pagamento aprovado</div>
+                </div>
+                <div class="order-actions">
+                  <a href="#" class="btn-detalhes">Detalhes</a>
+                  <a href="#" class="btn-cancelar">Cancelar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="orders-right">
+          <div class="stat-card">
+            <div class="stat-card-label">Total em Compras</div>
+            <div class="stat-card-value">R$ 2.840</div>
+            <div class="stat-card-sub">em 3 pedidos realizados</div>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-mini">
+              <div class="stat-mini-value">3</div>
+              <div class="stat-mini-label">Pedidos</div>
+            </div>
+            <div class="stat-mini">
+              <div class="stat-mini-value">1800</div>
+              <div class="stat-mini-label">Pares</div>
+            </div>
+            <div class="stat-mini">
+              <div class="stat-mini-value">1</div>
+              <div class="stat-mini-label">Entregue</div>
+            </div>
+          </div>
+
+          <div class="delivery-card">
+            <div class="delivery-label">Próxima Entrega</div>
+            <div class="delivery-date">22 de maio de 2026</div>
+            <div class="delivery-sub">#DBL-2024-04756 · 630 pares</div>
+            <a href="rastreamento.html" class="delivery-track-btn">⊙ Rastrear pedido</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    function filterOrders(status, btn) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.order-card').forEach(card => {
+        if (status === 'all') {
+          card.style.display = '';
+        } else if (card.dataset.status === status) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+  <style>
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(37,99,235,0); }
+    }
+  </style>
+</body>
+</html>

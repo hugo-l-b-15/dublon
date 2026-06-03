@@ -1,0 +1,224 @@
+/* ============================================================
+   DUBLON – Navbar CSS
+   ============================================================ */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--border-color);
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-inner {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* Logo */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+  margin-right: 32px;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+}
+
+/* Nav links */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links a {
+  display: block;
+  padding: 6px 12px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  transition: background var(--transition), color var(--transition);
+  text-decoration: none;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+  background: var(--gray-100);
+  color: var(--blue-vibrant);
+}
+
+/* Search */
+.navbar-search {
+  flex: 1;
+  max-width: 360px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.navbar-search input {
+  width: 100%;
+  padding: 8px 14px 8px 36px;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  background: var(--gray-50);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.navbar-search input:focus {
+  border-color: var(--blue-vibrant);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+  background: var(--white);
+}
+
+.navbar-search input::placeholder {
+  color: var(--gray-400);
+}
+
+.navbar-search .search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+/* Actions */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 16px;
+  flex-shrink: 0;
+}
+
+.navbar-btn-contact {
+  padding: 7px 16px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  transition: all var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.navbar-btn-contact:hover {
+  border-color: var(--blue-vibrant);
+  color: var(--blue-vibrant);
+}
+
+.navbar-btn-quote {
+  padding: 8px 18px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--white);
+  background: var(--blue-vibrant);
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.navbar-btn-quote:hover {
+  background: var(--blue-vivid);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+}
+
+.navbar-btn-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+  text-decoration: none;
+}
+
+.navbar-btn-track:hover {
+  background: var(--gray-100);
+  color: var(--text-primary);
+}
+
+.navbar-btn-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+  text-decoration: none;
+}
+
+.navbar-btn-login:hover {
+  background: var(--gray-100);
+}
+
+/* User Avatar */
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--blue-vibrant);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition);
+  text-decoration: none;
+}
+
+.navbar-user:hover {
+  background: var(--gray-100);
+}
+
+.navbar-user-name {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+}

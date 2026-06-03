@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedido Confirmado – DUBLON</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    .confirm-page {
+      min-height: calc(100vh - 56px);
+      background: var(--gray-50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 32px;
+    }
+
+    .confirm-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-2xl);
+      padding: 48px 40px;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .confirm-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--green-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin: 0 auto 24px;
+      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .confirm-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .confirm-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .confirm-order-num {
+      background: var(--gray-50);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .confirm-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 32px;
+      text-align: left;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .confirm-detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+    .confirm-detail-row:last-child { border-bottom: none; }
+    .confirm-detail-row .key { color: var(--text-secondary); }
+    .confirm-detail-row .val { font-weight: 600; color: var(--text-primary); }
+
+    .confirm-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: var(--blue-info-bg);
+      color: var(--blue-vibrant);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .confirm-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1B3A6E"/>
+          <path d="M8 20 L16 10 L24 20 L16 30 Z" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M20 10 L32 16 L32 24 L20 30" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="28" cy="10" r="2" fill="#22D3EE"/>
+        </svg>
+        <span style="font-size:18px;font-weight:800;color:#1B3A6E;letter-spacing:-0.02em;">DUBLON</span>
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html">Produtos</a></li>
+        <li><a href="sobre.html">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+      </ul>
+      <div class="navbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Buscar produto..." />
+      </div>
+      <div class="navbar-actions">
+        <a href="contato.html" class="navbar-btn-contact">Contato</a>
+        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
+        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
+        <a href="perfil.html" class="navbar-user">
+          <div class="user-avatar">JS</div>
+          <span class="navbar-user-name">João Silva</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="confirm-page">
+    <div class="confirm-card">
+      <div class="confirm-icon">✓</div>
+
+      <h1 class="confirm-title">Pedido realizado com sucesso!</h1>
+      <p class="confirm-sub">
+        Seu pedido foi confirmado e está sendo processado.<br>
+        Você receberá um e-mail com os detalhes e o código de rastreio.
+      </p>
+
+      <div class="confirm-order-num">#DBL-2024-04900</div>
+
+      <div class="confirm-status">
+        <span>●</span> Processando
+      </div>
+
+      <div class="confirm-details">
+        <div class="confirm-detail-row">
+          <span class="key">Produtos</span>
+          <span class="val">Palmilha EVA Pro D45 + Sport Runner X</span>
+        </div>
+        <div class="confirm-detail-row">
+          <span class="key">Total de pares</span>
+          <span class="val">600 pares</span>
+        </div>
+        <div class="confirm-detail-row">
+          <span class="key">Valor total</span>
+          <span class="val">R$ 657,50</span>
+        </div>
+        <div class="confirm-detail-row">
+          <span class="key">Forma de pagamento</span>
+          <span class="val">Boleto Bancário</span>
+        </div>
+        <div class="confirm-detail-row">
+          <span class="key">Previsão de entrega</span>
+          <span class="val" style="color:#16A34A;">3-5 dias úteis</span>
+        </div>
+        <div class="confirm-detail-row">
+          <span class="key">Endereço</span>
+          <span class="val">Rua das Indústrias, 1240 · São Paulo, SP</span>
+        </div>
+      </div>
+
+      <div class="confirm-actions">
+        <a href="meus-pedidos.html" class="btn btn-primary" style="padding:12px 20px;">→ Meus Pedidos</a>
+        <a href="rastreamento.html" class="btn btn-white" style="padding:12px 20px;border:1.5px solid var(--border-color);">🔍 Rastrear</a>
+        <a href="catalogo.html" class="btn btn-ghost" style="padding:12px 20px;">Continuar comprando</a>
+      </div>
+
+      <p class="confirm-note">
+        📧 Enviamos um e-mail de confirmação para joao@empresa.com.br
+      </p>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

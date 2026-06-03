@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout – DUBLON</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    .checkout-page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 28px;
+      background: var(--gray-50);
+      min-height: calc(100vh - 56px);
+    }
+
+    .checkout-steps {
+      display: flex;
+      gap: 0;
+      margin-bottom: 28px;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .checkout-step {
+      flex: 1;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-right: 1px solid var(--border-color);
+      background: var(--white);
+    }
+    .checkout-step:last-child { border-right: none; }
+
+    .checkout-step.done {
+      color: #16A34A;
+    }
+
+    .checkout-step.active {
+      color: var(--blue-vibrant);
+      background: var(--blue-info-bg);
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .checkout-step.done .step-num {
+      background: #22C55E;
+      color: var(--white);
+    }
+    .checkout-step.active .step-num {
+      background: var(--blue-vibrant);
+      color: var(--white);
+    }
+
+    .checkout-section {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .checkout-section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Payment methods */
+    .payment-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .payment-method:hover { border-color: var(--blue-vibrant); }
+    .payment-method.selected { border-color: var(--blue-vibrant); background: #EFF6FF; }
+
+    .payment-method input[type="radio"] {
+      accent-color: var(--blue-vibrant);
+    }
+
+    .payment-method-icon {
+      font-size: 22px;
+    }
+
+    .payment-method-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .payment-method-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Order summary right */
+    .checkout-summary {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+    }
+
+    .checkout-summary-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .checkout-summary-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .checkout-item-mini {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .checkout-item-mini:last-of-type { border-bottom: none; }
+
+    .checkout-item-img {
+      width: 48px;
+      height: 48px;
+      background: var(--gray-100);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .checkout-item-info {
+      flex: 1;
+    }
+    .checkout-item-info .name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .checkout-item-info .qty {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .checkout-item-price {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .checkout-total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 8px 0;
+    }
+    .checkout-total-row .label { color: var(--text-secondary); }
+
+    .checkout-grand-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0 8px;
+      border-top: 2px solid var(--border-color);
+      margin-top: 8px;
+    }
+    .checkout-grand-total .label { font-size: 15px; font-weight: 700; }
+    .checkout-grand-total .value { font-size: 22px; font-weight: 800; color: var(--text-primary); }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1B3A6E"/>
+          <path d="M8 20 L16 10 L24 20 L16 30 Z" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M20 10 L32 16 L32 24 L20 30" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="28" cy="10" r="2" fill="#22D3EE"/>
+        </svg>
+        <span style="font-size:18px;font-weight:800;color:#1B3A6E;letter-spacing:-0.02em;">DUBLON</span>
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html">Produtos</a></li>
+        <li><a href="sobre.html">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+      </ul>
+      <div class="navbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Buscar produto..." />
+      </div>
+      <div class="navbar-actions">
+        <a href="contato.html" class="navbar-btn-contact">Contato</a>
+        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
+        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
+        <a href="perfil.html" class="navbar-user">
+          <div class="user-avatar">JS</div>
+          <span class="navbar-user-name">João Silva</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div style="background:var(--gray-50);min-height:calc(100vh - 56px);">
+    <div class="checkout-page">
+      <!-- Main form -->
+      <div>
+        <!-- Steps -->
+        <div class="checkout-steps">
+          <div class="checkout-step done"><div class="step-num">✓</div> Carrinho</div>
+          <div class="checkout-step active"><div class="step-num">2</div> Checkout</div>
+          <div class="checkout-step"><div class="step-num">3</div> Confirmação</div>
+        </div>
+
+        <!-- Dados do cliente -->
+        <div class="checkout-section">
+          <div class="checkout-section-title">👤 Dados do cliente</div>
+          <div class="form-row" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label">NOME COMPLETO</label>
+              <input type="text" class="form-control" value="João Augusto Silva" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">CPF / CNPJ</label>
+              <input type="text" class="form-control" placeholder="000.000.000-00" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">E-MAIL</label>
+              <input type="email" class="form-control" value="joao@empresa.com.br" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">TELEFONE</label>
+              <input type="tel" class="form-control" value="(11) 99999-9999" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Endereço de entrega -->
+        <div class="checkout-section">
+          <div class="checkout-section-title">📍 Endereço de entrega</div>
+          <div class="form-row" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label">CEP</label>
+              <input type="text" class="form-control" placeholder="00000-000" />
+            </div>
+            <div class="form-group" style="flex:2;">
+              <label class="form-label">LOGRADOURO</label>
+              <input type="text" class="form-control" placeholder="Rua, Avenida..." />
+            </div>
+          </div>
+          <div class="form-row" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label">NÚMERO</label>
+              <input type="text" class="form-control" placeholder="Nº" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">COMPLEMENTO</label>
+              <input type="text" class="form-control" placeholder="Apto, Sala..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label">BAIRRO</label>
+              <input type="text" class="form-control" placeholder="Bairro" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="flex:2;">
+              <label class="form-label">CIDADE</label>
+              <input type="text" class="form-control" placeholder="Cidade" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">ESTADO</label>
+              <select class="form-control">
+                <option>SP</option><option>RJ</option><option>MG</option><option>RS</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Forma de pagamento -->
+        <div class="checkout-section">
+          <div class="checkout-section-title">💳 Forma de pagamento</div>
+          <div class="payment-methods">
+            <label class="payment-method selected">
+              <input type="radio" name="payment" value="boleto" checked />
+              <div class="payment-method-icon">📄</div>
+              <div>
+                <div class="payment-method-label">Boleto Bancário</div>
+                <div class="payment-method-sub">Prazo de 2 dias úteis</div>
+              </div>
+            </label>
+            <label class="payment-method">
+              <input type="radio" name="payment" value="pix" />
+              <div class="payment-method-icon">⚡</div>
+              <div>
+                <div class="payment-method-label">PIX</div>
+                <div class="payment-method-sub">Aprovação imediata</div>
+              </div>
+            </label>
+            <label class="payment-method">
+              <input type="radio" name="payment" value="cartao" />
+              <div class="payment-method-icon">💳</div>
+              <div>
+                <div class="payment-method-label">Cartão de crédito</div>
+                <div class="payment-method-sub">Até 6x sem juros</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;padding:14px;font-size:15px;" onclick="window.location.href='pedido-confirmado.html'">
+          → Confirmar pedido
+        </button>
+      </div>
+
+      <!-- Summary -->
+      <div class="checkout-summary">
+        <div class="checkout-summary-card">
+          <div class="checkout-summary-title">Resumo do pedido</div>
+
+          <div class="checkout-item-mini">
+            <div class="checkout-item-img">👟</div>
+            <div class="checkout-item-info">
+              <div class="name">Palmilha EVA Pro D45</div>
+              <div class="qty">350 pares · Branco</div>
+            </div>
+            <div class="checkout-item-price">R$ 420,00</div>
+          </div>
+
+          <div class="checkout-item-mini">
+            <div class="checkout-item-img">👟</div>
+            <div class="checkout-item-info">
+              <div class="name">Palmilha Sport Runner X</div>
+              <div class="qty">250 pares · Azul</div>
+            </div>
+            <div class="checkout-item-price">R$ 237,50</div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <div class="checkout-total-row"><span class="label">Subtotal</span><span>R$ 657,50</span></div>
+            <div class="checkout-total-row"><span class="label">Frete</span><span style="color:#16A34A;">Grátis</span></div>
+            <div class="checkout-total-row"><span class="label">Desconto</span><span>—</span></div>
+          </div>
+
+          <div class="checkout-grand-total">
+            <span class="label">Total</span>
+            <span class="value">R$ 657,50</span>
+          </div>
+
+          <div style="margin-top:16px;padding:12px;background:#F0FDF4;border-radius:8px;font-size:12px;color:#16A34A;">
+            🔒 Pagamento 100% seguro e protegido
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.querySelectorAll('.payment-method').forEach(method => {
+      method.addEventListener('click', () => {
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+        method.classList.add('selected');
+      });
+    });
+  </script>
+</body>
+</html>

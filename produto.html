@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Palmilha EVA Pro D45 – DUBLON</title>
+  <meta name="description" content="Palmilha EVA Pro D45 DUBLON. Certificação industrial, alta performance. Adicione ao carrinho." />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    .product-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    /* ── Gallery ─────────────────────────────────────────── */
+    .product-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .product-main-img {
+      height: 380px;
+      background: linear-gradient(145deg, var(--gray-100) 0%, var(--gray-50) 100%);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-badge-main {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+    }
+
+    .product-thumbs {
+      display: flex;
+      gap: 10px;
+    }
+
+    .product-thumb {
+      width: 80px;
+      height: 80px;
+      background: var(--gray-100);
+      border-radius: var(--radius-lg);
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      cursor: pointer;
+      transition: border-color var(--transition);
+      flex-shrink: 0;
+    }
+
+    .product-thumb.active,
+    .product-thumb:hover {
+      border-color: var(--blue-vibrant);
+    }
+
+    /* ── Product info ────────────────────────────────────── */
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .product-breadcrumb {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .product-breadcrumb a {
+      color: var(--blue-vibrant);
+      text-decoration: none;
+    }
+
+    .product-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stars { color: #F59E0B; letter-spacing: 2px; }
+
+    .rating-count {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .product-price-block {
+      padding: 20px;
+      background: var(--gray-50);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+    }
+
+    .product-price-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .product-price-main {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .product-price-unit {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    .product-price-min {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Colors */
+    .product-option-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .color-options {
+      display: flex;
+      gap: 8px;
+    }
+
+    .color-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .color-btn.active,
+    .color-btn:hover {
+      border-color: var(--blue-vibrant);
+      transform: scale(1.1);
+    }
+
+    /* Quantity + Add to cart */
+    .add-to-cart-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-add-main {
+      flex: 1;
+      padding: 14px 24px;
+      background: var(--blue-vibrant);
+      color: var(--white);
+      border-radius: var(--radius-lg);
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all var(--transition-md);
+      border: none;
+    }
+    .btn-add-main:hover {
+      background: var(--blue-vivid);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.4);
+    }
+
+    .btn-quote-product {
+      padding: 14px 20px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--white);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-quote-product:hover {
+      border-color: var(--blue-vibrant);
+      color: var(--blue-vibrant);
+    }
+
+    /* Technical specs */
+    .tech-specs {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .tech-specs-title {
+      padding: 14px 20px;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--border-color);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .tech-spec-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+    .tech-spec-item:last-child { border-bottom: none; }
+    .tech-spec-item .key { color: var(--text-secondary); }
+    .tech-spec-item .val { font-weight: 600; color: var(--text-primary); }
+
+    /* Delivery info */
+    .delivery-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .delivery-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .delivery-item .icon { font-size: 16px; }
+    .delivery-item strong { color: var(--text-primary); }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1B3A6E"/>
+          <path d="M8 20 L16 10 L24 20 L16 30 Z" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M20 10 L32 16 L32 24 L20 30" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="28" cy="10" r="2" fill="#22D3EE"/>
+        </svg>
+        <span style="font-size:18px;font-weight:800;color:#1B3A6E;letter-spacing:-0.02em;">DUBLON</span>
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html">Produtos</a></li>
+        <li><a href="sobre.html">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+      </ul>
+      <div class="navbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Buscar produto..." />
+      </div>
+      <div class="navbar-actions">
+        <a href="contato.html" class="navbar-btn-contact">Contato</a>
+        <a href="login.html" class="navbar-btn-login"><span>👤</span> Entrar</a>
+        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
+        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
+      </div>
+    </div>
+  </nav>
+
+  <div style="background:var(--gray-50);padding:12px 32px;border-bottom:1px solid var(--border-color);">
+    <div style="max-width:1200px;margin:0 auto;">
+      <span style="font-size:12px;color:var(--text-muted);">
+        <a href="catalogo.html" style="color:var(--blue-vibrant);text-decoration:none;">Catálogo</a>
+        › <a href="catalogo.html" style="color:var(--blue-vibrant);text-decoration:none;">Palmilha EVA</a>
+        › Palmilha EVA Pro D45
+      </span>
+    </div>
+  </div>
+
+  <div class="product-page">
+    <!-- GALLERY -->
+    <div class="product-gallery">
+      <div class="product-main-img">
+        <span class="product-badge-main"><span class="badge badge-blue">Mais vendido</span></span>
+        👟
+      </div>
+      <div class="product-thumbs">
+        <div class="product-thumb active">👟</div>
+        <div class="product-thumb">👟</div>
+        <div class="product-thumb">👟</div>
+        <div class="product-thumb" style="background:#EFF6FF;">📋</div>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="product-info">
+      <div>
+        <div class="product-breadcrumb">
+          <a href="catalogo.html">Palmilha EVA</a> › Palmilha EVA Pro D45
+        </div>
+        <h1 class="product-title">Palmilha EVA Pro D45</h1>
+        <div class="product-rating" style="margin-top:8px;">
+          <span class="stars">★★★★★</span>
+          <span class="rating-count">4.9 (128 avaliações)</span>
+          <span style="font-size:12px;color:#16A34A;font-weight:600;margin-left:8px;">✓ Em estoque</span>
+        </div>
+      </div>
+
+      <div class="product-price-block">
+        <div class="product-price-label">Preço unitário</div>
+        <div class="product-price-main">R$ 1,20<span class="product-price-unit">/par</span></div>
+        <div class="product-price-min">Pedido mínimo: 50 pares</div>
+      </div>
+
+      <!-- Colors -->
+      <div>
+        <div class="product-option-title">Cor: <span style="font-weight:400;color:var(--text-secondary);">Branco</span></div>
+        <div class="color-options">
+          <div class="color-btn active" style="background:#FFFFFF;border:2px solid #E2E8F0;" title="Branco"></div>
+          <div class="color-btn" style="background:#1B3A6E;" title="Azul Escuro"></div>
+          <div class="color-btn" style="background:#1E293B;" title="Preto"></div>
+          <div class="color-btn" style="background:#D4A574;" title="Bege"></div>
+          <div class="color-btn" style="background:#6B7280;" title="Cinza"></div>
+        </div>
+      </div>
+
+      <!-- Quantity -->
+      <div>
+        <div class="product-option-title">Quantidade (pares)</div>
+        <div class="qty-counter">
+          <button data-action="minus">−</button>
+          <input type="number" value="100" min="50" id="prod-qty" />
+          <button data-action="plus">+</button>
+        </div>
+      </div>
+
+      <!-- Add to cart -->
+      <div class="add-to-cart-row">
+        <button class="btn-add-main" onclick="window.location.href='carrinho.html'">
+          🛒 Adicionar ao carrinho
+        </button>
+        <button class="btn-quote-product" onclick="window.location.href='orcamento.html'">Orçamento</button>
+      </div>
+
+      <!-- Tech specs -->
+      <div class="tech-specs">
+        <div class="tech-specs-title">Informações Técnicas</div>
+        <div class="tech-spec-item"><span class="key">Material</span><span class="val">EVA expandido</span></div>
+        <div class="tech-spec-item"><span class="key">Densidade</span><span class="val">D45</span></div>
+        <div class="tech-spec-item"><span class="key">Espessura</span><span class="val">4mm a 8mm</span></div>
+        <div class="tech-spec-item"><span class="key">Numeração</span><span class="val">33 ao 47</span></div>
+        <div class="tech-spec-item"><span class="key">Certificação</span><span class="val">ABNT NBR 12282</span></div>
+        <div class="tech-spec-item"><span class="key">Aplicação</span><span class="val">Industrial / Calçados</span></div>
+      </div>
+
+      <!-- Delivery -->
+      <div class="delivery-info">
+        <div class="delivery-item"><span class="icon">🚚</span><span><strong>Entrega em 3-5 dias úteis</strong> para todo o Brasil</span></div>
+        <div class="delivery-item"><span class="icon">🔄</span><span>Troca gratuita em caso de defeito</span></div>
+        <div class="delivery-item"><span class="icon">🏭</span><span>Produção certificada ABNT</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

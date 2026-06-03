@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meu Perfil – DUBLON</title>
+  <meta name="description" content="Gerencie suas informações pessoais, endereços e preferências na DUBLON." />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <style>
+    /* ── Profile layout ─────────────────────────────────── */
+    .profile-layout {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .profile-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .profile-right {
+      width: 220px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── Section cards ───────────────────────────────────── */
+    .profile-section {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .profile-section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile-section-title .icon {
+      width: 32px;
+      height: 32px;
+      background: var(--gray-100);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .profile-section-title h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .profile-section-title p {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .btn-edit {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition);
+      background: var(--white);
+      text-decoration: none;
+    }
+    .btn-edit:hover {
+      border-color: var(--blue-vibrant);
+      color: var(--blue-vibrant);
+    }
+
+    /* Fields grid */
+    .profile-fields {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding: 24px;
+    }
+
+    .profile-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .profile-field label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .profile-field-value {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      color: var(--text-primary);
+      background: var(--white);
+    }
+
+    .profile-field-icon {
+      color: var(--gray-400);
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Address section */
+    .address-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 20px 24px;
+    }
+
+    .address-card-item {
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      position: relative;
+      cursor: pointer;
+      transition: border-color var(--transition);
+    }
+
+    .address-card-item:hover { border-color: var(--blue-vibrant); }
+
+    .address-card-item.principal {
+      border-color: var(--blue-vibrant);
+      background: #F0F6FF;
+    }
+
+    .address-badge-principal {
+      position: absolute;
+      top: -1px;
+      right: 12px;
+      background: var(--blue-vibrant);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .address-house-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .address-street {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .address-detail {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .address-add-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1.5px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 13px;
+      gap: 6px;
+      transition: all var(--transition);
+      min-height: 90px;
+    }
+    .address-add-btn:hover {
+      border-color: var(--blue-vibrant);
+      color: var(--blue-vibrant);
+    }
+    .address-add-btn .plus { font-size: 24px; }
+
+    /* Notifications */
+    .notification-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notification-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .notification-item:last-child { border-bottom: none; }
+
+    .notification-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .notification-info strong {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .notification-info span {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* ── Right panel ─────────────────────────────────────── */
+    .profile-user-card {
+      background: linear-gradient(145deg, #1B3A6E 0%, #2563EB 100%);
+      border-radius: var(--radius-xl);
+      padding: 24px 20px;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .profile-user-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--white);
+      margin: 0 auto 12px;
+      border: 3px solid rgba(255,255,255,0.3);
+    }
+
+    .profile-user-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .profile-user-email {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 12px;
+    }
+
+    .profile-premium-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(135deg, #FCD34D, #F59E0B);
+      color: #7C2D12;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+
+    .btn-change-photo {
+      width: 100%;
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--radius-md);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .btn-change-photo:hover { background: rgba(255,255,255,0.25); }
+
+    .profile-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .profile-stat-mini {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .profile-stat-mini .val {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .profile-stat-mini .lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .security-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .security-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+    }
+
+    .security-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .security-item:last-child { border-bottom: none; }
+
+    .security-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .security-item-left .icon { font-size: 14px; }
+    .security-item-left .info strong {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: block;
+    }
+    .security-item-left .info span {
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .security-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--blue-vibrant);
+      text-decoration: none;
+    }
+    .security-link:hover { text-decoration: underline; }
+
+    .security-green {
+      font-size: 12px;
+      color: #16A34A;
+      font-weight: 600;
+    }
+
+    .danger-zone {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .danger-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #DC2626;
+      margin-bottom: 14px;
+    }
+
+    .btn-danger {
+      width: 100%;
+      padding: 9px 14px;
+      border: 1.5px solid #FECACA;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      color: #DC2626;
+      background: var(--white);
+      cursor: pointer;
+      transition: all var(--transition);
+      margin-bottom: 8px;
+      text-align: center;
+      display: block;
+    }
+    .btn-danger:hover { background: #FEE2E2; }
+    .btn-danger:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1B3A6E"/>
+          <path d="M8 20 L16 10 L24 20 L16 30 Z" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M20 10 L32 16 L32 24 L20 30" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linejoin="round"/>
+          <line x1="16" y1="10" x2="28" y2="10" stroke="#22D3EE" stroke-width="1.5"/>
+          <circle cx="28" cy="10" r="2" fill="#22D3EE"/>
+        </svg>
+        <span style="font-size:18px;font-weight:800;color:#1B3A6E;letter-spacing:-0.02em;">DUBLON</span>
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html">Produtos</a></li>
+        <li><a href="sobre.html">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+      </ul>
+      <div class="navbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Buscar produto..." />
+      </div>
+      <div class="navbar-actions">
+        <a href="contato.html" class="navbar-btn-contact">Contato</a>
+        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
+        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
+        <a href="perfil.html" class="navbar-user">
+          <div class="user-avatar">JS</div>
+          <span class="navbar-user-name">João Silva</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CLIENT LAYOUT -->
+  <div class="client-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">JS</div>
+        <div class="sidebar-name">João Silva</div>
+        <div class="sidebar-email">joao@empresa.com.br</div>
+        <span class="sidebar-badge-premium">★ Cliente Premium</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="perfil.html" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Visão geral
+        </a>
+        <a href="meus-pedidos.html" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Meus pedidos
+          <span class="sidebar-nav-badge">3</span>
+        </a>
+        <a href="perfil.html" class="sidebar-nav-item active">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Meu perfil
+        </a>
+        <a href="perfil.html" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
+          Endereços
+        </a>
+        <a href="#" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Pagamentos
+        </a>
+        <a href="#" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Segurança
+        </a>
+        <a href="#" class="sidebar-nav-item">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Ajuda
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="client-content">
+      <div class="page-header">
+        <h1>Meu Perfil</h1>
+        <p>Gerencie suas informações pessoais e preferências</p>
+      </div>
+
+      <div class="profile-layout">
+        <!-- LEFT: Sections -->
+        <div class="profile-main">
+
+          <!-- Dados Pessoais -->
+          <div class="profile-section">
+            <div class="profile-section-header">
+              <div class="profile-section-title">
+                <div class="icon">👤</div>
+                <div>
+                  <h2>Dados Pessoais</h2>
+                  <p>Informações da sua conta</p>
+                </div>
+              </div>
+              <a href="#" class="btn-edit">✏ Editar</a>
+            </div>
+            <div class="profile-fields">
+              <div class="profile-field">
+                <label>NOME COMPLETO</label>
+                <div class="profile-field-value">
+                  <span class="profile-field-icon">👤</span>
+                  João Augusto Silva
+                </div>
+              </div>
+              <div class="profile-field">
+                <label>CPF</label>
+                <div class="profile-field-value">
+                  <span class="profile-field-icon">📋</span>
+                  ••••••••••
+                </div>
+              </div>
+              <div class="profile-field">
+                <label>DATA DE NASCIMENTO</label>
+                <div class="profile-field-value">
+                  <span class="profile-field-icon">📅</span>
+                  15/03/1990
+                </div>
+              </div>
+              <div class="profile-field">
+                <label>E-MAIL</label>
+                <div class="profile-field-value">
+                  <span class="profile-field-icon">✉</span>
+                  joao@empresa.com.br
+                </div>
+              </div>
+              <div class="profile-field">
+                <label>TELEFONE</label>
+                <div class="profile-field-value">
+                  <span class="profile-field-icon">📞</span>
+                  (11) 99999-9999
+                </div>
+              </div>
+              <div class="profile-field">
+                <label>EMPRESA</label>
+                <div class="profile-field-value">
+                  <span class="profile-field-icon">🏢</span>
+                  Indústrias Silva Ltda
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Endereços -->
+          <div class="profile-section">
+            <div class="profile-section-header">
+              <div class="profile-section-title">
+                <div class="icon">📍</div>
+                <div>
+                  <h2>Endereços</h2>
+                  <p>Gerencie seus endereços de entrega</p>
+                </div>
+              </div>
+              <a href="#" class="btn-edit" style="background:var(--blue-vibrant);color:#fff;border-color:var(--blue-vibrant);">+ Adicionar endereço</a>
+            </div>
+            <div class="address-grid">
+              <div class="address-card-item principal">
+                <span class="address-badge-principal">Principal</span>
+                <div class="address-house-icon">🏠</div>
+                <div class="address-street">Rua das Indústrias, 1240</div>
+                <div class="address-detail">Sala 3 · Bairro Industrial</div>
+                <div class="address-detail">São Paulo, SP · 04000-000</div>
+              </div>
+              <div class="address-add-btn">
+                <span class="plus">+</span>
+                <span>Novo endereço</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Notificações -->
+          <div class="profile-section">
+            <div class="profile-section-header">
+              <div class="profile-section-title">
+                <div class="icon">🔔</div>
+                <div>
+                  <h2>Notificações</h2>
+                  <p>Controle como você quer ser avisado</p>
+                </div>
+              </div>
+            </div>
+            <div class="notification-list">
+              <div class="notification-item">
+                <div class="notification-info">
+                  <strong>Atualizações de pedido por e-mail</strong>
+                  <span>Receba o status de cada etapa da entrega</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="notification-item">
+                <div class="notification-info">
+                  <strong>SMS / WhatsApp</strong>
+                  <span>Notificações de entrega pelo celular</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="notification-item">
+                <div class="notification-info">
+                  <strong>Promoções e ofertas</strong>
+                  <span>Cupons e descontos exclusivos para a sua conta</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="notification-item">
+                <div class="notification-info">
+                  <strong>Newsletter Dublon</strong>
+                  <span>Novidades sobre produtos, dicas e conteúdo técnico</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT panel -->
+        <div class="profile-right">
+          <!-- User card -->
+          <div class="profile-user-card">
+            <div class="profile-user-avatar">JS</div>
+            <div class="profile-user-name">João Augusto Silva</div>
+            <div class="profile-user-email">joao@empresa.com.br</div>
+            <span class="profile-premium-badge">★ Cliente Premium</span>
+            <br />
+            <button class="btn-change-photo" style="margin-top:12px;">Alterar foto de perfil</button>
+          </div>
+
+          <!-- Stats -->
+          <div class="profile-stats">
+            <div class="profile-stat-mini">
+              <div class="val">3</div>
+              <div class="lbl">Pedidos</div>
+            </div>
+            <div class="profile-stat-mini">
+              <div class="val">1800</div>
+              <div class="lbl">Pares</div>
+            </div>
+            <div class="profile-stat-mini">
+              <div class="val">1</div>
+              <div class="lbl">Endereço</div>
+            </div>
+            <div class="profile-stat-mini">
+              <div class="val">4.9</div>
+              <div class="lbl">Avaliação</div>
+            </div>
+          </div>
+
+          <!-- Security -->
+          <div class="security-card">
+            <div class="security-title">Segurança da conta</div>
+            <div class="security-item">
+              <div class="security-item-left">
+                <span class="icon">🔒</span>
+                <div class="info">
+                  <strong>Senha</strong>
+                  <span>Alterada há 30 dias</span>
+                </div>
+              </div>
+              <a href="#" class="security-link">Alterar</a>
+            </div>
+            <div class="security-item">
+              <div class="security-item-left">
+                <span class="icon">✓</span>
+                <div class="info">
+                  <strong>Autenticação 2 fatores</strong>
+                  <span class="security-green">Ativada</span>
+                </div>
+              </div>
+              <a href="#" class="security-link">Gerenciar</a>
+            </div>
+          </div>
+
+          <!-- Danger zone -->
+          <div class="danger-zone">
+            <div class="danger-title">⚠ Zona de perigo</div>
+            <button class="btn-danger">Desativar minha conta</button>
+            <button class="btn-danger">Excluir minha conta</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

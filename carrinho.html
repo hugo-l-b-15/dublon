@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrinho – DUBLON</title>
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    .cart-page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 28px;
+      background: var(--gray-50);
+      min-height: calc(100vh - 56px);
+    }
+
+    .cart-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    /* Cart items */
+    .cart-items {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cart-item {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cart-item-img {
+      width: 72px;
+      height: 72px;
+      background: var(--gray-100);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      flex-shrink: 0;
+      border: 1px solid var(--border-color);
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-cat {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--blue-vibrant);
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .cart-item-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .cart-item-spec {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .cart-item-qty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cart-item-qty .qty-counter {
+      border-radius: var(--radius-md);
+    }
+
+    .cart-item-qty .qty-counter input {
+      width: 50px;
+    }
+
+    .cart-item-price {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .cart-item-price .unit {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .cart-item-price .total {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .cart-item-remove {
+      color: var(--gray-400);
+      font-size: 16px;
+      cursor: pointer;
+      transition: color var(--transition);
+      margin-left: 12px;
+      background: none;
+      border: none;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+    }
+    .cart-item-remove:hover { color: #EF4444; background: #FEE2E2; }
+
+    /* Summary */
+    .cart-summary {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+    }
+
+    .summary-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .summary-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .summary-row:last-of-type { border-bottom: none; }
+
+    .summary-row .label { color: var(--text-secondary); }
+    .summary-row .value { font-weight: 600; color: var(--text-primary); }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0 8px;
+      margin-top: 4px;
+      border-top: 2px solid var(--border-color);
+    }
+
+    .summary-total .label {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .summary-total .value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .coupon-row {
+      display: flex;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .coupon-row input {
+      flex: 1;
+      padding: 9px 12px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      outline: none;
+    }
+    .coupon-row input:focus { border-color: var(--blue-vibrant); }
+
+    .coupon-row button {
+      padding: 9px 14px;
+      background: var(--gray-100);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .coupon-row button:hover { border-color: var(--blue-vibrant); color: var(--blue-vibrant); }
+
+    .summary-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1B3A6E"/>
+          <path d="M8 20 L16 10 L24 20 L16 30 Z" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M20 10 L32 16 L32 24 L20 30" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="28" cy="10" r="2" fill="#22D3EE"/>
+        </svg>
+        <span style="font-size:18px;font-weight:800;color:#1B3A6E;letter-spacing:-0.02em;">DUBLON</span>
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html">Produtos</a></li>
+        <li><a href="sobre.html">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+      </ul>
+      <div class="navbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Buscar produto..." />
+      </div>
+      <div class="navbar-actions">
+        <a href="contato.html" class="navbar-btn-contact">Contato</a>
+        <a href="login.html" class="navbar-btn-login"><span>👤</span> Entrar</a>
+        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
+        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
+      </div>
+    </div>
+  </nav>
+
+  <div style="background:var(--gray-50);min-height:calc(100vh - 56px);">
+    <div class="cart-page">
+      <!-- Items -->
+      <div>
+        <h1 class="cart-title">🛒 Meu Carrinho</h1>
+        <div class="cart-items">
+          <div class="cart-item">
+            <div class="cart-item-img">👟</div>
+            <div class="cart-item-info">
+              <div class="cart-item-cat">Palmilha EVA</div>
+              <div class="cart-item-name">Palmilha EVA Pro D45</div>
+              <div class="cart-item-spec">Cor: Branco · D45 · Tamanho 39-42</div>
+            </div>
+            <div class="cart-item-qty">
+              <div class="qty-counter">
+                <button data-action="minus">−</button>
+                <input type="number" value="350" min="50" id="qty-1" />
+                <button data-action="plus">+</button>
+              </div>
+              <span style="font-size:11px;color:var(--text-muted);">R$ 1,20/par</span>
+            </div>
+            <div class="cart-item-price">
+              <div class="unit">Subtotal</div>
+              <div class="total">R$ 420,00</div>
+            </div>
+            <button class="cart-item-remove" title="Remover">✕</button>
+          </div>
+
+          <div class="cart-item">
+            <div class="cart-item-img" style="background:#EFF6FF;">👟</div>
+            <div class="cart-item-info">
+              <div class="cart-item-cat">Linha Esportiva</div>
+              <div class="cart-item-name">Palmilha Sport Runner X</div>
+              <div class="cart-item-spec">Cor: Azul Escuro · D35 · Tamanho 37-43</div>
+            </div>
+            <div class="cart-item-qty">
+              <div class="qty-counter">
+                <button data-action="minus">−</button>
+                <input type="number" value="250" min="50" id="qty-2" />
+                <button data-action="plus">+</button>
+              </div>
+              <span style="font-size:11px;color:var(--text-muted);">R$ 0,95/par</span>
+            </div>
+            <div class="cart-item-price">
+              <div class="unit">Subtotal</div>
+              <div class="total">R$ 237,50</div>
+            </div>
+            <button class="cart-item-remove" title="Remover">✕</button>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;">
+          <a href="catalogo.html" style="font-size:13px;color:var(--blue-vibrant);text-decoration:none;font-weight:600;">← Continuar comprando</a>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="cart-summary">
+        <div class="summary-card">
+          <div class="summary-title">Resumo do pedido</div>
+
+          <div class="summary-row">
+            <span class="label">Subtotal (600 pares)</span>
+            <span class="value">R$ 657,50</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Frete</span>
+            <span class="value" style="color:#16A34A;">Calcular</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Desconto</span>
+            <span class="value">—</span>
+          </div>
+
+          <div class="coupon-row">
+            <input type="text" placeholder="Código de cupom" id="coupon-input" />
+            <button onclick="applyCoupon()">Aplicar</button>
+          </div>
+
+          <div class="summary-total">
+            <span class="label">Total</span>
+            <span class="value">R$ 657,50</span>
+          </div>
+
+          <button class="btn btn-primary btn-full" style="padding:14px;font-size:15px;margin-top:4px;" onclick="window.location.href='checkout.html'">
+            → Finalizar pedido
+          </button>
+
+          <p class="summary-note">🔒 Pagamento 100% seguro</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    function applyCoupon() {
+      const code = document.getElementById('coupon-input').value.trim();
+      if (code.toUpperCase() === 'DUBLON10') {
+        alert('Cupom aplicado! 10% de desconto.');
+      } else if (code) {
+        alert('Cupom inválido ou expirado.');
+      }
+    }
+  </script>
+</body>
+</html>

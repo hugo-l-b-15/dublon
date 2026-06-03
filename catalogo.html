@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo de Produtos – DUBLON</title>
+  <meta name="description" content="Explore o catálogo completo de palmilhas industriais DUBLON. EVA, Premium, Esportiva e mais." />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    .catalog-layout {
+      display: flex;
+      min-height: calc(100vh - 56px);
+      background: var(--gray-50);
+    }
+
+    /* ── Sidebar filtros ─────────────────────────────────── */
+    .catalog-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--white);
+      border-right: 1px solid var(--border-color);
+      padding: 24px 0;
+    }
+
+    .catalog-sidebar-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      padding: 0 20px;
+      margin-bottom: 12px;
+    }
+
+    .filter-group {
+      padding: 0 20px;
+      margin-bottom: 24px;
+    }
+
+    .filter-group-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .filter-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 0;
+      cursor: pointer;
+    }
+
+    .filter-option input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+      accent-color: var(--blue-vibrant);
+    }
+
+    .filter-option label {
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .filter-option:hover label { color: var(--text-primary); }
+
+    .filter-divider {
+      height: 1px;
+      background: var(--border-color);
+      margin: 12px 20px 20px;
+    }
+
+    .price-range {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .price-range input[type="range"] {
+      width: 100%;
+      accent-color: var(--blue-vibrant);
+    }
+
+    .price-range-values {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* ── Main content ────────────────────────────────────── */
+    .catalog-main {
+      flex: 1;
+      padding: 28px 32px;
+    }
+
+    .catalog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .catalog-header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .catalog-header p {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .catalog-sort {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .catalog-sort label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .catalog-sort select {
+      padding: 7px 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      color: var(--text-primary);
+      background: var(--white);
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* ── Product grid ────────────────────────────────────── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .product-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition-md), box-shadow var(--transition-md);
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .product-card-img {
+      height: 160px;
+      background: linear-gradient(145deg, var(--gray-100) 0%, var(--gray-50) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      position: relative;
+    }
+
+    .product-card-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+    }
+
+    .product-card-wishlist {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      background: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      font-size: 14px;
+      border: 1px solid var(--border-color);
+      transition: all var(--transition);
+    }
+    .product-card-wishlist:hover { border-color: #EF4444; color: #EF4444; }
+
+    .product-card-body {
+      padding: 16px;
+    }
+
+    .product-card-cat {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--blue-vibrant);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .product-card-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .product-card-specs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .spec-tag {
+      padding: 2px 8px;
+      background: var(--gray-100);
+      border-radius: 100px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .product-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .product-price {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-price-label {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .product-price-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .product-price-unit {
+      font-size: 11px;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .btn-add-cart {
+      width: 36px;
+      height: 36px;
+      background: var(--blue-vibrant);
+      color: var(--white);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition);
+      border: none;
+    }
+    .btn-add-cart:hover {
+      background: var(--blue-vivid);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <svg class="logo-icon" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="8" fill="#1B3A6E"/>
+          <path d="M8 20 L16 10 L24 20 L16 30 Z" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M20 10 L32 16 L32 24 L20 30" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linejoin="round"/>
+          <line x1="16" y1="10" x2="28" y2="10" stroke="#22D3EE" stroke-width="1.5"/>
+          <circle cx="28" cy="10" r="2" fill="#22D3EE"/>
+        </svg>
+        <span style="font-size:18px;font-weight:800;color:#1B3A6E;letter-spacing:-0.02em;">DUBLON</span>
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html" class="active">Produtos</a></li>
+        <li><a href="sobre.html">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+      </ul>
+      <div class="navbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Buscar produto..." />
+      </div>
+      <div class="navbar-actions">
+        <a href="contato.html" class="navbar-btn-contact">Contato</a>
+        <a href="login.html" class="navbar-btn-login"><span>👤</span> Entrar</a>
+        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
+        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="catalog-layout">
+    <!-- SIDEBAR -->
+    <aside class="catalog-sidebar">
+      <div class="catalog-sidebar-title">Filtros</div>
+
+      <div class="filter-group">
+        <div class="filter-group-title">Categoria</div>
+        <div class="filter-option"><input type="checkbox" id="f-eva" checked /><label for="f-eva">Palmilha EVA</label></div>
+        <div class="filter-option"><input type="checkbox" id="f-premium" /><label for="f-premium">Palmilha Premium</label></div>
+        <div class="filter-option"><input type="checkbox" id="f-sport" /><label for="f-sport">Linha Esportiva</label></div>
+        <div class="filter-option"><input type="checkbox" id="f-custom" /><label for="f-custom">Personalizada</label></div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-group">
+        <div class="filter-group-title">Densidade</div>
+        <div class="filter-option"><input type="checkbox" id="f-d35" /><label for="f-d35">D35</label></div>
+        <div class="filter-option"><input type="checkbox" id="f-d45" checked /><label for="f-d45">D45</label></div>
+        <div class="filter-option"><input type="checkbox" id="f-d55" /><label for="f-d55">D55</label></div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-group">
+        <div class="filter-group-title">Faixa de preço</div>
+        <div class="price-range">
+          <input type="range" min="0" max="5" value="3" id="price-range" oninput="updatePrice(this.value)" />
+          <div class="price-range-values">
+            <span>R$ 0,80</span>
+            <span id="price-max">R$ 2,40</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-group">
+        <div class="filter-group-title">Disponibilidade</div>
+        <div class="filter-option"><input type="checkbox" id="f-stock" checked /><label for="f-stock">Em estoque</label></div>
+        <div class="filter-option"><input type="checkbox" id="f-order" /><label for="f-order">Sob encomenda</label></div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="catalog-main">
+      <div class="catalog-header">
+        <div>
+          <h1>Catálogo de Produtos</h1>
+          <p>6 produtos encontrados</p>
+        </div>
+        <div class="catalog-sort">
+          <label>Ordenar por:</label>
+          <select>
+            <option>Mais relevantes</option>
+            <option>Menor preço</option>
+            <option>Maior preço</option>
+            <option>Mais vendidos</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="product-grid">
+        <!-- Product 1 -->
+        <a href="produto.html" style="text-decoration:none;" class="product-card">
+          <div class="product-card-img">
+            👟
+            <span class="product-card-badge"><span class="badge badge-blue">Mais vendido</span></span>
+            <button class="product-card-wishlist">♡</button>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-cat">Palmilha EVA</div>
+            <div class="product-card-name">Palmilha EVA Pro D45</div>
+            <div class="product-card-specs">
+              <span class="spec-tag">D45</span>
+              <span class="spec-tag">Antichoque</span>
+              <span class="spec-tag">Industrial</span>
+            </div>
+            <div class="product-card-footer">
+              <div class="product-price">
+                <span class="product-price-label">A partir de</span>
+                <span class="product-price-value">R$ 1,20<span class="product-price-unit">/par</span></span>
+              </div>
+              <button class="btn-add-cart">+</button>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 2 -->
+        <a href="produto.html" style="text-decoration:none;" class="product-card">
+          <div class="product-card-img" style="background:linear-gradient(145deg,#EFF6FF 0%,#DBEAFE 100%);">
+            👟
+            <button class="product-card-wishlist">♡</button>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-cat">Palmilha Premium</div>
+            <div class="product-card-name">Palmilha Premium +600</div>
+            <div class="product-card-specs">
+              <span class="spec-tag">D55</span>
+              <span class="spec-tag">Memória</span>
+              <span class="spec-tag">Premium</span>
+            </div>
+            <div class="product-card-footer">
+              <div class="product-price">
+                <span class="product-price-label">A partir de</span>
+                <span class="product-price-value">R$ 2,10<span class="product-price-unit">/par</span></span>
+              </div>
+              <button class="btn-add-cart">+</button>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 3 -->
+        <a href="produto.html" style="text-decoration:none;" class="product-card">
+          <div class="product-card-img" style="background:linear-gradient(145deg,#F0FDF4 0%,#DCFCE7 100%);">
+            👟
+            <span class="product-card-badge"><span class="badge badge-green">Novo</span></span>
+            <button class="product-card-wishlist">♡</button>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-cat">Linha Esportiva</div>
+            <div class="product-card-name">Palmilha Esportiva Runner +600</div>
+            <div class="product-card-specs">
+              <span class="spec-tag">D35</span>
+              <span class="spec-tag">Respirável</span>
+              <span class="spec-tag">Runner</span>
+            </div>
+            <div class="product-card-footer">
+              <div class="product-price">
+                <span class="product-price-label">A partir de</span>
+                <span class="product-price-value">R$ 0,95<span class="product-price-unit">/par</span></span>
+              </div>
+              <button class="btn-add-cart">+</button>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 4 -->
+        <a href="produto.html" style="text-decoration:none;" class="product-card">
+          <div class="product-card-img">
+            👟
+            <button class="product-card-wishlist">♡</button>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-cat">Palmilha EVA</div>
+            <div class="product-card-name">Palmilha EVA Standard D35</div>
+            <div class="product-card-specs">
+              <span class="spec-tag">D35</span>
+              <span class="spec-tag">Econômico</span>
+            </div>
+            <div class="product-card-footer">
+              <div class="product-price">
+                <span class="product-price-label">A partir de</span>
+                <span class="product-price-value">R$ 0,80<span class="product-price-unit">/par</span></span>
+              </div>
+              <button class="btn-add-cart">+</button>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 5 -->
+        <a href="produto.html" style="text-decoration:none;" class="product-card">
+          <div class="product-card-img" style="background:linear-gradient(145deg,#FFF7ED 0%,#FED7AA 100%);">
+            👟
+            <button class="product-card-wishlist">♡</button>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-cat">Premium</div>
+            <div class="product-card-name">Palmilha Ortopédica Pro</div>
+            <div class="product-card-specs">
+              <span class="spec-tag">D45</span>
+              <span class="spec-tag">Ortopédica</span>
+              <span class="spec-tag">Gel</span>
+            </div>
+            <div class="product-card-footer">
+              <div class="product-price">
+                <span class="product-price-label">A partir de</span>
+                <span class="product-price-value">R$ 2,40<span class="product-price-unit">/par</span></span>
+              </div>
+              <button class="btn-add-cart">+</button>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 6 -->
+        <a href="produto.html" style="text-decoration:none;" class="product-card">
+          <div class="product-card-img" style="background:linear-gradient(145deg,#F5F3FF 0%,#EDE9FE 100%);">
+            👟
+            <button class="product-card-wishlist">♡</button>
+          </div>
+          <div class="product-card-body">
+            <div class="product-card-cat">Personalizada</div>
+            <div class="product-card-name">Palmilha Personalizada Industrial</div>
+            <div class="product-card-specs">
+              <span class="spec-tag">Sob encomenda</span>
+              <span class="spec-tag">Custom</span>
+            </div>
+            <div class="product-card-footer">
+              <div class="product-price">
+                <span class="product-price-label">Consulte</span>
+                <span class="product-price-value" style="font-size:14px;">Preço sob consulta</span>
+              </div>
+              <button class="btn-add-cart" style="background:var(--gray-700);">→</button>
+            </div>
+          </div>
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    const prices = ['R$ 0,80','R$ 1,20','R$ 1,60','R$ 2,00','R$ 2,40','R$ 3,00'];
+    function updatePrice(val) {
+      document.getElementById('price-max').textContent = prices[val];
+    }
+  </script>
+</body>
+</html>
