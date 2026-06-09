@@ -1,23 +1,50 @@
 # DUBLON — Palmilhas Industriais
 
-Este projeto consiste em um website institucional completo com e-commerce e sistema de solicitação de orçamentos para a **DUBLON Palmilhas Industriais**. O sistema possui um frontend estático completo e interativo e um backend robusto construído em Node.js com Express e persistência em banco de dados PostgreSQL, pronto para deploy na plataforma Railway.
+> E-commerce B2B completo com painel administrativo, integração de API e deploy na Railway.
+
+![Node.js](https://img.shields.io/badge/Node.js-20-339933?style=flat-square&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4.x-000000?style=flat-square&logo=express&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![Railway](https://img.shields.io/badge/Deploy-Railway-0B0D0E?style=flat-square&logo=railway&logoColor=white)
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 📋 Sobre o Projeto
+
+A **DUBLON Palmilhas Industriais** é uma plataforma de e-commerce B2B especializada em palmilhas industriais, EPI e esportivas. O sistema cobre desde o catálogo de produtos até o rastreamento de pedidos, orçamentos personalizados e um painel de gestão administrativo completo.
+
+### Funcionalidades principais
+
+| Área | Funcionalidade |
+|------|---------------|
+| 🛒 **Loja** | Catálogo com filtros, página de produto, carrinho e checkout |
+| 📦 **Pedidos** | Listagem, rastreamento em tempo real, cancelamento |
+| 👤 **Perfil** | Dados pessoais, endereços, segurança, notificações |
+| 💬 **Contato** | Formulário de contato e solicitação de orçamento |
+| 🔐 **Admin** | Dashboard de métricas, gestão de produtos e pedidos |
+| 🔑 **Auth** | JWT + bcrypt, modo demo sem banco de dados |
+
+---
+
+## 🛠️ Tecnologias
 
 ### Frontend
-- **HTML5** & **CSS3** (Estilização premium, responsiva e moderna baseada nas especificações de UI originais)
-- **JavaScript (Vanilla)** (Interações dinâmicas, carrinho de compras, rastreamento de pedidos e consumo de API)
+- **HTML5 + CSS3** — Design premium responsivo com glassmorphism, gradientes e micro-animações
+- **JavaScript Vanilla** — Carrinho, filtros, rastreamento e consumo dinâmico da API via `js/api.js`
+- **Fontes:** Sora + DM Sans (Google Fonts)
 
 ### Backend
-- **Node.js** com **Express** (Servidor web e roteador de APIs)
-- **PostgreSQL** (Banco de dados relacional de alta confiabilidade)
-- **jsonwebtoken (JWT)** (Mecanismo stateless de autenticação segura)
-- **bcryptjs** (Hash e criptografia segura de senhas)
-- **pg (node-postgres)** (Driver de conexão com o PostgreSQL)
-- **dotenv** (Gerenciamento seguro de variáveis de ambiente)
-- **cors** (Habilitação de Cross-Origin Resource Sharing)
+- **Node.js 20 + Express 4** — Servidor e roteador de APIs REST
+- **PostgreSQL 16** — Banco de dados relacional
+- **jsonwebtoken (JWT)** — Autenticação stateless
+- **bcryptjs** — Hash seguro de senhas
+- **pg (node-postgres)** — Driver PostgreSQL
+- **dotenv** — Gerenciamento de variáveis de ambiente
+- **cors** — Cross-Origin Resource Sharing
+
+### Infra
+- **Docker** — Containerização via `Dockerfile` na raiz
+- **Railway** — Deploy automático via `railway.json` + `railway.toml`
 
 ---
 
@@ -25,102 +52,205 @@ Este projeto consiste em um website institucional completo com e-commerce e sist
 
 ```
 dublon/
-├── admin/                      # Painel administrativo do frontend
-├── assets/                     # Imagens, logotipos e mídias do site
-├── css/                        # Estilos globais e específicos das páginas
-├── js/                         # Scripts de lógica do frontend
-├── backend/                    # Pasta raiz do servidor backend
-│   ├── src/
-│   │   ├── index.js            # Ponto de entrada do Express (configura middlewares, rotas e estáticos)
-│   │   ├── db.js               # Gerenciador da Pool de conexões do PostgreSQL
-│   │   ├── db/
-│   │   │   ├── schema.sql      # Estrutura do banco de dados (tabelas e chaves)
-│   │   │   ├── seed.sql        # Dados iniciais (categorias e produtos)
-│   │   │   └── init.js         # Inicializador automático de tabelas e do admin
-│   │   ├── middleware/
-│   │   │   └── auth.js         # Middleware para rotas protegidas (Usuários e Admin)
-│   │   └── routes/
-│   │       ├── auth.js         # Rotas de Registro, Login e Verificação (/api/auth)
-│   │       ├── products.js     # Rotas do catálogo de produtos (/api/products)
-│   │       ├── orders.js       # Rotas de compras e pedidos (/api/orders)
-│   │       ├── users.js        # Rotas de perfil, endereços e clientes (/api/users)
-│   │       ├── categories.js   # Rotas de categorias do catálogo (/api/categories)
-│   │       ├── contact.js      # Rotas do formulário de contato (/api/contact)
-│   │       ├── quote.js        # Rotas de cotação/orçamentos (/api/quote)
-│   │       └── dashboard.js    # Rotas com relatórios financeiros e estatísticas (/api/dashboard)
-│   ├── .env.example            # Exemplo de configuração de ambiente local
-│   └── package.json            # Dependências e scripts do servidor Node.js
-├── Dockerfile                  # Arquivo de containerização para Deploy no Railway
-├── .env.example                # Arquivo de exemplo de ambiente na raiz
-└── [Páginas HTML]              # Arquivos HTML do site (index.html, sobre.html, etc.)
+├── admin/                        # Painel administrativo (SPA estática)
+│   ├── dashboard.html            # Métricas, gráfico de vendas, pedidos recentes
+│   ├── pedidos.html              # Gestão de pedidos
+│   ├── produtos.html             # Listagem de produtos
+│   └── produto-novo.html         # Cadastro de produto
+├── assets/
+│   └── images/
+│       └── dublon_logo_transparente.png  # Logo oficial (PNG transparente)
+├── css/
+│   ├── global.css                # Variáveis de design, reset, tipografia
+│   ├── components.css            # Botões, badges, tabelas, cards
+│   └── navbar.css                # Navbar responsiva
+├── js/
+│   ├── api.js                    # Gateway central — todos os fetch() para o backend
+│   └── main.js                   # Inicialização global do frontend
+├── backend/
+│   ├── package.json
+│   └── src/
+│       ├── index.js              # Entry point — middlewares, rotas, static files
+│       ├── db.js                 # Pool de conexões PostgreSQL
+│       ├── db/
+│       │   ├── schema.sql        # DDL completo (tabelas, índices, constraints)
+│       │   ├── seed.sql          # Dados iniciais (categorias, produtos, cupons, usuários)
+│       │   └── init.js           # Auto-migração e seed no boot
+│       ├── middleware/
+│       │   └── auth.js           # Middlewares JWT: auth() e admin()
+│       └── routes/
+│           ├── auth.js           # /api/auth — login, register, /me + modo demo
+│           ├── products.js       # /api/products — CRUD de produtos
+│           ├── orders.js         # /api/orders — pedidos e rastreamento
+│           ├── users.js          # /api/users — perfil, endereços, clientes
+│           ├── categories.js     # /api/categories
+│           ├── contact.js        # /api/contact
+│           ├── quote.js          # /api/quote — orçamentos
+│           ├── dashboard.js      # /api/dashboard — métricas e relatórios
+│           ├── cart.js           # /api/cart — carrinho persistente
+│           └── coupons.js        # /api/coupons — validação de cupons
+├── [Páginas HTML]                # index, catalogo, produto, carrinho, checkout,
+│                                 # login, cadastro, perfil, meus-pedidos,
+│                                 # rastreamento, contato, orcamento,
+│                                 # sobre, servicos, pedido-confirmado
+├── Dockerfile                    # Imagem Node 20 Alpine
+├── railway.json                  # Builder DOCKERFILE + startCommand
+├── railway.toml                  # Documentação de variáveis Railway
+└── .env.example                  # Modelo de variáveis de ambiente
 ```
 
 ---
 
-## ⚙️ Configuração e Execução Local
+## ⚙️ Execução Local
 
 ### Pré-requisitos
-- **Node.js** (versão 20 ou superior)
-- **PostgreSQL** instalado e rodando em sua máquina local
+- Node.js ≥ 20
+- PostgreSQL rodando localmente (ou string de conexão remota)
 
-### Passo a Passo
+### Passo a passo
 
-1. **Clonar o Repositório**
-   ```bash
-   git clone https://github.com/hugo-l-b-15/dublon.git
-   cd dublon
-   ```
+```bash
+# 1. Clonar o repositório
+git clone https://github.com/hugo-l-b-15/dublon.git
+cd dublon
 
-2. **Instalar Dependências do Backend**
-   ```bash
-   cd backend
-   npm install
-   ```
+# 2. Instalar dependências do backend
+cd backend
+npm install
 
-3. **Configurar as Variáveis de Ambiente**
-   Copie o arquivo `.env.example` para `.env` e configure as credenciais do seu banco de dados PostgreSQL local e sua chave secreta JWT:
-   ```bash
-   cp .env.example .env
-   ```
-   Abra o arquivo `.env` e edite as informações se necessário:
-   ```env
-   DATABASE_URL=postgresql://postgres:sua_senha_aqui@localhost:5432/dublon
-   JWT_SECRET=sua-chave-secreta-para-token-jwt
-   PORT=3000
-   NODE_ENV=development
-   ```
+# 3. Configurar variáveis de ambiente
+cp .env.example .env
+```
 
-4. **Executar em Modo de Desenvolvimento**
-   Com o PostgreSQL rodando localmente e a variável `DATABASE_URL` configurada, inicie o servidor:
-   ```bash
-   npm run dev
-   ```
-   *Nota: O backend está programado para criar automaticamente todas as tabelas (definidas em `schema.sql`), popular os dados de exemplo (`seed.sql`) e criar o usuário administrador no primeiro boot.*
+Edite `backend/.env`:
 
-5. **Acessar o Projeto**
-   Abra seu navegador e acesse:
-   [http://localhost:3000](http://localhost:3000)
+```env
+DATABASE_URL=postgresql://postgres:sua_senha@localhost:5432/dublon
+JWT_SECRET=sua-chave-secreta-forte
+PORT=3000
+NODE_ENV=development
+```
+
+```bash
+# 4. Iniciar o servidor (auto-cria tabelas e seed no primeiro boot)
+npm run dev
+```
+
+Acesse: **[http://localhost:3000](http://localhost:3000)**
+
+> **Sem banco de dados?** O servidor sobe mesmo sem `DATABASE_URL` configurada — apenas log de aviso. Use o [modo demo](#-modo-demo) para navegar pelo painel admin.
 
 ---
 
 ## 🚀 Deploy no Railway
 
-O projeto está totalmente configurado e otimizado para deploy no **Railway** utilizando o Dockerfile presente na raiz.
+O projeto está totalmente configurado para Railway com `railway.json` e `railway.toml`.
 
-1. Acesse o painel do [Railway](https://railway.app/).
-2. Crie um novo projeto a partir de seu repositório no GitHub (`hugo-l-b-15/dublon`).
-3. No painel do projeto do Railway, clique em **Add Service** -> **Database** -> **PostgreSQL**.
-4. Conecte o serviço do banco de dados PostgreSQL ao seu serviço do aplicativo (isso injetará a variável de ambiente `DATABASE_URL` automaticamente).
-5. Defina a variável de ambiente adicional `JWT_SECRET` com uma frase secreta forte nas configurações da aplicação.
-6. O Railway irá construir a imagem Docker e inicializar o projeto automaticamente.
+### Passo a passo
+
+1. Acesse [railway.app](https://railway.app/) e crie um projeto a partir do repositório `hugo-l-b-15/dublon`
+2. Clique em **Add Service → Database → PostgreSQL**
+3. Vá em **seu serviço → Variables → Add Reference** e selecione `DATABASE_URL` do plugin Postgres
+4. Adicione manualmente a variável `JWT_SECRET` com uma string forte e aleatória
+5. Faça redeploy — o backend inicializa o schema e seed automaticamente
+
+### Variáveis de ambiente
+
+| Variável | Obrigatória | Descrição |
+|----------|-------------|-----------|
+| `DATABASE_URL` | ✅ Sim | Connection string PostgreSQL (injetada pelo plugin Railway) |
+| `JWT_SECRET` | ✅ Sim | Chave de assinatura dos tokens JWT |
+| `PORT` | ➖ Auto | Porta HTTP (Railway injeta automaticamente) |
+| `NODE_ENV` | ➖ Opcional | `production` por padrão |
 
 ---
 
-## 🔑 Acesso de Administrador Padrão
+## 🔑 Credenciais de Acesso
 
-Após a inicialização do banco de dados, o sistema gera automaticamente uma conta de administrador inicial para gerenciamento do catálogo e visualização de pedidos, orçamentos e mensagens de contato:
+### Usuário Admin (banco de dados)
+| Campo | Valor |
+|-------|-------|
+| E-mail | `admin@dublon.com.br` |
+| Senha | `password` |
+| Acesso | `/admin/dashboard.html` |
 
-- **E-mail:** `admin@dublon.com.br`
-- **Senha:** `dublon@2026`
+> ⚠️ Altere a senha após o primeiro acesso em produção.
 
-*(Recomenda-se alterar a senha após o primeiro acesso pelo painel de perfil do usuário).*
+### Usuário Cliente de Exemplo (seed)
+| Campo | Valor |
+|-------|-------|
+| E-mail | `joao@empresa.com.br` |
+| Senha | `password` |
+
+---
+
+## 🎭 Modo Demo
+
+Para apresentações **sem banco de dados configurado**, use as credenciais de demonstração:
+
+| Campo | Valor |
+|-------|-------|
+| E-mail | `demo@dublon.com.br` |
+| Senha | `demo1234` |
+| Role | `admin` |
+| Validade do token | 8 horas |
+
+O modo demo retorna um JWT válido com `role: admin` **sem consultar o banco**, permitindo navegação completa pelo painel administrativo e frontend.
+
+---
+
+## 📡 API — Endpoints Principais
+
+| Método | Endpoint | Descrição | Auth |
+|--------|----------|-----------|------|
+| `POST` | `/api/auth/login` | Login (+ modo demo) | — |
+| `POST` | `/api/auth/register` | Cadastro de cliente | — |
+| `GET` | `/api/auth/me` | Dados do usuário logado | 🔒 |
+| `GET` | `/api/products` | Listar produtos (com filtros) | — |
+| `GET` | `/api/products/:id` | Detalhe do produto | — |
+| `GET` | `/api/categories` | Listar categorias | — |
+| `GET` | `/api/orders` | Pedidos do usuário | 🔒 |
+| `POST` | `/api/orders` | Criar pedido | 🔒 |
+| `GET` | `/api/orders/track/:code` | Rastrear pedido | — |
+| `GET` | `/api/cart` | Carrinho do usuário | 🔒 |
+| `POST` | `/api/cart` | Adicionar item ao carrinho | 🔒 |
+| `POST` | `/api/coupons/validate` | Validar cupom | 🔒 |
+| `GET` | `/api/users/profile` | Perfil do usuário | 🔒 |
+| `PUT` | `/api/users/profile` | Atualizar perfil | 🔒 |
+| `POST` | `/api/contact` | Enviar mensagem de contato | — |
+| `POST` | `/api/quote` | Solicitar orçamento | — |
+| `GET` | `/api/dashboard/stats` | Métricas gerais | 🔐 Admin |
+| `GET` | `/api/health` | Health check | — |
+
+🔒 = requer token JWT de usuário &nbsp;|&nbsp; 🔐 = requer token JWT com `role: admin`
+
+---
+
+## 🎨 Design System
+
+Paleta de cores e variáveis CSS centralizadas em `css/global.css`:
+
+| Token | Valor | Uso |
+|-------|-------|-----|
+| `--blue-dark` | `#0F2847` | Backgrounds escuros, hero |
+| `--blue-vibrant` | `#2563EB` | CTA primário, links |
+| `--cyan-accent` | `#22D3EE` | Destaques, badges |
+| `--green-success` | `#22C55E` | Status positivos |
+| `--yellow-warn` | `#F59E0B` | Alertas, em produção |
+| `--red-error` | `#EF4444` | Erros, cancelamentos |
+
+---
+
+## 🗃️ Cupons de Desconto (seed)
+
+| Código | Tipo | Desconto | Pedido mínimo |
+|--------|------|----------|---------------|
+| `DUBLONO` | Percentual | 10% | R$ 50,00 |
+| `PRIMEIRA10` | Fixo | R$ 10,00 | R$ 80,00 |
+| `INDUSTRIAL20` | Percentual | 20% | R$ 200,00 |
+
+---
+
+## 📄 Licença
+
+Projeto proprietário — todos os direitos reservados à **DUBLON Palmilhas Industriais**.
