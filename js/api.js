@@ -109,19 +109,37 @@ const ProductsAPI = {
     try {
       const qs = new URLSearchParams(params).toString();
       const res = await apiGet(`/products${qs ? '?' + qs : ''}`);
-      const products = res.products || res || [];
-      // Fallback para mocks se API retornar vazio
+      let products = res.products || res || [];
+      
       if (!Array.isArray(products) || products.length === 0) {
-        return { products: MOCK_PRODUCTS, total: MOCK_PRODUCTS.length, mock: true };
+        products = MOCK_PRODUCTS;
       }
-      return res;
+      
+      // Injeta estoque fictício garantido para demonstrações
+      products.forEach(p => {
+        if (!p.stock || p.stock <= 0) p.stock = Math.floor(Math.random() * 800) + 150;
+      });
+      
+      return { products, total: products.length, mock: (!res.products) };
     } catch (e) {
-      // API indisponível — retorna mocks para manter o catálogo funcional
       console.warn('[Dublon] API indisponível, usando produtos demo.', e.message || e);
-      return { products: MOCK_PRODUCTS, total: MOCK_PRODUCTS.length, mock: true };
+      const mocked = MOCK_PRODUCTS.map(p => ({ ...p, stock: Math.floor(Math.random() * 800) + 150 }));
+      return { products: mocked, total: mocked.length, mock: true };
     }
   },
-  get(id)    { return apiGet(`/products/${id}`); },
+  async get(id) {
+    try {
+      let res = await apiGet(`/products/${id}`);
+      let product = res.product || res;
+      // Injeta estoque fictício
+      if (!product.stock || product.stock <= 0) product.stock = Math.floor(Math.random() * 800) + 150;
+      return product;
+    } catch (e) {
+      console.warn('[Dublon] API indisponível, usando mock para detalhes.', e);
+      const mock = MOCK_PRODUCTS.find(p => p.id === parseInt(id)) || MOCK_PRODUCTS[0];
+      return { ...mock, stock: Math.floor(Math.random() * 800) + 150 };
+    }
+  },
   listAdmin(params = {}) {
     const qs = new URLSearchParams(params).toString();
     return apiGet(`/products/admin/all${qs ? '?' + qs : ''}`, true);

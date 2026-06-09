@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -434,7 +434,7 @@
         // Estoque
         const stockBadge = document.getElementById('product-stock-badge');
         if (product.stock > 0) {
-          stockBadge.textContent = '✓ Em estoque';
+          stockBadge.textContent = `✓ Em estoque (${product.stock} pares disponíveis)`;
           stockBadge.style.color = '#16A34A';
         } else {
           stockBadge.textContent = '✕ Fora de estoque';
