@@ -4,6 +4,7 @@
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+  checkRouteProtection(); // Primeiro: protege rotas antes de renderizar
   initNavbar();
   initNavActiveState();
   initSidebar();

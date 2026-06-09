@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -221,6 +221,17 @@
   <script src="js/api.js"></script>
   <script src="js/main.js"></script>
   <script>
+    // Se já estiver logado, redirecionar direto
+    (function() {
+      const API = window.API;
+      if (API && API.Auth.isLoggedIn()) {
+        const user = API.Auth.getUser();
+        window.location.href = user && user.role === 'admin'
+          ? 'admin/dashboard.html'
+          : 'meus-pedidos.html';
+      }
+    })();
+
     async function handleLogin(e) {
       e.preventDefault();
       const email = document.getElementById('login-email').value;

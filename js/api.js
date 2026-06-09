@@ -84,7 +84,17 @@ const AuthAPI = {
   },
 
   async me() {
-    return apiGet('/auth/me', true);
+    // Tenta API, mas retorna cache local se falhar (sem banco)
+    try {
+      const data = await apiGet('/auth/me', true);
+      // Atualiza cache local se a API responder
+      if (data && data.user) Auth.setSession(Auth.getToken(), data.user);
+      return data;
+    } catch (e) {
+      const user = Auth.getUser();
+      if (user) return { user }; // retorna da sessão local
+      throw e;
+    }
   },
 
   logout() {
