@@ -310,7 +310,11 @@ async function updateCartBadge() {
       b.textContent = count || 0;
       b.style.display = count > 0 ? 'flex' : 'none';
     });
-  } catch (e) { /* silencioso */ }
+  } catch (e) { 
+    if (typeof updateCartBadgeLocal === 'function') {
+      updateCartBadgeLocal();
+    }
+  }
 }
 
 // ── Inicialização de toast CSS ────────────────────────────────

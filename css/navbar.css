@@ -193,6 +193,42 @@
   background: var(--gray-100);
 }
 
+.navbar-btn-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 36px;
+  height: 36px;
+  color: var(--text-primary);
+  border-radius: 50%;
+  transition: all var(--transition);
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.navbar-btn-cart:hover {
+  background: var(--gray-100);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  background: var(--red-error);
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 800;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 2px 4px rgba(239,68,68,0.3);
+}
+
 /* User Avatar */
 .user-avatar {
   width: 34px;
