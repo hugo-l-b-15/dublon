@@ -1,0 +1,23 @@
+# railway.toml — Dublon service configuration
+# Docs: https://docs.railway.app/reference/config-as-code
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "node backend/src/index.js"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# ── Required environment variables ────────────────────────────────────────────
+# DATABASE_URL  → injected automatically when you link the Railway PostgreSQL
+#                 plugin to this service (Settings → Variables → Add Reference).
+# JWT_SECRET    → set manually in Railway environment variables.
+#
+# Steps to link PostgreSQL on Railway:
+#   1. Create a PostgreSQL plugin in your Railway project.
+#   2. Go to your service → Variables → Add Reference.
+#   3. Select the Postgres plugin and the DATABASE_URL variable.
+#   4. Redeploy — the server will call initializeDatabase() on startup.
+# ─────────────────────────────────────────────────────────────────────────────

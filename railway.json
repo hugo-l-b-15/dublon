@@ -7,6 +7,24 @@
   "deploy": {
     "startCommand": "node backend/src/index.js",
     "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 3
+    "restartPolicyMaxRetries": 3,
+    "environmentVariables": {
+      "DATABASE_URL": {
+        "description": "PostgreSQL connection string — link the Railway PostgreSQL plugin to populate this automatically.",
+        "required": true
+      },
+      "JWT_SECRET": {
+        "description": "Secret key used to sign and verify JWT tokens. Set a strong random string in Railway environment variables.",
+        "required": true
+      },
+      "NODE_ENV": {
+        "description": "Runtime environment (production | development).",
+        "default": "production"
+      },
+      "PORT": {
+        "description": "HTTP port the Express server listens on. Railway injects this automatically.",
+        "default": "3000"
+      }
+    }
   }
 }
