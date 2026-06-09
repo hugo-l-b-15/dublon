@@ -116,6 +116,15 @@ VALUES
   ('INDUSTRIAL20', 'Desconto 20% linha industrial', 'percentage', 20.00, 200.00, 200, true)
 ON CONFLICT (code) DO NOTHING;
 
+-- ── Usuário Admin (acesso ao painel /admin) ──────────────────
+INSERT INTO users (name, email, password, role)
+VALUES (
+  'Admin Dublon',
+  'admin@dublon.com.br',
+  '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', -- senha: password
+  'admin'
+) ON CONFLICT (email) DO NOTHING;
+
 -- ── Usuário de exemplo (João Silva – Cliente Premium) ────────
 INSERT INTO users (name, email, password, role, cpf, phone, birthdate, company, is_premium, notification_email, notification_sms)
 VALUES (
