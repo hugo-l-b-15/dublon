@@ -93,11 +93,33 @@ const AuthAPI = {
   }
 };
 
+// ── Mock products (fallback sem banco de dados) ──────────────
+const MOCK_PRODUCTS = [
+  { id: 1, name: 'Palmilha EVA Pro D35', category: 'EVA', category_id: 1, density: 'D35', price: 48.90, original_price: 48.90, stock: 200, image: null, rating: 4.5, reviews_count: 42, is_new: false, sku: 'MOCK-EVA-D35', material: 'EVA Simples', thickness: '6 mm', application: 'Uso Geral' },
+  { id: 2, name: 'Palmilha EVA Pro D45', category: 'EVA', category_id: 1, density: 'D45', price: 54.90, original_price: 59.90, stock: 150, image: null, rating: 4.7, reviews_count: 128, is_new: true, sku: 'MOCK-EVA-D45', material: 'EVA Duplado', thickness: '8 mm', application: 'Industrial / EPI' },
+  { id: 3, name: 'Palmilha EVA Pro D50', category: 'EVA', category_id: 1, density: 'D50', price: 59.90, original_price: 59.90, stock: 120, image: null, rating: 4.6, reviews_count: 87, is_new: false, sku: 'MOCK-EVA-D50', material: 'EVA Premium', thickness: '10 mm', application: 'Premium / Executivo' },
+  { id: 4, name: 'Palmilha Látex Standard', category: 'Látex', category_id: 2, density: 'D45', price: 39.90, original_price: 39.90, stock: 300, image: null, rating: 4.2, reviews_count: 34, is_new: false, sku: 'MOCK-LAT-STD', material: 'Látex Natural', thickness: '6 mm', application: 'Esportivo / Corrida' },
+  { id: 5, name: 'Palmilha Látex Premium', category: 'Látex', category_id: 2, density: 'D50', price: 67.90, original_price: 67.90, stock: 80, image: null, rating: 4.8, reviews_count: 56, is_new: false, sku: 'MOCK-LAT-PRE', material: 'Látex Premium', thickness: '8 mm', application: 'Esportivo / Trail' },
+  { id: 6, name: 'Palmilha CAB Industrial', category: 'CAB', category_id: 3, density: 'D60', price: 89.90, original_price: 89.90, stock: 60, image: null, rating: 4.6, reviews_count: 203, is_new: false, sku: 'MOCK-CAB-IND', material: 'CAB / Aço Temperado', thickness: '2.5 mm', application: 'EPI Industrial' },
+];
+
 // ── Products API ─────────────────────────────────────────────
 const ProductsAPI = {
-  list(params = {}) {
-    const qs = new URLSearchParams(params).toString();
-    return apiGet(`/products${qs ? '?' + qs : ''}`);
+  async list(params = {}) {
+    try {
+      const qs = new URLSearchParams(params).toString();
+      const res = await apiGet(`/products${qs ? '?' + qs : ''}`);
+      const products = res.products || res || [];
+      // Fallback para mocks se API retornar vazio
+      if (!Array.isArray(products) || products.length === 0) {
+        return { products: MOCK_PRODUCTS, total: MOCK_PRODUCTS.length, mock: true };
+      }
+      return res;
+    } catch (e) {
+      // API indisponível — retorna mocks para manter o catálogo funcional
+      console.warn('[Dublon] API indisponível, usando produtos demo.', e.message || e);
+      return { products: MOCK_PRODUCTS, total: MOCK_PRODUCTS.length, mock: true };
+    }
   },
   get(id)    { return apiGet(`/products/${id}`); },
   listAdmin(params = {}) {

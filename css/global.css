@@ -127,6 +127,22 @@ ul, ol {
 img {
   max-width: 100%;
   display: block;
+  background: none;
+}
+
+/* ── Logo img — strip all box chrome (transparent PNG fix) ── */
+.navbar-logo img,
+.login-logo img,
+.register-logo img,
+.admin-sidebar-header img,
+.footer-brand-name img {
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 button {

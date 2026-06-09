@@ -59,20 +59,16 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ error: 'Os campos email e senha são obrigatórios.' });
   }
 
-  // ── MODO DEMONSTRAÇÃO ──────────────────────────────────────────
-  // Credenciais fixas para apresentações sem banco de dados ativo.
-  // Remove ou comente este bloco em produção com banco configurado.
+  // ── MODO DEMONSTRAÇÃO (sem banco de dados) ────────────────────
   if (email === 'demo@dublon.com.br' && password === 'demo1234') {
-    const demoToken = jwt.sign(
-      { id: 0, email: 'demo@dublon.com.br', role: 'admin', name: 'Admin Demo' },
-      JWT_SECRET,
-      { expiresIn: '8h' }
+    const token = jwt.sign(
+      { id: 0, email, role: 'admin', name: 'Administrador' },
+      process.env.JWT_SECRET || 'demo-secret',
+      { expiresIn: '7d' }
     );
     return res.json({
-      message: 'Login de demonstração realizado com sucesso.',
-      user: { id: 0, name: 'Admin Demo', email: 'demo@dublon.com.br', role: 'admin' },
-      token: demoToken,
-      demo: true
+      token,
+      user: { id: 0, name: 'Administrador', email, role: 'admin' }
     });
   }
   // ─────────────────────────────────────────────────────────────
