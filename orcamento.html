@@ -331,14 +331,14 @@
               <label class="form-label">NOME COMPLETO</label>
               <div class="form-control-icon">
                 <span class="icon">👤</span>
-                <input type="text" class="form-control" placeholder="Seu nome" required />
+                <input type="text" name="name" class="form-control" placeholder="Seu nome" required />
               </div>
             </div>
             <div class="form-group">
               <label class="form-label">EMPRESA</label>
               <div class="form-control-icon">
                 <span class="icon">🏢</span>
-                <input type="text" class="form-control" placeholder="Nome de empresa" required />
+                <input type="text" name="company" class="form-control" placeholder="Nome de empresa" required />
               </div>
             </div>
           </div>
@@ -348,14 +348,14 @@
               <label class="form-label">E-MAIL</label>
               <div class="form-control-icon">
                 <span class="icon">✉</span>
-                <input type="email" class="form-control" placeholder="seu@email.com" required />
+                <input type="email" name="email" class="form-control" placeholder="seu@email.com" required />
               </div>
             </div>
             <div class="form-group">
               <label class="form-label">TELEFONE</label>
               <div class="form-control-icon">
                 <span class="icon">📞</span>
-                <input type="tel" class="form-control" placeholder="(11) 99999-9999" />
+                <input type="tel" name="phone" class="form-control" placeholder="(11) 99999-9999" />
               </div>
             </div>
           </div>
@@ -365,7 +365,7 @@
               <label class="form-label">TIPO DE PRODUTO</label>
               <div class="form-control-icon">
                 <span class="icon">📦</span>
-                <select class="form-control" required>
+                <select name="product_type" class="form-control" required>
                   <option value="" disabled selected>Selecione o produto</option>
                   <option>Palmilha EVA Industrial</option>
                   <option>Palmilha Premium +600</option>
@@ -387,7 +387,7 @@
 
           <div class="form-group">
             <label class="form-label">ESPECIFICAÇÕES / OBSERVAÇÕES</label>
-            <textarea class="form-control" rows="4" placeholder="Descreva detalhes como dimensões, densidade, aplicação, prazo desejado..." style="min-height:100px;"></textarea>
+            <textarea name="message" class="form-control" rows="4" placeholder="Descreva detalhes como dimensões, densidade, aplicação, prazo desejado..." style="min-height:100px;"></textarea>
           </div>
 
           <button type="submit" class="btn btn-primary btn-full" style="padding:14px;font-size:15px;" id="quote-submit">
@@ -400,6 +400,54 @@
     </div>
   </div>
 
+  <script src="js/api.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!window.API) return;
+
+      // 1. Auto-preencher dados se logado
+      if (window.API.Auth.isLoggedIn()) {
+        const user = window.API.Auth.getUser();
+        if (user) {
+          const nameInput = document.querySelector('[name="name"]');
+          const emailInput = document.querySelector('[name="email"]');
+          const companyInput = document.querySelector('[name="company"]');
+          
+          if (nameInput) nameInput.value = user.name || '';
+          if (emailInput) emailInput.value = user.email || '';
+          if (companyInput && user.company) companyInput.value = user.company;
+        }
+      }
+
+      // 2. Carregar produtos reais no select
+      const select = document.querySelector('[name="product_type"]');
+      if (select) {
+        try {
+          const res = await window.API.ProductsAPI.list({ limit: 100 });
+          const products = res.products || [];
+          if (products.length > 0) {
+            const firstOption = select.options[0];
+            select.innerHTML = '';
+            select.appendChild(firstOption);
+            
+            products.forEach(p => {
+              const opt = document.createElement('option');
+              opt.value = p.name;
+              opt.textContent = p.name;
+              select.appendChild(opt);
+            });
+            
+            const otherOpt = document.createElement('option');
+            otherOpt.value = 'Outro';
+            otherOpt.textContent = 'Outro';
+            select.appendChild(otherOpt);
+          }
+        } catch (e) {
+          console.error('Erro ao carregar produtos:', e);
+        }
+      }
+    });
+  </script>
 </body>
 </html>

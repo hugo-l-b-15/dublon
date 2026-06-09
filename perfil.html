@@ -521,50 +521,11 @@
                   <p>Informações da sua conta</p>
                 </div>
               </div>
-              <a href="#" class="btn-edit">✏ Editar</a>
+              <button id="btn-edit-profile" class="btn-edit" style="cursor:pointer; border:1.5px solid var(--border-color); padding:6px 14px; border-radius:var(--radius-md); font-weight:600; font-size:12px; color:var(--text-secondary); background:var(--white);">✏ Editar</button>
             </div>
-            <div class="profile-fields">
-              <div class="profile-field">
-                <label>NOME COMPLETO</label>
-                <div class="profile-field-value">
-                  <span class="profile-field-icon">👤</span>
-                  João Augusto Silva
-                </div>
-              </div>
-              <div class="profile-field">
-                <label>CPF</label>
-                <div class="profile-field-value">
-                  <span class="profile-field-icon">📋</span>
-                  ••••••••••
-                </div>
-              </div>
-              <div class="profile-field">
-                <label>DATA DE NASCIMENTO</label>
-                <div class="profile-field-value">
-                  <span class="profile-field-icon">📅</span>
-                  15/03/1990
-                </div>
-              </div>
-              <div class="profile-field">
-                <label>E-MAIL</label>
-                <div class="profile-field-value">
-                  <span class="profile-field-icon">✉</span>
-                  joao@empresa.com.br
-                </div>
-              </div>
-              <div class="profile-field">
-                <label>TELEFONE</label>
-                <div class="profile-field-value">
-                  <span class="profile-field-icon">📞</span>
-                  (11) 99999-9999
-                </div>
-              </div>
-              <div class="profile-field">
-                <label>EMPRESA</label>
-                <div class="profile-field-value">
-                  <span class="profile-field-icon">🏢</span>
-                  Indústrias Silva Ltda
-                </div>
+            <div class="profile-fields" id="personal-fields">
+              <div style="grid-column: span 3; text-align:center; padding:20px; color:var(--text-secondary);">
+                Carregando dados pessoais...
               </div>
             </div>
           </div>
@@ -579,19 +540,10 @@
                   <p>Gerencie seus endereços de entrega</p>
                 </div>
               </div>
-              <a href="#" class="btn-edit" style="background:var(--blue-vibrant);color:#fff;border-color:var(--blue-vibrant);">+ Adicionar endereço</a>
             </div>
-            <div class="address-grid">
-              <div class="address-card-item principal">
-                <span class="address-badge-principal">Principal</span>
-                <div class="address-house-icon">🏠</div>
-                <div class="address-street">Rua das Indústrias, 1240</div>
-                <div class="address-detail">Sala 3 · Bairro Industrial</div>
-                <div class="address-detail">São Paulo, SP · 04000-000</div>
-              </div>
-              <div class="address-add-btn">
-                <span class="plus">+</span>
-                <span>Novo endereço</span>
+            <div class="address-grid" id="address-grid">
+              <div style="grid-column: span 2; text-align:center; padding:20px; color:var(--text-secondary);">
+                Carregando seus endereços...
               </div>
             </div>
           </div>
@@ -614,7 +566,7 @@
                   <span>Receba o status de cada etapa da entrega</span>
                 </div>
                 <label class="toggle">
-                  <input type="checkbox" checked />
+                  <input type="checkbox" id="notify-email" checked />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
@@ -624,7 +576,7 @@
                   <span>Notificações de entrega pelo celular</span>
                 </div>
                 <label class="toggle">
-                  <input type="checkbox" checked />
+                  <input type="checkbox" id="notify-sms" />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
@@ -634,7 +586,7 @@
                   <span>Cupons e descontos exclusivos para a sua conta</span>
                 </div>
                 <label class="toggle">
-                  <input type="checkbox" />
+                  <input type="checkbox" id="notify-promo" />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
@@ -644,7 +596,7 @@
                   <span>Novidades sobre produtos, dicas e conteúdo técnico</span>
                 </div>
                 <label class="toggle">
-                  <input type="checkbox" />
+                  <input type="checkbox" id="notify-newsletter" />
                   <span class="toggle-slider"></span>
                 </label>
               </div>
@@ -656,30 +608,30 @@
         <div class="profile-right">
           <!-- User card -->
           <div class="profile-user-card">
-            <div class="profile-user-avatar">JS</div>
-            <div class="profile-user-name">João Augusto Silva</div>
-            <div class="profile-user-email">joao@empresa.com.br</div>
-            <span class="profile-premium-badge">★ Cliente Premium</span>
+            <div class="profile-user-avatar">-</div>
+            <div class="profile-user-name">Carregando...</div>
+            <div class="profile-user-email">...</div>
+            <span class="profile-premium-badge" style="display:none;">★ Cliente Premium</span>
             <br />
-            <button class="btn-change-photo" style="margin-top:12px;">Alterar foto de perfil</button>
+            <button class="btn-change-photo" style="margin-top:12px;" onclick="window.API.Toast.info('Funcionalidade de upload de foto em desenvolvimento.')">Alterar foto de perfil</button>
           </div>
 
           <!-- Stats -->
           <div class="profile-stats">
             <div class="profile-stat-mini">
-              <div class="val">3</div>
+              <div class="val">0</div>
               <div class="lbl">Pedidos</div>
             </div>
             <div class="profile-stat-mini">
-              <div class="val">1800</div>
+              <div class="val">0</div>
               <div class="lbl">Pares</div>
             </div>
             <div class="profile-stat-mini">
-              <div class="val">1</div>
-              <div class="lbl">Endereço</div>
+              <div class="val">0</div>
+              <div class="lbl">Endereços</div>
             </div>
             <div class="profile-stat-mini">
-              <div class="val">4.9</div>
+              <div class="val">5.0</div>
               <div class="lbl">Avaliação</div>
             </div>
           </div>
@@ -692,20 +644,20 @@
                 <span class="icon">🔒</span>
                 <div class="info">
                   <strong>Senha</strong>
-                  <span>Alterada há 30 dias</span>
+                  <span>Alterar senha da conta</span>
                 </div>
               </div>
-              <a href="#" class="security-link">Alterar</a>
+              <a href="#" class="security-link" onclick="openPasswordModal(event)">Alterar</a>
             </div>
             <div class="security-item">
               <div class="security-item-left">
                 <span class="icon">✓</span>
                 <div class="info">
                   <strong>Autenticação 2 fatores</strong>
-                  <span class="security-green">Ativada</span>
+                  <span class="security-green" id="txt-2fa">Desativada</span>
                 </div>
               </div>
-              <a href="#" class="security-link">Gerenciar</a>
+              <a href="#" class="security-link" id="link-2fa" onclick="event.preventDefault(); toggle2FA();">Ativar</a>
             </div>
           </div>
 
@@ -720,6 +672,465 @@
     </main>
   </div>
 
+  <!-- Address Modal -->
+  <div id="address-modal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; align-items:center; justify-content:center; padding:20px; font-family:'Inter', sans-serif;">
+    <div class="modal-card" style="background:#fff; border-radius:var(--radius-xl); max-width:500px; width:100%; box-shadow:0 20px 40px rgba(0,0,0,0.2); overflow:hidden;">
+      <div style="padding:20px 24px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:16px; font-weight:700; color:var(--text-primary);" id="address-modal-title">Novo Endereço</h3>
+        <button onclick="closeAddressModal()" style="border:none; background:none; font-size:18px; cursor:pointer; color:var(--text-muted);">&times;</button>
+      </div>
+      <form id="address-form" style="padding:24px; display:flex; flex-direction:column; gap:16px;">
+        <input type="hidden" id="address-id" />
+        <div class="form-group">
+          <label class="form-label">Identificação (ex: Casa, Trabalho)</label>
+          <input type="text" id="addr-label" class="form-control" placeholder="Casa" required />
+        </div>
+        <div class="form-row" style="display:grid; grid-template-columns:3fr 1fr; gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Rua / Logradouro</label>
+            <input type="text" id="addr-street" class="form-control" placeholder="Rua..." required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Número</label>
+            <input type="text" id="addr-number" class="form-control" placeholder="123" required />
+          </div>
+        </div>
+        <div class="form-row" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Complemento</label>
+            <input type="text" id="addr-complement" class="form-control" placeholder="Apto, Sala..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Bairro</label>
+            <input type="text" id="addr-neighborhood" class="form-control" placeholder="Bairro" required />
+          </div>
+        </div>
+        <div class="form-row" style="display:grid; grid-template-columns: 2fr 1fr 1.5fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Cidade</label>
+            <input type="text" id="addr-city" class="form-control" placeholder="São Paulo" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estado</label>
+            <input type="text" id="addr-state" class="form-control" placeholder="SP" required maxlength="2" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">CEP</label>
+            <input type="text" id="addr-zip" class="form-control" placeholder="00000-000" required />
+          </div>
+        </div>
+        <div class="terms-check" style="margin-top:4px; display:flex; align-items:center; gap:8px;">
+          <input type="checkbox" id="addr-default" />
+          <label for="addr-default" style="font-weight:600;">Definir como endereço principal</label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="padding:12px; margin-top:8px;">Salvar Endereço</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Password Modal -->
+  <div id="password-modal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:10000; align-items:center; justify-content:center; padding:20px; font-family:'Inter', sans-serif;">
+    <div class="modal-card" style="background:#fff; border-radius:var(--radius-xl); max-width:400px; width:100%; box-shadow:0 20px 40px rgba(0,0,0,0.2); overflow:hidden;">
+      <div style="padding:20px 24px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size:16px; font-weight:700; color:var(--text-primary);">Alterar Senha</h3>
+        <button onclick="closePasswordModal()" style="border:none; background:none; font-size:18px; cursor:pointer; color:var(--text-muted);">&times;</button>
+      </div>
+      <form id="password-form" style="padding:24px; display:flex; flex-direction:column; gap:16px;">
+        <div class="form-group">
+          <label class="form-label">Senha Atual</label>
+          <input type="password" id="pw-current" class="form-control" required minlength="8" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nova Senha</label>
+          <input type="password" id="pw-new" class="form-control" required minlength="8" placeholder="Mínimo 8 caracteres" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirmar Nova Senha</label>
+          <input type="password" id="pw-confirm" class="form-control" required minlength="8" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="padding:12px; margin-top:8px;">Alterar Senha</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!window.API || !window.API.Auth.isLoggedIn()) return;
+
+      const { UsersAPI, Format } = window.API;
+
+      let currentUser = null;
+      let addressesList = [];
+
+      async function loadProfileData() {
+        try {
+          const data = await UsersAPI.getProfile();
+          currentUser = data.user;
+          addressesList = data.addresses || [];
+          
+          renderProfileDetails(currentUser);
+          renderAddresses(addressesList);
+          renderNotifications(currentUser);
+          renderRightPanel(currentUser, data.stats);
+        } catch (e) {
+          console.error(e);
+          window.API.Toast.error('Erro ao carregar dados do perfil.');
+        }
+      }
+
+      const personalFieldsContainer = document.getElementById('personal-fields');
+      const btnEditProfile = document.getElementById('btn-edit-profile');
+      let isEditingProfile = false;
+
+      function renderProfileDetails(user) {
+        if (isEditingProfile) return;
+        
+        personalFieldsContainer.innerHTML = `
+          <div class="profile-field">
+            <label>NOME COMPLETO</label>
+            <div class="profile-field-value">
+              <span class="profile-field-icon">👤</span>
+              <span id="val-name">${user.name || '-'}</span>
+            </div>
+          </div>
+          <div class="profile-field">
+            <label>CPF</label>
+            <div class="profile-field-value">
+              <span class="profile-field-icon">📋</span>
+              <span id="val-cpf">${user.cpf || '-'}</span>
+            </div>
+          </div>
+          <div class="profile-field">
+            <label>DATA DE NASCIMENTO</label>
+            <div class="profile-field-value">
+              <span class="profile-field-icon">📅</span>
+              <span id="val-birthdate">${user.birthdate ? Format.date(user.birthdate) : '-'}</span>
+            </div>
+          </div>
+          <div class="profile-field">
+            <label>E-MAIL</label>
+            <div class="profile-field-value">
+              <span class="profile-field-icon">✉</span>
+              <span id="val-email">${user.email || '-'}</span>
+            </div>
+          </div>
+          <div class="profile-field">
+            <label>TELEFONE</label>
+            <div class="profile-field-value">
+              <span class="profile-field-icon">📞</span>
+              <span id="val-phone">${user.phone || '-'}</span>
+            </div>
+          </div>
+          <div class="profile-field">
+            <label>EMPRESA</label>
+            <div class="profile-field-value">
+              <span class="profile-field-icon">🏢</span>
+              <span id="val-company">${user.company || '-'}</span>
+            </div>
+          </div>
+        `;
+        btnEditProfile.textContent = '✏ Editar';
+        btnEditProfile.disabled = false;
+      }
+
+      btnEditProfile.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (!currentUser) return;
+
+        if (!isEditingProfile) {
+          isEditingProfile = true;
+          personalFieldsContainer.innerHTML = `
+            <div class="profile-field">
+              <label>NOME COMPLETO</label>
+              <input type="text" id="input-name" class="form-control" value="${currentUser.name || ''}" required />
+            </div>
+            <div class="profile-field">
+              <label>CPF</label>
+              <input type="text" id="input-cpf" class="form-control" value="${currentUser.cpf || ''}" placeholder="000.000.000-00" />
+            </div>
+            <div class="profile-field">
+              <label>DATA DE NASCIMENTO</label>
+              <input type="date" id="input-birthdate" class="form-control" value="${currentUser.birthdate ? currentUser.birthdate.split('T')[0] : ''}" />
+            </div>
+            <div class="profile-field">
+              <label>E-MAIL</label>
+              <input type="email" id="input-email" class="form-control" value="${currentUser.email || ''}" required />
+            </div>
+            <div class="profile-field">
+              <label>TELEFONE</label>
+              <input type="tel" id="input-phone" class="form-control" value="${currentUser.phone || ''}" placeholder="(11) 99999-9999" />
+            </div>
+            <div class="profile-field">
+              <label>EMPRESA</label>
+              <input type="text" id="input-company" class="form-control" value="${currentUser.company || ''}" />
+            </div>
+          `;
+          btnEditProfile.textContent = '💾 Salvar';
+        } else {
+          saveProfileDetails();
+        }
+      });
+
+      async function saveProfileDetails() {
+        const name = document.getElementById('input-name').value.trim();
+        const email = document.getElementById('input-email').value.trim();
+        const cpf = document.getElementById('input-cpf').value.trim();
+        const phone = document.getElementById('input-phone').value.trim();
+        const birthdate = document.getElementById('input-birthdate').value;
+        const company = document.getElementById('input-company').value.trim();
+
+        if (!name || !email) {
+          window.API.Toast.error('Nome e E-mail são obrigatórios.');
+          return;
+        }
+
+        btnEditProfile.disabled = true;
+        btnEditProfile.textContent = 'Salvando...';
+
+        try {
+          const res = await UsersAPI.updateProfile({
+            name,
+            email,
+            cpf,
+            phone,
+            birthdate: birthdate || null,
+            company
+          });
+          
+          window.API.Toast.success('Perfil atualizado com sucesso.');
+          currentUser = res.user;
+          isEditingProfile = false;
+          renderProfileDetails(currentUser);
+        } catch (err) {
+          window.API.Toast.error(err.message || 'Erro ao atualizar perfil.');
+          btnEditProfile.disabled = false;
+          btnEditProfile.textContent = '💾 Salvar';
+        }
+      }
+
+      const addressGrid = document.getElementById('address-grid');
+      
+      function renderAddresses(addresses) {
+        addressGrid.innerHTML = '';
+        
+        addresses.forEach(addr => {
+          const card = document.createElement('div');
+          card.className = `address-card-item ${addr.is_default ? 'principal' : ''}`;
+          card.innerHTML = `
+            ${addr.is_default ? '<span class="address-badge-principal">Principal</span>' : ''}
+            <div class="address-house-icon">🏠</div>
+            <div class="address-street">${addr.street}, ${addr.number}</div>
+            <div class="address-detail">${addr.complement || ''} · ${addr.neighborhood}</div>
+            <div class="address-detail">${addr.city}, ${addr.state} · ${addr.zip_code}</div>
+            <div style="margin-top: 12px; display:flex; gap: 8px; justify-content: flex-end; position:relative; z-index:10;">
+              ${!addr.is_default ? `<button onclick="setDefaultAddress(${addr.id})" style="font-size:10px; font-weight:600; padding:4px 8px; background:none; border:1px solid var(--border-color); border-radius:4px; cursor:pointer;">Tornar Principal</button>` : ''}
+              <button onclick="deleteAddress(${addr.id})" style="font-size:10px; font-weight:600; padding:4px 8px; background:none; border:1px solid #FECACA; color:#DC2626; border-radius:4px; cursor:pointer;">Remover</button>
+            </div>
+          `;
+          addressGrid.appendChild(card);
+        });
+
+        const addBtn = document.createElement('div');
+        addBtn.className = 'address-add-btn';
+        addBtn.onclick = () => openAddressModal();
+        addBtn.innerHTML = `
+          <span class="plus">+</span>
+          <span>Novo endereço</span>
+        `;
+        addressGrid.appendChild(addBtn);
+      }
+
+      window.setDefaultAddress = async (id) => {
+        try {
+          const addr = addressesList.find(a => a.id === id);
+          if (!addr) return;
+          await UsersAPI.updateAddress(id, { ...addr, is_default: true });
+          window.API.Toast.success('Endereço principal atualizado.');
+          loadProfileData();
+        } catch (err) {
+          window.API.Toast.error(err.message || 'Erro ao definir endereço principal.');
+        }
+      };
+
+      window.deleteAddress = async (id) => {
+        if (!confirm('Excluir este endereço?')) return;
+        try {
+          await UsersAPI.deleteAddress(id);
+          window.API.Toast.success('Endereço excluído com sucesso.');
+          loadProfileData();
+        } catch (err) {
+          window.API.Toast.error(err.message || 'Erro ao excluir endereço.');
+        }
+      };
+
+      const addressModal = document.getElementById('address-modal');
+      const addressForm = document.getElementById('address-form');
+      
+      window.openAddressModal = () => {
+        addressForm.reset();
+        document.getElementById('address-id').value = '';
+        document.getElementById('address-modal-title').textContent = 'Novo Endereço';
+        addressModal.style.display = 'flex';
+      };
+      
+      window.closeAddressModal = () => {
+        addressModal.style.display = 'none';
+      };
+
+      addressForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {
+          label: document.getElementById('addr-label').value.trim() || 'Casa',
+          street: document.getElementById('addr-street').value.trim(),
+          number: document.getElementById('addr-number').value.trim(),
+          complement: document.getElementById('addr-complement').value.trim() || null,
+          neighborhood: document.getElementById('addr-neighborhood').value.trim(),
+          city: document.getElementById('addr-city').value.trim(),
+          state: document.getElementById('addr-state').value.trim().toUpperCase(),
+          zip_code: document.getElementById('addr-zip').value.trim(),
+          is_default: document.getElementById('addr-default').checked
+        };
+
+        try {
+          await UsersAPI.addAddress(payload);
+          window.API.Toast.success('Endereço adicionado com sucesso!');
+          closeAddressModal();
+          loadProfileData();
+        } catch (err) {
+          window.API.Toast.error(err.message || 'Erro ao salvar endereço.');
+        }
+      });
+
+      function renderNotifications(user) {
+        document.getElementById('notify-email').checked = user.notification_email ?? true;
+        document.getElementById('notify-sms').checked = user.notification_sms ?? false;
+        document.getElementById('notify-promo').checked = user.notification_promo ?? false;
+        document.getElementById('notify-newsletter').checked = user.notification_newsletter ?? false;
+      }
+
+      async function saveNotificationPreferences() {
+        const payload = {
+          notification_email: document.getElementById('notify-email').checked,
+          notification_sms: document.getElementById('notify-sms').checked,
+          notification_promo: document.getElementById('notify-promo').checked,
+          notification_newsletter: document.getElementById('notify-newsletter').checked
+        };
+
+        try {
+          await UsersAPI.updateNotifications(payload);
+          window.API.Toast.success('Preferências de notificação salvas.');
+        } catch (e) {
+          window.API.Toast.error('Erro ao atualizar preferências.');
+        }
+      }
+
+      document.querySelectorAll('.toggle input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+          saveNotificationPreferences();
+        });
+      });
+
+      function renderRightPanel(user, stats) {
+        const initials = user.name ? user.name.slice(0, 2).toUpperCase() : 'U';
+        document.querySelector('.profile-user-avatar').textContent = initials;
+        document.querySelector('.profile-user-name').textContent = user.name;
+        document.querySelector('.profile-user-email').textContent = user.email;
+        
+        const badgePremium = document.querySelector('.profile-premium-badge');
+        if (badgePremium) {
+          badgePremium.style.display = user.is_premium ? 'inline-flex' : 'none';
+        }
+
+        const txt2FA = document.getElementById('txt-2fa');
+        const link2FA = document.getElementById('link-2fa');
+        if (txt2FA && link2FA) {
+          txt2FA.textContent = user.two_factor_enabled ? 'Ativada' : 'Desativada';
+          txt2FA.className = user.two_factor_enabled ? 'security-green' : '';
+          link2FA.textContent = user.two_factor_enabled ? 'Desativar' : 'Ativar';
+        }
+
+        if (stats) {
+          const statCards = document.querySelectorAll('.profile-stat-mini');
+          if (statCards[0]) statCards[0].querySelector('.val').textContent = stats.total_orders || 0;
+          if (statCards[1]) statCards[1].querySelector('.val').textContent = stats.total_pairs || 0;
+          if (statCards[2]) statCards[2].querySelector('.val').textContent = addressesList.length;
+        }
+      }
+
+      window.toggle2FA = async () => {
+        if (!currentUser) return;
+        currentUser.two_factor_enabled = !currentUser.two_factor_enabled;
+        try {
+          await UsersAPI.updateProfile(currentUser);
+          window.API.Toast.success(`Autenticação 2 fatores ${currentUser.two_factor_enabled ? 'ativada' : 'desativada'}.`);
+          loadProfileData();
+        } catch (e) {
+          currentUser.two_factor_enabled = !currentUser.two_factor_enabled;
+          window.API.Toast.error('Erro ao atualizar autenticação 2 fatores.');
+        }
+      };
+
+      const passwordModal = document.getElementById('password-modal');
+      const passwordForm = document.getElementById('password-form');
+
+      window.openPasswordModal = (e) => {
+        if (e) e.preventDefault();
+        passwordForm.reset();
+        passwordModal.style.display = 'flex';
+      };
+
+      window.closePasswordModal = () => {
+        passwordModal.style.display = 'none';
+      };
+
+      passwordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const currentPassword = document.getElementById('pw-current').value;
+        const newPassword = document.getElementById('pw-new').value;
+        const confirmPassword = document.getElementById('pw-confirm').value;
+
+        if (newPassword !== confirmPassword) {
+          window.API.Toast.error('As senhas não coincidem.');
+          return;
+        }
+
+        try {
+          await UsersAPI.updatePassword({ currentPassword, newPassword });
+          window.API.Toast.success('Senha alterada com sucesso!');
+          closePasswordModal();
+        } catch (err) {
+          window.API.Toast.error(err.message || 'Erro ao alterar senha.');
+        }
+      });
+
+      const deactivateBtn = document.querySelectorAll('.danger-zone .btn-danger')[0];
+      const deleteBtn = document.querySelectorAll('.danger-zone .btn-danger')[1];
+
+      if (deactivateBtn) {
+        deactivateBtn.addEventListener('click', async () => {
+          if (!confirm('Tem certeza que deseja desativar sua conta? Você poderá reativá-la depois.')) return;
+          try {
+            await UsersAPI.deleteAccount();
+            window.API.Toast.success('Sua conta foi desativada.');
+            setTimeout(() => {
+              window.API.AuthAPI.logout();
+            }, 1500);
+          } catch (e) {
+            window.API.Toast.error('Erro ao desativar conta.');
+          }
+        });
+      }
+
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', () => {
+          alert('Para excluir definitivamente sua conta e todos os dados associados, entre em contato com o suporte em contato@dublon.com.br.');
+        });
+      }
+
+      await loadProfileData();
+    });
+  </script>
 </body>
 </html>

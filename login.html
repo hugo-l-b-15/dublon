@@ -221,24 +221,45 @@
     </p>
   </div>
 
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
   <script>
-    function handleLogin(e) {
+    async function handleLogin(e) {
       e.preventDefault();
       const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-senha').value;
       const btn = document.getElementById('login-submit');
+      const originalText = btn.textContent;
+
       btn.textContent = 'Entrando...';
       btn.disabled = true;
-      setTimeout(() => {
-        if (email.toLowerCase() === 'admin@dublon.com.br') {
-          window.location.href = 'admin/dashboard.html';
-        } else {
-          window.location.href = 'meus-pedidos.html';
-        }
-      }, 800);
+
+      try {
+        const data = await window.API.AuthAPI.login(email, password);
+        window.API.Toast.success('Login efetuado com sucesso!');
+
+        // Obter redirect da URL, se houver
+        const params = new URLSearchParams(window.location.search);
+        const redirect = params.get('redirect');
+
+        setTimeout(() => {
+          if (data.user.role === 'admin') {
+            window.location.href = 'admin/dashboard.html';
+          } else if (redirect) {
+            window.location.href = decodeURIComponent(redirect);
+          } else {
+            window.location.href = 'meus-pedidos.html';
+          }
+        }, 800);
+      } catch (err) {
+        window.API.Toast.error(err.message || 'E-mail ou senha incorretos.');
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
     }
 
     function handleGoogleLogin() {
-      alert('Login com Google em desenvolvimento.');
+      window.API.Toast.info('Login com Google em desenvolvimento.');
     }
   </script>
 </body>

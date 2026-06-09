@@ -320,21 +320,19 @@
     <aside class="catalog-sidebar">
       <div class="catalog-sidebar-title">Filtros</div>
 
-      <div class="filter-group">
+      <div class="filter-group" id="category-filters">
         <div class="filter-group-title">Categoria</div>
-        <div class="filter-option"><input type="checkbox" id="f-eva" checked /><label for="f-eva">Palmilha EVA</label></div>
-        <div class="filter-option"><input type="checkbox" id="f-premium" /><label for="f-premium">Palmilha Premium</label></div>
-        <div class="filter-option"><input type="checkbox" id="f-sport" /><label for="f-sport">Linha Esportiva</label></div>
-        <div class="filter-option"><input type="checkbox" id="f-custom" /><label for="f-custom">Personalizada</label></div>
+        <div style="font-size:12px;color:var(--text-secondary);">Carregando categorias...</div>
       </div>
 
       <div class="filter-divider"></div>
 
-      <div class="filter-group">
+      <div class="filter-group" id="density-filters">
         <div class="filter-group-title">Densidade</div>
-        <div class="filter-option"><input type="checkbox" id="f-d35" /><label for="f-d35">D35</label></div>
-        <div class="filter-option"><input type="checkbox" id="f-d45" checked /><label for="f-d45">D45</label></div>
-        <div class="filter-option"><input type="checkbox" id="f-d55" /><label for="f-d55">D55</label></div>
+        <div class="filter-option"><input type="checkbox" id="f-d35" data-density="D35 kg/m²" /><label for="f-d35">D35</label></div>
+        <div class="filter-option"><input type="checkbox" id="f-d45" data-density="D45 kg/m²" /><label for="f-d45">D45</label></div>
+        <div class="filter-option"><input type="checkbox" id="f-d50" data-density="D50 kg/m²" /><label for="f-d50">D50</label></div>
+        <div class="filter-option"><input type="checkbox" id="f-d60" data-density="D60 kg/m²" /><label for="f-d60">D60</label></div>
       </div>
 
       <div class="filter-divider"></div>
@@ -342,20 +340,12 @@
       <div class="filter-group">
         <div class="filter-group-title">Faixa de preço</div>
         <div class="price-range">
-          <input type="range" min="0" max="5" value="3" id="price-range" oninput="updatePrice(this.value)" />
+          <input type="range" min="0" max="300" value="300" id="price-range" />
           <div class="price-range-values">
-            <span>R$ 0,80</span>
-            <span id="price-max">R$ 2,40</span>
+            <span>R$ 0,00</span>
+            <span id="price-max">R$ 300,00</span>
           </div>
         </div>
-      </div>
-
-      <div class="filter-divider"></div>
-
-      <div class="filter-group">
-        <div class="filter-group-title">Disponibilidade</div>
-        <div class="filter-option"><input type="checkbox" id="f-stock" checked /><label for="f-stock">Em estoque</label></div>
-        <div class="filter-option"><input type="checkbox" id="f-order" /><label for="f-order">Sob encomenda</label></div>
       </div>
     </aside>
 
@@ -364,173 +354,187 @@
       <div class="catalog-header">
         <div>
           <h1>Catálogo de Produtos</h1>
-          <p>6 produtos encontrados</p>
+          <p id="product-count-text">0 produtos encontrados</p>
         </div>
         <div class="catalog-sort">
           <label>Ordenar por:</label>
-          <select>
-            <option>Mais relevantes</option>
-            <option>Menor preço</option>
-            <option>Maior preço</option>
-            <option>Mais vendidos</option>
+          <select id="catalog-sort-select">
+            <option value="relevant">Mais relevantes</option>
+            <option value="price-asc">Menor preço</option>
+            <option value="price-desc">Maior preço</option>
+            <option value="rating">Mais bem avaliados</option>
           </select>
         </div>
       </div>
 
-      <div class="product-grid">
-        <!-- Product 1 -->
-        <a href="produto.html" style="text-decoration:none;" class="product-card">
-          <div class="product-card-img">
-            👟
-            <span class="product-card-badge"><span class="badge badge-blue">Mais vendido</span></span>
-            <button class="product-card-wishlist">♡</button>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-cat">Palmilha EVA</div>
-            <div class="product-card-name">Palmilha EVA Pro D45</div>
-            <div class="product-card-specs">
-              <span class="spec-tag">D45</span>
-              <span class="spec-tag">Antichoque</span>
-              <span class="spec-tag">Industrial</span>
-            </div>
-            <div class="product-card-footer">
-              <div class="product-price">
-                <span class="product-price-label">A partir de</span>
-                <span class="product-price-value">R$ 1,20<span class="product-price-unit">/par</span></span>
-              </div>
-              <button class="btn-add-cart">+</button>
-            </div>
-          </div>
-        </a>
-
-        <!-- Product 2 -->
-        <a href="produto.html" style="text-decoration:none;" class="product-card">
-          <div class="product-card-img" style="background:linear-gradient(145deg,#EFF6FF 0%,#DBEAFE 100%);">
-            👟
-            <button class="product-card-wishlist">♡</button>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-cat">Palmilha Premium</div>
-            <div class="product-card-name">Palmilha Premium +600</div>
-            <div class="product-card-specs">
-              <span class="spec-tag">D55</span>
-              <span class="spec-tag">Memória</span>
-              <span class="spec-tag">Premium</span>
-            </div>
-            <div class="product-card-footer">
-              <div class="product-price">
-                <span class="product-price-label">A partir de</span>
-                <span class="product-price-value">R$ 2,10<span class="product-price-unit">/par</span></span>
-              </div>
-              <button class="btn-add-cart">+</button>
-            </div>
-          </div>
-        </a>
-
-        <!-- Product 3 -->
-        <a href="produto.html" style="text-decoration:none;" class="product-card">
-          <div class="product-card-img" style="background:linear-gradient(145deg,#F0FDF4 0%,#DCFCE7 100%);">
-            👟
-            <span class="product-card-badge"><span class="badge badge-green">Novo</span></span>
-            <button class="product-card-wishlist">♡</button>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-cat">Linha Esportiva</div>
-            <div class="product-card-name">Palmilha Esportiva Runner +600</div>
-            <div class="product-card-specs">
-              <span class="spec-tag">D35</span>
-              <span class="spec-tag">Respirável</span>
-              <span class="spec-tag">Runner</span>
-            </div>
-            <div class="product-card-footer">
-              <div class="product-price">
-                <span class="product-price-label">A partir de</span>
-                <span class="product-price-value">R$ 0,95<span class="product-price-unit">/par</span></span>
-              </div>
-              <button class="btn-add-cart">+</button>
-            </div>
-          </div>
-        </a>
-
-        <!-- Product 4 -->
-        <a href="produto.html" style="text-decoration:none;" class="product-card">
-          <div class="product-card-img">
-            👟
-            <button class="product-card-wishlist">♡</button>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-cat">Palmilha EVA</div>
-            <div class="product-card-name">Palmilha EVA Standard D35</div>
-            <div class="product-card-specs">
-              <span class="spec-tag">D35</span>
-              <span class="spec-tag">Econômico</span>
-            </div>
-            <div class="product-card-footer">
-              <div class="product-price">
-                <span class="product-price-label">A partir de</span>
-                <span class="product-price-value">R$ 0,80<span class="product-price-unit">/par</span></span>
-              </div>
-              <button class="btn-add-cart">+</button>
-            </div>
-          </div>
-        </a>
-
-        <!-- Product 5 -->
-        <a href="produto.html" style="text-decoration:none;" class="product-card">
-          <div class="product-card-img" style="background:linear-gradient(145deg,#FFF7ED 0%,#FED7AA 100%);">
-            👟
-            <button class="product-card-wishlist">♡</button>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-cat">Premium</div>
-            <div class="product-card-name">Palmilha Ortopédica Pro</div>
-            <div class="product-card-specs">
-              <span class="spec-tag">D45</span>
-              <span class="spec-tag">Ortopédica</span>
-              <span class="spec-tag">Gel</span>
-            </div>
-            <div class="product-card-footer">
-              <div class="product-price">
-                <span class="product-price-label">A partir de</span>
-                <span class="product-price-value">R$ 2,40<span class="product-price-unit">/par</span></span>
-              </div>
-              <button class="btn-add-cart">+</button>
-            </div>
-          </div>
-        </a>
-
-        <!-- Product 6 -->
-        <a href="produto.html" style="text-decoration:none;" class="product-card">
-          <div class="product-card-img" style="background:linear-gradient(145deg,#F5F3FF 0%,#EDE9FE 100%);">
-            👟
-            <button class="product-card-wishlist">♡</button>
-          </div>
-          <div class="product-card-body">
-            <div class="product-card-cat">Personalizada</div>
-            <div class="product-card-name">Palmilha Personalizada Industrial</div>
-            <div class="product-card-specs">
-              <span class="spec-tag">Sob encomenda</span>
-              <span class="spec-tag">Custom</span>
-            </div>
-            <div class="product-card-footer">
-              <div class="product-price">
-                <span class="product-price-label">Consulte</span>
-                <span class="product-price-value" style="font-size:14px;">Preço sob consulta</span>
-              </div>
-              <button class="btn-add-cart" style="background:var(--gray-700);">→</button>
-            </div>
-          </div>
-        </a>
+      <div class="product-grid" id="product-grid">
+        <!-- Carregado dinamicamente -->
       </div>
     </main>
   </div>
 
+  <script src="js/api.js"></script>
   <script src="js/main.js"></script>
   <script>
-    const prices = ['R$ 0,80','R$ 1,20','R$ 1,60','R$ 2,00','R$ 2,40','R$ 3,00'];
-    function updatePrice(val) {
-      document.getElementById('price-max').textContent = prices[val];
-    }
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!window.API) return;
+
+      const { ProductsAPI, CategoriesAPI, Format } = window.API;
+
+      const productGrid = document.getElementById('product-grid');
+      const productCountText = document.getElementById('product-count-text');
+      const sortSelect = document.getElementById('catalog-sort-select');
+      const categoryFiltersContainer = document.getElementById('category-filters');
+
+      let allProducts = [];
+      let categories = [];
+      let selectedCategories = [];
+      let selectedDensities = [];
+      let maxPrice = 300.00;
+
+      async function loadCategories() {
+        try {
+          const res = await CategoriesAPI.list();
+          categories = res.categories || res || [];
+          renderCategories(categories);
+        } catch (e) {
+          console.error('Erro ao carregar categorias:', e);
+        }
+      }
+
+      function renderCategories(cats) {
+        categoryFiltersContainer.innerHTML = '<div class="filter-group-title">Categoria</div>';
+        cats.forEach(cat => {
+          const opt = document.createElement('div');
+          opt.className = 'filter-option';
+          opt.innerHTML = `
+            <input type="checkbox" id="cat-${cat.id}" data-id="${cat.id}" />
+            <label for="cat-${cat.id}">${cat.name}</label>
+          `;
+          opt.querySelector('input').addEventListener('change', (e) => {
+            const catId = parseInt(e.target.dataset.id);
+            if (e.target.checked) {
+              selectedCategories.push(catId);
+            } else {
+              selectedCategories = selectedCategories.filter(id => id !== catId);
+            }
+            filterAndRender();
+          });
+          categoryFiltersContainer.appendChild(opt);
+        });
+      }
+
+      async function fetchProducts() {
+        productGrid.innerHTML = '<div style="grid-column:span 3;text-align:center;padding:40px;color:var(--text-secondary);">Carregando catálogo...</div>';
+        try {
+          const res = await ProductsAPI.list({ limit: 100 });
+          allProducts = res.products || res || [];
+          filterAndRender();
+        } catch (e) {
+          productGrid.innerHTML = '<div style="grid-column:span 3;text-align:center;padding:40px;color:var(--text-secondary);">Erro ao carregar catálogo de produtos.</div>';
+        }
+      }
+
+      function filterAndRender() {
+        let filtered = [...allProducts];
+
+        if (selectedCategories.length > 0) {
+          filtered = filtered.filter(p => selectedCategories.includes(p.category_id));
+        }
+
+        if (selectedDensities.length > 0) {
+          filtered = filtered.filter(p => selectedDensities.includes(p.density));
+        }
+
+        filtered = filtered.filter(p => parseFloat(p.price) <= maxPrice);
+
+        const sortVal = sortSelect.value;
+        if (sortVal === 'price-asc') {
+          filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+        } else if (sortVal === 'price-desc') {
+          filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+        } else if (sortVal === 'rating') {
+          filtered.sort((a, b) => parseFloat(b.rating || 0) - parseFloat(a.rating || 0));
+        }
+
+        renderProducts(filtered);
+      }
+
+      function renderProducts(products) {
+        productCountText.textContent = `${products.length} produto(s) encontrado(s)`;
+        
+        if (products.length === 0) {
+          productGrid.innerHTML = '<div style="grid-column:span 3;text-align:center;padding:40px;color:var(--text-secondary);">Nenhum produto atende aos filtros selecionados.</div>';
+          return;
+        }
+
+        productGrid.innerHTML = '';
+        products.forEach(p => {
+          const mainImg = p.images && p.images.find(img => img.is_main) || (p.images && p.images[0]) || { image_url: '' };
+          
+          let badgeHtml = '';
+          if (p.is_new) {
+            badgeHtml = '<span class="product-card-badge"><span class="badge badge-blue">Novidade</span></span>';
+          } else if (p.rating >= 4.5) {
+            badgeHtml = '<span class="product-card-badge"><span class="badge badge-purple">Mais vendido</span></span>';
+          }
+
+          const card = document.createElement('a');
+          card.href = `produto.html?id=${p.id}`;
+          card.className = 'product-card';
+          card.style.textDecoration = 'none';
+          card.innerHTML = `
+            <div class="product-card-img" style="background: linear-gradient(145deg, var(--gray-100) 0%, var(--gray-50) 100%); height: 180px;">
+              ${mainImg.image_url ? `<img src="${mainImg.image_url}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" />` : '👟'}
+              ${badgeHtml}
+            </div>
+            <div class="product-card-body">
+              <div class="product-card-cat">${p.category_name || 'Geral'}</div>
+              <div class="product-card-name">${p.name}</div>
+              <div class="product-card-specs" style="margin-top:6px; margin-bottom:12px; display:flex; gap:6px; flex-wrap:wrap;">
+                ${p.density ? `<span class="spec-tag" style="padding: 2px 8px; background: var(--gray-100); border-radius: 100px; font-size: 10px; font-weight: 600; color: var(--text-secondary);">${p.density}</span>` : ''}
+                ${p.material ? `<span class="spec-tag" style="padding: 2px 8px; background: var(--gray-100); border-radius: 100px; font-size: 10px; font-weight: 600; color: var(--text-secondary);">${p.material}</span>` : ''}
+              </div>
+              <div class="product-card-footer" style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="product-price" style="display:flex; flex-direction:column;">
+                  <span class="product-price-label" style="font-size:10px; color:var(--text-muted);">A partir de</span>
+                  <span class="product-price-value" style="font-size:16px; font-weight:800; color:var(--text-primary);">${Format.currency(p.price)}<span class="product-price-unit" style="font-size:11px; font-weight:400; color:var(--text-secondary);">/par</span></span>
+                </div>
+                <button class="btn-add-cart">+</button>
+              </div>
+            </div>
+          `;
+          productGrid.appendChild(card);
+        });
+      }
+
+      sortSelect.addEventListener('change', () => filterAndRender());
+
+      document.querySelectorAll('#density-filters input').forEach(chk => {
+        chk.addEventListener('change', (e) => {
+          const densityVal = e.target.dataset.density;
+          if (e.target.checked) {
+            selectedDensities.push(densityVal);
+          } else {
+            selectedDensities = selectedDensities.filter(d => d !== densityVal);
+          }
+          filterAndRender();
+        });
+      });
+
+      const priceRange = document.getElementById('price-range');
+      const priceMaxVal = document.getElementById('price-max');
+      
+      priceRange.addEventListener('input', (e) => {
+        const value = parseFloat(e.target.value);
+        maxPrice = value;
+        priceMaxVal.textContent = Format.currency(value);
+        filterAndRender();
+      });
+
+      await loadCategories();
+      await fetchProducts();
+    });
   </script>
 </body>
 </html>

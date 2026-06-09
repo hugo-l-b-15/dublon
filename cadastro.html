@@ -169,11 +169,11 @@
       <div class="form-row">
         <div class="form-group">
           <label class="form-label">NOME</label>
-          <input type="text" class="form-control" placeholder="Seu nome" required />
+          <input type="text" class="form-control" placeholder="Seu nome" required id="reg-name" />
         </div>
         <div class="form-group">
           <label class="form-label">SOBRENOME</label>
-          <input type="text" class="form-control" placeholder="Sobrenome" required />
+          <input type="text" class="form-control" placeholder="Sobrenome" required id="reg-lastname" />
         </div>
       </div>
 
@@ -181,7 +181,7 @@
         <label class="form-label">E-MAIL</label>
         <div class="form-control-icon">
           <span class="icon">✉</span>
-          <input type="email" class="form-control" placeholder="seu@email.com" required />
+          <input type="email" class="form-control" placeholder="seu@email.com" required id="reg-email" />
         </div>
       </div>
 
@@ -190,12 +190,12 @@
           <label class="form-label">TELEFONE</label>
           <div class="form-control-icon">
             <span class="icon">📞</span>
-            <input type="tel" class="form-control" placeholder="(11) 99999-9999" />
+            <input type="tel" class="form-control" placeholder="(11) 99999-9999" id="reg-phone" />
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">CPF</label>
-          <input type="text" class="form-control" placeholder="000.000.000-00" />
+          <input type="text" class="form-control" placeholder="000.000.000-00" id="reg-cpf" />
         </div>
       </div>
 
@@ -203,7 +203,7 @@
         <label class="form-label">EMPRESA (OPCIONAL)</label>
         <div class="form-control-icon">
           <span class="icon">🏢</span>
-          <input type="text" class="form-control" placeholder="Nome da empresa" />
+          <input type="text" class="form-control" placeholder="Nome da empresa" id="reg-company" />
         </div>
       </div>
 
@@ -212,14 +212,14 @@
           <label class="form-label">SENHA</label>
           <div class="form-control-icon">
             <span class="icon">🔒</span>
-            <input type="password" class="form-control" placeholder="Mínimo 8 caracteres" required minlength="8" />
+            <input type="password" class="form-control" placeholder="Mínimo 8 caracteres" required minlength="8" id="reg-password" />
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">CONFIRMAR SENHA</label>
           <div class="form-control-icon">
             <span class="icon">🔒</span>
-            <input type="password" class="form-control" placeholder="Repita a senha" required />
+            <input type="password" class="form-control" placeholder="Repita a senha" required id="reg-confirm-password" />
           </div>
         </div>
       </div>
@@ -248,15 +248,57 @@
     </p>
   </div>
 
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
   <script>
-    function handleRegister(e) {
+    async function handleRegister(e) {
       e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const lastname = document.getElementById('reg-lastname').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const phone = document.getElementById('reg-phone').value.trim();
+      const cpf = document.getElementById('reg-cpf').value.trim();
+      const company = document.getElementById('reg-company').value.trim();
+      const password = document.getElementById('reg-password').value;
+      const confirmPassword = document.getElementById('reg-confirm-password').value;
+
+      if (password !== confirmPassword) {
+        window.API.Toast.error('As senhas não coincidem.');
+        return;
+      }
+
       const btn = document.getElementById('register-submit');
+      const originalText = btn.textContent;
       btn.textContent = 'Criando conta...';
       btn.disabled = true;
-      setTimeout(() => {
-        window.location.href = 'meus-pedidos.html';
-      }, 1200);
+
+      try {
+        const fullName = `${name} ${lastname}`.trim();
+        const regData = await window.API.AuthAPI.register({
+          name: fullName,
+          email,
+          password
+        });
+
+        if (phone || cpf || company) {
+          await window.API.UsersAPI.updateProfile({
+            name: fullName,
+            email,
+            phone,
+            cpf,
+            company
+          });
+        }
+
+        window.API.Toast.success('Conta criada com sucesso!');
+        setTimeout(() => {
+          window.location.href = 'meus-pedidos.html';
+        }, 1200);
+      } catch (err) {
+        window.API.Toast.error(err.message || 'Erro ao criar conta. Tente novamente.');
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
     }
   </script>
 </body>

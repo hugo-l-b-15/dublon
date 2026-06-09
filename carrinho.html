@@ -258,48 +258,8 @@
       <div>
         <h1 class="cart-title">🛒 Meu Carrinho</h1>
         <div class="cart-items">
-          <div class="cart-item">
-            <div class="cart-item-img">👟</div>
-            <div class="cart-item-info">
-              <div class="cart-item-cat">Palmilha EVA</div>
-              <div class="cart-item-name">Palmilha EVA Pro D45</div>
-              <div class="cart-item-spec">Cor: Branco · D45 · Tamanho 39-42</div>
-            </div>
-            <div class="cart-item-qty">
-              <div class="qty-counter">
-                <button data-action="minus">−</button>
-                <input type="number" value="350" min="50" id="qty-1" />
-                <button data-action="plus">+</button>
-              </div>
-              <span style="font-size:11px;color:var(--text-muted);">R$ 1,20/par</span>
-            </div>
-            <div class="cart-item-price">
-              <div class="unit">Subtotal</div>
-              <div class="total">R$ 420,00</div>
-            </div>
-            <button class="cart-item-remove" title="Remover">✕</button>
-          </div>
-
-          <div class="cart-item">
-            <div class="cart-item-img" style="background:#EFF6FF;">👟</div>
-            <div class="cart-item-info">
-              <div class="cart-item-cat">Linha Esportiva</div>
-              <div class="cart-item-name">Palmilha Sport Runner X</div>
-              <div class="cart-item-spec">Cor: Azul Escuro · D35 · Tamanho 37-43</div>
-            </div>
-            <div class="cart-item-qty">
-              <div class="qty-counter">
-                <button data-action="minus">−</button>
-                <input type="number" value="250" min="50" id="qty-2" />
-                <button data-action="plus">+</button>
-              </div>
-              <span style="font-size:11px;color:var(--text-muted);">R$ 0,95/par</span>
-            </div>
-            <div class="cart-item-price">
-              <div class="unit">Subtotal</div>
-              <div class="total">R$ 237,50</div>
-            </div>
-            <button class="cart-item-remove" title="Remover">✕</button>
+          <div style="padding:40px; text-align:center;">
+            Carregando o seu carrinho...
           </div>
         </div>
 
@@ -314,12 +274,12 @@
           <div class="summary-title">Resumo do pedido</div>
 
           <div class="summary-row">
-            <span class="label">Subtotal (600 pares)</span>
-            <span class="value">R$ 657,50</span>
+            <span class="label">Subtotal (0 pares)</span>
+            <span class="value">R$ 0,00</span>
           </div>
           <div class="summary-row">
             <span class="label">Frete</span>
-            <span class="value" style="color:#16A34A;">Calcular</span>
+            <span class="value" style="color:#16A34A;">Grátis</span>
           </div>
           <div class="summary-row">
             <span class="label">Desconto</span>
@@ -333,7 +293,7 @@
 
           <div class="summary-total">
             <span class="label">Total</span>
-            <span class="value">R$ 657,50</span>
+            <span class="value">R$ 0,00</span>
           </div>
 
           <button class="btn btn-primary btn-full" style="padding:14px;font-size:15px;margin-top:4px;" onclick="window.location.href='checkout.html'">
@@ -346,16 +306,188 @@
     </div>
   </div>
 
+  <script src="js/api.js"></script>
   <script src="js/main.js"></script>
   <script>
-    function applyCoupon() {
-      const code = document.getElementById('coupon-input').value.trim();
-      if (code.toUpperCase() === 'DUBLON10') {
-        alert('Cupom aplicado! 10% de desconto.');
-      } else if (code) {
-        alert('Cupom inválido ou expirado.');
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!window.API) return;
+
+      const { CartAPI, CouponsAPI, Format, Toast } = window.API;
+
+      const cartItemsContainer = document.querySelector('.cart-items');
+      const subtotalLabel = document.querySelector('.summary-row:nth-of-type(1) .value');
+      const subtotalTitleLabel = document.querySelector('.summary-row:nth-of-type(1) .label');
+      const discountLabel = document.querySelector('.summary-row:nth-of-type(3) .value');
+      const totalLabel = document.querySelector('.summary-total .value');
+      const checkoutBtn = document.querySelector('.btn-primary');
+
+      let cartData = null;
+      let appliedCoupon = null;
+
+      async function loadCart() {
+        try {
+          cartData = await CartAPI.get();
+          renderCart(cartData);
+        } catch (e) {
+          console.error(e);
+          cartItemsContainer.innerHTML = '<div style="padding:40px; text-align:center;">Erro ao carregar o carrinho.</div>';
+        }
       }
-    }
+
+      function renderCart(data) {
+        const items = data.items || [];
+        
+        if (items.length === 0) {
+          cartItemsContainer.innerHTML = `
+            <div style="padding:48px; text-align:center; color:var(--text-secondary); background:#fff; border:1px solid var(--border-color); border-radius:var(--radius-xl);">
+              <span style="font-size:48px;">🛒</span>
+              <p style="margin-top:16px; font-weight:600; font-size:16px;">Seu carrinho está vazio</p>
+              <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Adicione produtos do catálogo para solicitar ou realizar um pedido.</p>
+              <a href="catalogo.html" class="btn btn-primary btn-sm">Ver Catálogo</a>
+            </div>
+          `;
+          subtotalTitleLabel.textContent = 'Subtotal (0 pares)';
+          subtotalLabel.textContent = Format.currency(0);
+          totalLabel.textContent = Format.currency(0);
+          discountLabel.textContent = '—';
+          checkoutBtn.disabled = true;
+          return;
+        }
+
+        checkoutBtn.disabled = false;
+        cartItemsContainer.innerHTML = '';
+        
+        let totalPairs = 0;
+
+        items.forEach(item => {
+          totalPairs += parseInt(item.quantity);
+          const card = document.createElement('div');
+          card.className = 'cart-item';
+          card.innerHTML = `
+            <div class="cart-item-img" style="background:#F8FAFC; width: 72px; height: 72px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0;">
+              ${item.image_url ? `<img src="${item.image_url}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;" />` : '👟'}
+            </div>
+            <div class="cart-item-info" style="flex: 1; margin-left: 16px;">
+              <div class="cart-item-cat" style="font-size: 10px; font-weight: 700; color: var(--blue-vibrant); text-transform: uppercase; margin-bottom: 3px;">${item.category_name || 'Geral'}</div>
+              <div class="cart-item-name" style="font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">${item.name}</div>
+              <div class="cart-item-spec" style="font-size: 12px; color: var(--text-secondary);">Cor: <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background-color:${item.color};border:1px solid #ddd;vertical-align:middle;"></span> · Tamanho: ${item.size}</div>
+            </div>
+            <div class="cart-item-qty" style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+              <div class="qty-counter">
+                <button onclick="changeQty(${item.id}, -1)">−</button>
+                <input type="number" value="${item.quantity}" min="${item.stock_min || 50}" onchange="updateQty(${item.id}, this.value)" id="qty-${item.id}" />
+                <button onclick="changeQty(${item.id}, 1)">+</button>
+              </div>
+              <span style="font-size:11px;color:var(--text-muted);">${Format.currency(item.price)}/par</span>
+            </div>
+            <div class="cart-item-price" style="text-align: right; flex-shrink: 0; margin-left: 16px;">
+              <div class="unit" style="font-size: 11px; color: var(--text-muted);">Subtotal</div>
+              <div class="total" style="font-size: 18px; font-weight: 800; color: var(--text-primary);">${Format.currency(item.price * item.quantity)}</div>
+            </div>
+            <button class="cart-item-remove" onclick="removeItem(${item.id})" title="Remover">✕</button>
+          `;
+          cartItemsContainer.appendChild(card);
+        });
+
+        subtotalTitleLabel.textContent = `Subtotal (${totalPairs} pares)`;
+        recalculateTotals(data.subtotal);
+      }
+
+      window.changeQty = async (id, delta) => {
+        const input = document.getElementById(`qty-${id}`);
+        if (!input) return;
+        let newQty = parseInt(input.value) + delta;
+        const min = parseInt(input.min) || 50;
+        if (newQty < min) newQty = min;
+        input.value = newQty;
+        await updateQty(id, newQty);
+      };
+
+      window.updateQty = async (id, val) => {
+        const qty = parseInt(val);
+        try {
+          const res = await CartAPI.update(id, qty);
+          await loadCart();
+          if (window.API.updateCartBadge) {
+            window.API.updateCartBadge();
+          }
+        } catch (err) {
+          Toast.error(err.message || 'Erro ao atualizar quantidade.');
+          await loadCart();
+        }
+      };
+
+      window.removeItem = async (id) => {
+        try {
+          await CartAPI.remove(id);
+          Toast.success('Item removido do carrinho.');
+          await loadCart();
+          if (window.API.updateCartBadge) {
+            window.API.updateCartBadge();
+          }
+        } catch (err) {
+          Toast.error(err.message || 'Erro ao remover item.');
+        }
+      };
+
+      function recalculateTotals(subtotal) {
+        subtotalLabel.textContent = Format.currency(subtotal);
+        let finalDiscount = 0;
+
+        if (appliedCoupon) {
+          if (appliedCoupon.discount_type === 'percentage') {
+            finalDiscount = (subtotal * parseFloat(appliedCoupon.discount_value)) / 100;
+          } else {
+            finalDiscount = parseFloat(appliedCoupon.discount_value);
+          }
+          discountLabel.textContent = `-${Format.currency(finalDiscount)}`;
+          discountLabel.style.color = '#16A34A';
+        } else {
+          discountLabel.textContent = '—';
+          discountLabel.style.color = '';
+        }
+
+        const finalTotal = Math.max(0, subtotal - finalDiscount);
+        totalLabel.textContent = Format.currency(finalTotal);
+      }
+
+      window.applyCoupon = async () => {
+        const codeInput = document.getElementById('coupon-input');
+        const code = codeInput.value.trim();
+
+        if (!code) {
+          Toast.warn('Por favor, insira o código de cupom.');
+          return;
+        }
+
+        if (!cartData || !cartData.subtotal) return;
+
+        try {
+          const res = await CouponsAPI.validate(code, cartData.subtotal);
+          appliedCoupon = res.coupon;
+          sessionStorage.setItem('applied_coupon', JSON.stringify(appliedCoupon));
+          Toast.success('Cupom aplicado com sucesso!');
+          recalculateTotals(cartData.subtotal);
+        } catch (err) {
+          Toast.error(err.message || 'Cupom inválido ou expirado.');
+          appliedCoupon = null;
+          sessionStorage.removeItem('applied_coupon');
+          recalculateTotals(cartData.subtotal);
+        }
+      };
+
+      const savedCoupon = sessionStorage.getItem('applied_coupon');
+      if (savedCoupon) {
+        try {
+          appliedCoupon = JSON.parse(savedCoupon);
+          document.getElementById('coupon-input').value = appliedCoupon.code;
+        } catch (e) {
+          sessionStorage.removeItem('applied_coupon');
+        }
+      }
+
+      await loadCart();
+    });
   </script>
 </body>
 </html>

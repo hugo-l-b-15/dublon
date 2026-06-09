@@ -567,7 +567,7 @@
       <div class="track-input-label">CÓDIGO DE RASTREIO</div>
       <div class="track-input-row">
         <input type="text" id="tracking-input" placeholder="Ex: DBL-2024-00847" />
-        <button class="btn-search" onclick="handleTrackingSearch()">🔍 Rastrear</button>
+        <button class="btn-search" id="tracking-btn" onclick="handleTrackingSearch()">🔍 Rastrear</button>
       </div>
 
       <div class="result-divider">Resultado do rastreio</div>
@@ -637,6 +637,7 @@
     </div>
   </div>
 
+  <script src="js/api.js"></script>
   <script src="js/main.js"></script>
   <script>
     // Auto-show result if URL has param

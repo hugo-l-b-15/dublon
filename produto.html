@@ -308,49 +308,51 @@
 
   <div class="product-page">
     <!-- GALLERY -->
-    <div class="product-gallery">
-      <div class="product-main-img">
-        <span class="product-badge-main"><span class="badge badge-blue">Mais vendido</span></span>
+    <div class="product-gallery" id="product-gallery">
+      <div class="product-main-img" id="product-main-img" style="font-size: 100px;">
+        <span class="product-badge-main" id="product-badge-main" style="display:none;"><span class="badge badge-blue">Mais vendido</span></span>
         👟
       </div>
-      <div class="product-thumbs">
-        <div class="product-thumb active">👟</div>
-        <div class="product-thumb">👟</div>
-        <div class="product-thumb">👟</div>
-        <div class="product-thumb" style="background:#EFF6FF;">📋</div>
+      <div class="product-thumbs" id="product-thumbs">
+        <!-- Thumbnails dinâmicas -->
       </div>
     </div>
 
     <!-- INFO -->
     <div class="product-info">
       <div>
-        <div class="product-breadcrumb">
-          <a href="catalogo.html">Palmilha EVA</a> › Palmilha EVA Pro D45
+        <div class="product-breadcrumb" id="product-breadcrumb">
+          <a href="catalogo.html">Catálogo</a> › Carregando...
         </div>
-        <h1 class="product-title">Palmilha EVA Pro D45</h1>
+        <h1 class="product-title" id="product-title">Carregando produto...</h1>
         <div class="product-rating" style="margin-top:8px;">
-          <span class="stars">★★★★★</span>
-          <span class="rating-count">4.9 (128 avaliações)</span>
-          <span style="font-size:12px;color:#16A34A;font-weight:600;margin-left:8px;">✓ Em estoque</span>
+          <span class="stars" id="product-stars">★★★★★</span>
+          <span class="rating-count" id="product-rating-count">0.0 (0 avaliações)</span>
+          <span id="product-stock-badge" style="font-size:12px;color:#16A34A;font-weight:600;margin-left:8px;">✓ Em estoque</span>
         </div>
       </div>
 
       <div class="product-price-block">
         <div class="product-price-label">Preço unitário</div>
-        <div class="product-price-main">R$ 1,20<span class="product-price-unit">/par</span></div>
-        <div class="product-price-min">Pedido mínimo: 50 pares</div>
+        <div class="product-price-main" id="product-price-main">R$ 0,00<span class="product-price-unit">/par</span></div>
+        <div class="product-price-min" id="product-price-min">Pedido mínimo: 50 pares</div>
       </div>
 
       <!-- Colors -->
       <div>
-        <div class="product-option-title">Cor: <span style="font-weight:400;color:var(--text-secondary);">Branco</span></div>
-        <div class="color-options">
-          <div class="color-btn active" style="background:#FFFFFF;border:2px solid #E2E8F0;" title="Branco"></div>
-          <div class="color-btn" style="background:#1B3A6E;" title="Azul Escuro"></div>
-          <div class="color-btn" style="background:#1E293B;" title="Preto"></div>
-          <div class="color-btn" style="background:#D4A574;" title="Bege"></div>
-          <div class="color-btn" style="background:#6B7280;" title="Cinza"></div>
+        <div class="product-option-title">Cor: <span id="selected-color-label" style="font-weight:400;color:var(--text-secondary);">-</span></div>
+        <div class="color-options" id="color-options">
+          <!-- Cores dinâmicas -->
         </div>
+      </div>
+
+      <!-- Sizes -->
+      <div>
+        <div class="product-option-title">Tamanho: <span id="selected-size-label" style="font-weight:400;color:var(--text-secondary);">-</span></div>
+        <select id="prod-size" class="form-control" style="max-width:180px;" required>
+          <option value="" disabled selected>Selecione</option>
+          <!-- Tamanhos dinâmicos -->
+        </select>
       </div>
 
       <!-- Quantity -->
@@ -365,21 +367,21 @@
 
       <!-- Add to cart -->
       <div class="add-to-cart-row">
-        <button class="btn-add-main" onclick="window.location.href='carrinho.html'">
+        <button class="btn-add-main" id="btn-add-to-cart">
           🛒 Adicionar ao carrinho
         </button>
         <button class="btn-quote-product" onclick="window.location.href='orcamento.html'">Orçamento</button>
       </div>
 
       <!-- Tech specs -->
-      <div class="tech-specs">
+      <div class="tech-specs" id="tech-specs">
         <div class="tech-specs-title">Informações Técnicas</div>
-        <div class="tech-spec-item"><span class="key">Material</span><span class="val">EVA expandido</span></div>
-        <div class="tech-spec-item"><span class="key">Densidade</span><span class="val">D45</span></div>
-        <div class="tech-spec-item"><span class="key">Espessura</span><span class="val">4mm a 8mm</span></div>
-        <div class="tech-spec-item"><span class="key">Numeração</span><span class="val">33 ao 47</span></div>
-        <div class="tech-spec-item"><span class="key">Certificação</span><span class="val">ABNT NBR 12282</span></div>
-        <div class="tech-spec-item"><span class="key">Aplicação</span><span class="val">Industrial / Calçados</span></div>
+        <div class="tech-spec-item"><span class="key">Material</span><span class="val" id="spec-material">-</span></div>
+        <div class="tech-spec-item"><span class="key">Densidade</span><span class="val" id="spec-density">-</span></div>
+        <div class="tech-spec-item"><span class="key">Espessura</span><span class="val" id="spec-thickness">-</span></div>
+        <div class="tech-spec-item"><span class="key">Certificação</span><span class="val" id="spec-certification">-</span></div>
+        <div class="tech-spec-item"><span class="key">Durabilidade</span><span class="val" id="spec-durability">-</span></div>
+        <div class="tech-spec-item"><span class="key">Aplicação</span><span class="val" id="spec-application">-</span></div>
       </div>
 
       <!-- Delivery -->
@@ -391,6 +393,188 @@
     </div>
   </div>
 
+  <script src="js/api.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!window.API) return;
+
+      const { ProductsAPI, CartAPI, Format, Toast } = window.API;
+
+      // 1. Obter id do produto pela URL
+      const params = new URLSearchParams(window.location.search);
+      const productId = parseInt(params.get('id')) || 1;
+
+      let currentProduct = null;
+
+      async function loadProduct() {
+        try {
+          currentProduct = await ProductsAPI.get(productId);
+          renderProduct(currentProduct);
+        } catch (err) {
+          Toast.error(err.message || 'Erro ao carregar detalhes do produto.');
+          document.getElementById('product-title').textContent = 'Produto não encontrado';
+        }
+      }
+
+      function renderProduct(product) {
+        document.title = `${product.name} – DUBLON`;
+
+        // Breadcrumb
+        document.getElementById('product-breadcrumb').innerHTML = `
+          <a href="catalogo.html">Catálogo</a> › ${product.category_name || 'Geral'} › ${product.name}
+        `;
+
+        // Detalhes textuais
+        document.getElementById('product-title').textContent = product.name;
+        document.getElementById('product-price-main').innerHTML = `${Format.currency(product.price)}<span class="product-price-unit">/par</span>`;
+        document.getElementById('product-price-min').textContent = `Pedido mínimo: ${product.stock_min || 50} pares`;
+        document.getElementById('prod-qty').min = product.stock_min || 50;
+        document.getElementById('prod-qty').value = product.stock_min || 100;
+
+        // Avaliações
+        const rating = parseFloat(product.rating || 0);
+        document.getElementById('product-stars').textContent = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
+        document.getElementById('product-rating-count').textContent = `${rating.toFixed(1)} (${product.reviews_count || 0} avaliações)`;
+
+        // Estoque
+        const stockBadge = document.getElementById('product-stock-badge');
+        if (product.stock > 0) {
+          stockBadge.textContent = '✓ Em estoque';
+          stockBadge.style.color = '#16A34A';
+        } else {
+          stockBadge.textContent = '✕ Fora de estoque';
+          stockBadge.style.color = '#DC2626';
+        }
+
+        // Informações Técnicas
+        document.getElementById('spec-material').textContent = product.material || '-';
+        document.getElementById('spec-density').textContent = product.density || '-';
+        document.getElementById('spec-thickness').textContent = product.thickness || '-';
+        document.getElementById('spec-certification').textContent = product.certification || '-';
+        document.getElementById('spec-durability').textContent = product.durability || '-';
+        document.getElementById('spec-application').textContent = product.application || '-';
+
+        // Badge Novidade
+        const badgeMain = document.getElementById('product-badge-main');
+        if (product.is_new) {
+          badgeMain.style.display = 'block';
+          badgeMain.innerHTML = '<span class="badge badge-blue">Novidade</span>';
+        } else if (product.rating >= 4.5) {
+          badgeMain.style.display = 'block';
+          badgeMain.innerHTML = '<span class="badge badge-purple">Mais vendido</span>';
+        } else {
+          badgeMain.style.display = 'none';
+        }
+
+        // Galeria de imagens
+        const mainImgDiv = document.getElementById('product-main-img');
+        const thumbsDiv = document.getElementById('product-thumbs');
+        
+        if (product.images && product.images.length > 0) {
+          const mainImg = product.images.find(img => img.is_main) || product.images[0];
+          mainImgDiv.innerHTML = `
+            <span class="product-badge-main" id="product-badge-main" style="display:none;"></span>
+            <img src="${mainImg.image_url}" alt="${product.name}" style="width:100%; height:100%; object-fit:cover;" />
+          `;
+          
+          thumbsDiv.innerHTML = '';
+          product.images.forEach((img, idx) => {
+            const thumb = document.createElement('div');
+            thumb.className = `product-thumb ${img.image_url === mainImg.image_url ? 'active' : ''}`;
+            thumb.innerHTML = `<img src="${img.image_url}" alt="" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;" />`;
+            thumb.onclick = () => {
+              document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
+              thumb.classList.add('active');
+              mainImgDiv.querySelector('img').src = img.image_url;
+            };
+            thumbsDiv.appendChild(thumb);
+          });
+        }
+
+        // Renderizar opções de cores
+        const colorOptions = document.getElementById('color-options');
+        colorOptions.innerHTML = '';
+        const colors = typeof product.colors === 'string' ? JSON.parse(product.colors) : product.colors || [];
+        
+        colors.forEach((col, idx) => {
+          const btn = document.createElement('div');
+          btn.className = `color-btn ${idx === 0 ? 'active' : ''}`;
+          btn.style.backgroundColor = col;
+          btn.dataset.color = col;
+          btn.title = col;
+          btn.onclick = () => {
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('selected-color-label').textContent = col;
+          };
+          colorOptions.appendChild(btn);
+        });
+        if (colors.length > 0) {
+          document.getElementById('selected-color-label').textContent = colors[0];
+        }
+
+        // Renderizar opções de tamanhos
+        const sizeSelect = document.getElementById('prod-size');
+        sizeSelect.innerHTML = '<option value="" disabled selected>Selecione</option>';
+        const sizes = typeof product.sizes === 'string' ? JSON.parse(product.sizes) : product.sizes || [];
+        
+        sizes.forEach(sz => {
+          const opt = document.createElement('option');
+          opt.value = sz;
+          opt.textContent = sz;
+          sizeSelect.appendChild(opt);
+        });
+
+        sizeSelect.onchange = () => {
+          document.getElementById('selected-size-label').textContent = sizeSelect.value;
+        };
+      }
+
+      // Adicionar ao carrinho
+      const btnAddToCart = document.getElementById('btn-add-to-cart');
+      btnAddToCart.onclick = async () => {
+        if (!currentProduct) return;
+
+        const qty = parseInt(document.getElementById('prod-qty').value);
+        const minQty = currentProduct.stock_min || 50;
+
+        if (qty < minQty) {
+          Toast.warn(`A quantidade mínima para este produto é de ${minQty} pares.`);
+          return;
+        }
+
+        const sizeSelect = document.getElementById('prod-size');
+        const size = sizeSelect.value;
+
+        if (!size) {
+          Toast.warn('Por favor, escolha um tamanho.');
+          return;
+        }
+
+        const activeColorBtn = document.querySelector('.color-btn.active');
+        const color = activeColorBtn ? activeColorBtn.dataset.color : '';
+
+        btnAddToCart.disabled = true;
+        const originalText = btnAddToCart.innerHTML;
+        btnAddToCart.innerHTML = 'Adicionando...';
+
+        try {
+          await CartAPI.add(productId, qty, color, size);
+          Toast.success('Item adicionado ao carrinho com sucesso!');
+          if (window.API.updateCartBadge) {
+            window.API.updateCartBadge();
+          }
+        } catch (err) {
+          Toast.error(err.message || 'Erro ao adicionar item ao carrinho.');
+        } finally {
+          btnAddToCart.disabled = false;
+          btnAddToCart.innerHTML = originalText;
+        }
+      };
+
+      await loadProduct();
+    });
+  </script>
 </body>
 </html>

@@ -3,14 +3,15 @@ const router = express.Router();
 const db = require('../db');
 const { admin } = require('../middleware/auth');
 
-// GET /api/products - Listar produtos ativos para a loja (com filtros opcionais)
+// GET /api/products – Listar produtos ativos (com filtros)
 router.get('/', async (req, res) => {
-  const { category_id, search, limit = 12, page = 1 } = req.query;
+  const { category_id, category_slug, search, limit = 12, page = 1, sort = 'newest' } = req.query;
   const offset = (page - 1) * limit;
 
   try {
     let queryText = `
-      SELECT p.*, c.name as category_name, pi.image_url as main_image
+      SELECT p.*, c.name AS category_name, c.color AS category_color, c.slug AS category_slug,
+             pi.image_url AS main_image
       FROM products p
       LEFT JOIN categories c ON p.category_id = c.id
       LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_main = true
@@ -25,32 +26,32 @@ router.get('/', async (req, res) => {
       paramIndex++;
     }
 
+    if (category_slug) {
+      queryText += ` AND c.slug = $${paramIndex}`;
+      params.push(category_slug);
+      paramIndex++;
+    }
+
     if (search) {
-      queryText += ` AND (p.name ILIKE $${paramIndex} OR p.description ILIKE $${paramIndex})`;
+      queryText += ` AND (p.name ILIKE $${paramIndex} OR p.description ILIKE $${paramIndex} OR p.sku ILIKE $${paramIndex})`;
       params.push(`%${search}%`);
       paramIndex++;
     }
 
-    // Contagem total para paginação antes de aplicar limit/offset
     const countResult = await db.query(
-      `SELECT COUNT(*) FROM (${queryText}) as count_query`,
-      params
+      `SELECT COUNT(*) FROM (${queryText}) AS count_query`, params
     );
     const totalItems = parseInt(countResult.rows[0].count);
 
-    queryText += ` ORDER BY p.id DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
+    const sortMap = { newest: 'p.id DESC', price_asc: 'p.price ASC', price_desc: 'p.price DESC', rating: 'p.rating DESC' };
+    queryText += ` ORDER BY ${sortMap[sort] || 'p.id DESC'} LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
     params.push(parseInt(limit), parseInt(offset));
 
     const productsResult = await db.query(queryText, params);
 
     res.json({
       products: productsResult.rows,
-      pagination: {
-        total: totalItems,
-        page: parseInt(page),
-        limit: parseInt(limit),
-        pages: Math.ceil(totalItems / limit)
-      }
+      pagination: { total: totalItems, page: parseInt(page), limit: parseInt(limit), pages: Math.ceil(totalItems / limit) }
     });
   } catch (error) {
     console.error('Erro ao listar produtos:', error);
@@ -58,33 +59,61 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/products/admin/all - Listar todos os produtos para admin (incluindo inativos)
+// GET /api/products/admin/all – Todos os produtos para admin
 router.get('/admin/all', admin, async (req, res) => {
+  const { search, category_id, page = 1, limit = 20 } = req.query;
+  const offset = (page - 1) * limit;
+
   try {
-    const queryText = `
-      SELECT p.*, c.name as category_name, pi.image_url as main_image
+    let queryText = `
+      SELECT p.*, c.name AS category_name, c.color AS category_color,
+             pi.image_url AS main_image
       FROM products p
       LEFT JOIN categories c ON p.category_id = c.id
       LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_main = true
-      ORDER BY p.id DESC
+      WHERE 1=1
     `;
-    const result = await db.query(queryText);
-    res.json({ products: result.rows });
+    const params = [];
+    let idx = 1;
+
+    if (search) {
+      queryText += ` AND (p.name ILIKE $${idx} OR p.sku ILIKE $${idx})`;
+      params.push(`%${search}%`);
+      idx++;
+    }
+
+    if (category_id) {
+      queryText += ` AND p.category_id = $${idx}`;
+      params.push(category_id);
+      idx++;
+    }
+
+    const countResult = await db.query(`SELECT COUNT(*) FROM (${queryText}) AS c`, params);
+    const total = parseInt(countResult.rows[0].count);
+
+    queryText += ` ORDER BY p.id DESC LIMIT $${idx} OFFSET $${idx + 1}`;
+    params.push(parseInt(limit), parseInt(offset));
+
+    const result = await db.query(queryText, params);
+    res.json({
+      products: result.rows,
+      pagination: { total, page: parseInt(page), limit: parseInt(limit), pages: Math.ceil(total / limit) }
+    });
   } catch (error) {
     console.error('Erro ao listar produtos admin:', error);
     res.status(500).json({ error: 'Erro interno do servidor ao listar produtos admin.' });
   }
 });
 
-// GET /api/products/:id - Detalhes do produto + todas as imagens
+// GET /api/products/:id – Detalhes do produto + imagens
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
     const productResult = await db.query(
-      `SELECT p.*, c.name as category_name 
-       FROM products p 
-       LEFT JOIN categories c ON p.category_id = c.id 
+      `SELECT p.*, c.name AS category_name, c.color AS category_color, c.slug AS category_slug
+       FROM products p
+       LEFT JOIN categories c ON p.category_id = c.id
        WHERE p.id = $1`,
       [id]
     );
@@ -94,23 +123,30 @@ router.get('/:id', async (req, res) => {
     }
 
     const imagesResult = await db.query(
-      'SELECT id, image_url, is_main FROM product_images WHERE product_id = $1 ORDER BY is_main DESC, id ASC',
+      'SELECT id, image_url, is_main FROM product_images WHERE product_id=$1 ORDER BY is_main DESC, id ASC',
       [id]
     );
 
-    res.json({
-      product: productResult.rows[0],
-      images: imagesResult.rows
-    });
+    const reviewsResult = await db.query(
+      `SELECT r.*, u.name AS reviewer_name 
+       FROM product_reviews r 
+       LEFT JOIN users u ON r.user_id = u.id
+       WHERE r.product_id = $1
+       ORDER BY r.created_at DESC LIMIT 10`,
+      [id]
+    );
+
+    res.json({ product: productResult.rows[0], images: imagesResult.rows, reviews: reviewsResult.rows });
   } catch (error) {
     console.error('Erro ao obter detalhes do produto:', error);
     res.status(500).json({ error: 'Erro interno do servidor ao obter detalhes do produto.' });
   }
 });
 
-// POST /api/products - Criar produto (Admin)
+// POST /api/products – Criar produto (Admin)
 router.post('/', admin, async (req, res) => {
-  const { name, description, price, stock, category_id, sku, images } = req.body;
+  const { name, description, price, original_price, discount_percentage, stock, stock_min, category_id, sku, is_new,
+          density, thickness, material, certification, durability, application, colors, sizes, images } = req.body;
 
   if (!name || !description || price === undefined || stock === undefined || !sku) {
     return res.status(400).json({ error: 'Os campos nome, descrição, preço, estoque e SKU são obrigatórios.' });
@@ -120,23 +156,21 @@ router.post('/', admin, async (req, res) => {
   try {
     await client.query('BEGIN');
 
-    // Cria produto
     const productResult = await client.query(
-      `INSERT INTO products (name, description, price, stock, category_id, sku) 
-       VALUES ($1, $2, $3, $4, $5, $6) 
-       RETURNING *`,
-      [name, description, price, stock, category_id || null, sku]
+      `INSERT INTO products (name, description, price, original_price, discount_percentage, stock, stock_min, category_id, sku, is_new,
+                             density, thickness, material, certification, durability, application, colors, sizes)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18) RETURNING *`,
+      [name, description, price, original_price || price, discount_percentage || 0, stock, stock_min || 50, category_id || null, sku, is_new || false,
+       density || null, thickness || null, material || null, certification || null, durability || null, application || null,
+       JSON.stringify(colors || []), JSON.stringify(sizes || [])]
     );
     const product = productResult.rows[0];
 
-    // Cria imagens se fornecidas
     if (images && Array.isArray(images) && images.length > 0) {
       for (let i = 0; i < images.length; i++) {
-        const imageUrl = images[i];
-        const isMain = i === 0; // Primeira imagem como principal por padrão
         await client.query(
-          'INSERT INTO product_images (product_id, image_url, is_main) VALUES ($1, $2, $3)',
-          [product.id, imageUrl, isMain]
+          'INSERT INTO product_images (product_id, image_url, is_main) VALUES ($1,$2,$3)',
+          [product.id, images[i], i === 0]
         );
       }
     }
@@ -147,7 +181,7 @@ router.post('/', admin, async (req, res) => {
     await client.query('ROLLBACK');
     console.error('Erro ao criar produto:', error);
     if (error.code === '23505') {
-      return res.status(400).json({ error: 'Já existe um produto cadastrado com este SKU.' });
+      return res.status(400).json({ error: 'Já existe um produto com este SKU.' });
     }
     res.status(500).json({ error: 'Erro interno do servidor ao cadastrar produto.' });
   } finally {
@@ -155,10 +189,11 @@ router.post('/', admin, async (req, res) => {
   }
 });
 
-// PUT /api/products/:id - Editar produto (Admin)
+// PUT /api/products/:id – Editar produto (Admin)
 router.put('/:id', admin, async (req, res) => {
   const { id } = req.params;
-  const { name, description, price, stock, category_id, sku, is_active, images } = req.body;
+  const { name, description, price, original_price, discount_percentage, stock, stock_min, category_id, sku, is_active, is_new,
+          density, thickness, material, certification, durability, application, colors, sizes, images } = req.body;
 
   if (!name || !description || price === undefined || stock === undefined || !sku) {
     return res.status(400).json({ error: 'Os campos nome, descrição, preço, estoque e SKU são obrigatórios.' });
@@ -168,13 +203,16 @@ router.put('/:id', admin, async (req, res) => {
   try {
     await client.query('BEGIN');
 
-    // Atualiza produto
     const productResult = await client.query(
-      `UPDATE products 
-       SET name = $1, description = $2, price = $3, stock = $4, category_id = $5, sku = $6, is_active = $7, updated_at = CURRENT_TIMESTAMP
-       WHERE id = $8 
-       RETURNING *`,
-      [name, description, price, stock, category_id || null, sku, is_active !== undefined ? is_active : true, id]
+      `UPDATE products SET name=$1, description=$2, price=$3, original_price=$4, discount_percentage=$5, stock=$6, stock_min=$7,
+              category_id=$8, sku=$9, is_active=$10, is_new=$11,
+              density=$12, thickness=$13, material=$14, certification=$15, durability=$16, application=$17,
+              colors=$18, sizes=$19, updated_at=CURRENT_TIMESTAMP
+       WHERE id=$20 RETURNING *`,
+      [name, description, price, original_price || price, discount_percentage || 0, stock, stock_min || 50,
+       category_id || null, sku, is_active !== undefined ? is_active : true, is_new || false,
+       density || null, thickness || null, material || null, certification || null, durability || null, application || null,
+       JSON.stringify(colors || []), JSON.stringify(sizes || []), id]
     );
 
     if (productResult.rows.length === 0) {
@@ -182,31 +220,23 @@ router.put('/:id', admin, async (req, res) => {
       return res.status(404).json({ error: 'Produto não encontrado.' });
     }
 
-    const product = productResult.rows[0];
-
-    // Se passar imagens novas, atualiza-as
     if (images && Array.isArray(images)) {
-      // Remove imagens antigas
-      await client.query('DELETE FROM product_images WHERE product_id = $1', [id]);
-      
-      // Insere novas imagens
+      await client.query('DELETE FROM product_images WHERE product_id=$1', [id]);
       for (let i = 0; i < images.length; i++) {
-        const imageUrl = images[i];
-        const isMain = i === 0;
         await client.query(
-          'INSERT INTO product_images (product_id, image_url, is_main) VALUES ($1, $2, $3)',
-          [id, imageUrl, isMain]
+          'INSERT INTO product_images (product_id, image_url, is_main) VALUES ($1,$2,$3)',
+          [id, images[i], i === 0]
         );
       }
     }
 
     await client.query('COMMIT');
-    res.json({ message: 'Produto atualizado com sucesso.', product });
+    res.json({ message: 'Produto atualizado com sucesso.', product: productResult.rows[0] });
   } catch (error) {
     await client.query('ROLLBACK');
     console.error('Erro ao editar produto:', error);
     if (error.code === '23505') {
-      return res.status(400).json({ error: 'Já existe outro produto cadastrado com este SKU.' });
+      return res.status(400).json({ error: 'Já existe outro produto com este SKU.' });
     }
     res.status(500).json({ error: 'Erro interno do servidor ao editar produto.' });
   } finally {
@@ -214,13 +244,13 @@ router.put('/:id', admin, async (req, res) => {
   }
 });
 
-// DELETE /api/products/:id - Desativar produto / Soft Delete (Admin)
+// DELETE /api/products/:id – Desativar produto (Admin)
 router.delete('/:id', admin, async (req, res) => {
   const { id } = req.params;
 
   try {
     const result = await db.query(
-      'UPDATE products SET is_active = false, updated_at = CURRENT_TIMESTAMP WHERE id = $1 RETURNING *',
+      'UPDATE products SET is_active=false, updated_at=CURRENT_TIMESTAMP WHERE id=$1 RETURNING *',
       [id]
     );
 
