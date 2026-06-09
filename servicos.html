@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Serviços – DUBLON Palmilhas Industriais</title>
+  <meta name="description" content="Conheça os serviços da DUBLON: dublagem, fabricação sob medida, corte e aplicação de palmilhas industriais para todos os segmentos." />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <style>
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .services-hero {
+      background: linear-gradient(135deg, var(--blue-dark) 0%, #0D2046 50%, #1B3A6E 100%);
+      padding: 100px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .services-hero::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(37,99,235,0.25) 0%, transparent 70%);
+      top: -200px; right: -100px;
+      pointer-events: none;
+    }
+    .services-hero::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(34,211,238,0.1) 0%, transparent 70%);
+      bottom: -100px; left: -80px;
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 6px 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 100px;
+      color: var(--cyan-accent);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-size: 56px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.08;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-title .highlight { color: var(--cyan-accent); }
+
+    .hero-desc {
+      font-size: 17px;
+      color: rgba(255,255,255,0.68);
+      max-width: 580px;
+      margin: 0 auto 48px;
+      line-height: 1.75;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-btn-secondary {
+      padding: 14px 28px;
+      font-size: 15px;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      color: #fff;
+      background: transparent;
+      border-radius: 8px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .hero-btn-secondary:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.6);
+    }
+
+    /* ── Services Grid ─────────────────────────────────────────── */
+    .services-section {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 80px 32px;
+    }
+
+    .section-label {
+      display: inline-block;
+      padding: 4px 14px;
+      background: var(--blue-info-bg);
+      color: var(--blue-vibrant);
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .section-sub {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 56px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .service-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 32px 28px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--blue-vibrant);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(37,99,235,0.2);
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--blue-info-bg);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+
+    .service-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .service-desc {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .service-features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .service-features li {
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .service-features li::before {
+      content: '✓';
+      color: var(--green-success);
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ── Process strip ─────────────────────────────────────────── */
+    .process-section {
+      background: var(--gray-50);
+      padding: 80px 32px;
+    }
+
+    .process-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 56px;
+      position: relative;
+    }
+
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue-vibrant), var(--cyan-accent));
+    }
+
+    .process-step {
+      text-align: center;
+      padding: 0 16px;
+      position: relative;
+    }
+
+    .step-number {
+      width: 72px;
+      height: 72px;
+      background: var(--blue-vibrant);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--white);
+      margin: 0 auto 20px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 8px 24px rgba(37,99,235,0.35);
+    }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── Coming soon banner ────────────────────────────────────── */
+    .coming-soon-banner {
+      background: linear-gradient(135deg, #0D2046 0%, #1B3A6E 100%);
+      border-radius: var(--radius-2xl);
+      padding: 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin: 0 32px 80px;
+      max-width: 1160px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .coming-soon-banner::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(34,211,238,0.12) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      pointer-events: none;
+    }
+
+    .coming-soon-tag {
+      display: inline-block;
+      padding: 6px 20px;
+      background: rgba(34,211,238,0.12);
+      border: 1px solid rgba(34,211,238,0.3);
+      border-radius: 100px;
+      color: var(--cyan-accent);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .coming-soon-title {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .coming-soon-desc {
+      font-size: 16px;
+      color: rgba(255,255,255,0.65);
+      max-width: 520px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .coming-soon-ctas {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Footer ────────────────────────────────────────────────── */
+    footer {
+      background: var(--blue-dark);
+      padding: 40px 32px;
+      text-align: center;
+    }
+
+    .footer-copy {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- ── NAVBAR ──────────────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <img src="/assets/images/dublon_logo_transparente.png" alt="Dublon" style="height:36px;display:block;">
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html">Produtos</a></li>
+        <li><a href="servicos.html" class="active">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
+      </ul>
+      <div class="navbar-search">
+        <span class="search-icon">🔍</span>
+        <input type="search" placeholder="Buscar produto..." />
+      </div>
+      <div class="navbar-actions">
+        <a href="contato.html" class="navbar-btn-contact">Contato</a>
+        <a href="login.html" class="navbar-btn-login"><span>👤</span> Entrar</a>
+        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
+        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO ────────────────────────────────────────────────── -->
+  <section class="services-hero">
+    <div class="hero-tag">⚙️ Nossos Serviços</div>
+    <h1 class="hero-title">
+      Soluções completas em<br>
+      <span class="highlight">palmilhas industriais</span>
+    </h1>
+    <p class="hero-desc">
+      Da dublagem à fabricação sob medida, oferecemos um portfólio completo de serviços para atender indústrias calçadistas, de EPI e esportivas em todo o Brasil.
+    </p>
+    <div class="hero-ctas">
+      <a href="orcamento.html" class="btn btn-primary" style="padding:14px 28px;font-size:15px;">→ Solicitar Orçamento</a>
+      <a href="contato.html" class="hero-btn-secondary">Falar com especialista</a>
+    </div>
+  </section>
+
+  <!-- ── SERVIÇOS ─────────────────────────────────────────────── -->
+  <section class="services-section">
+    <div class="section-label">O que oferecemos</div>
+    <h2 class="section-title">Serviços especializados<br>para sua empresa</h2>
+    <p class="section-sub">Cada serviço é desenvolvido com equipamentos de ponta e matéria-prima certificada, garantindo qualidade e consistência em todos os lotes.</p>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🔁</div>
+        <div class="service-title">Dublagem de Palmilhas</div>
+        <div class="service-desc">Processo de laminação e colagem de materiais distintos para criar palmilhas multicamadas com características específicas de conforto e durabilidade.</div>
+        <ul class="service-features">
+          <li>EVA + tecido não-tecido</li>
+          <li>EVA + couro ecológico</li>
+          <li>Combinações personalizadas</li>
+          <li>Lotes a partir de 500 pares</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">✂️</div>
+        <div class="service-title">Corte e Conformação</div>
+        <div class="service-desc">Corte de precisão digital com tolerância de 0,1mm. Corte em faca de aço, facas de espuma e puncionamento para qualquer forma de palmilha.</div>
+        <ul class="service-features">
+          <li>Corte digital CNC</li>
+          <li>Faca de aço sob medida</li>
+          <li>Tamanhos 30 a 50</li>
+          <li>Pares avulsos ou kits</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🏭</div>
+        <div class="service-title">Fabricação Sob Medida</div>
+        <div class="service-desc">Desenvolvimento de palmilhas exclusivas com especificações técnicas definidas pelo cliente: densidade, espessura, material e aplicação.</div>
+        <ul class="service-features">
+          <li>Projeto técnico incluso</li>
+          <li>Protótipo em 48h</li>
+          <li>Aprovação antes da produção</li>
+          <li>Certificação CA disponível</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🦺</div>
+        <div class="service-title">Linha EPI Certificada</div>
+        <div class="service-desc">Palmilhas antiperfurantes e de proteção com certificação CA emitida pelo Ministério do Trabalho. Conformidade total com NR-6.</div>
+        <ul class="service-features">
+          <li>Certificação CA inclusa</li>
+          <li>Aço e Kevlar disponíveis</li>
+          <li>Laudos técnicos</li>
+          <li>Conformidade NR-6</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <div class="service-title">Personalização & Branding</div>
+        <div class="service-desc">Aplicação de logomarca, cores personalizadas, impressão e acabamentos exclusivos para marcas próprias e white label.</div>
+        <ul class="service-features">
+          <li>Silk-screen e hot stamping</li>
+          <li>Cores Pantone</li>
+          <li>Embalagem personalizada</li>
+          <li>White label disponível</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🚚</div>
+        <div class="service-title">Logística e Entrega</div>
+        <div class="service-desc">Entrega expressa para todo o Brasil via transportadoras parceiras. Embalagem industrial adequada para lotes de qualquer tamanho.</div>
+        <ul class="service-features">
+          <li>Entrega em 24h – SP capital</li>
+          <li>Frete negociado por volume</li>
+          <li>Rastreamento em tempo real</li>
+          <li>Nota fiscal eletrônica</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROCESSO ─────────────────────────────────────────────── -->
+  <section class="process-section">
+    <div class="process-inner">
+      <div style="text-align:center;">
+        <div class="section-label">Como funciona</div>
+        <h2 class="section-title" style="margin-bottom:8px;">Do orçamento à entrega</h2>
+        <p class="section-sub" style="margin:0 auto;text-align:center;">Um processo ágil e transparente em 4 etapas simples.</p>
+      </div>
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="step-number">1</div>
+          <div class="step-title">Orçamento</div>
+          <div class="step-desc">Envie suas especificações e receba uma proposta personalizada em até 24 horas.</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">2</div>
+          <div class="step-title">Aprovação</div>
+          <div class="step-desc">Avalie a proposta, aprove o protótipo e confirme o pedido com segurança.</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">3</div>
+          <div class="step-title">Produção</div>
+          <div class="step-desc">Sua palmilha é produzida com controle de qualidade em cada etapa do processo.</div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">4</div>
+          <div class="step-title">Entrega</div>
+          <div class="step-desc">Envio rápido e seguro para qualquer destino no Brasil com rastreamento completo.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ─────────────────────────────────────────────────── -->
+  <div style="padding:80px 32px;">
+    <div class="coming-soon-banner">
+      <div class="coming-soon-tag">🚀 Em breve</div>
+      <h2 class="coming-soon-title">Portal de Serviços Online</h2>
+      <p class="coming-soon-desc">
+        Em breve você poderá solicitar orçamentos, acompanhar a produção e gerenciar todos os seus pedidos de serviço diretamente pelo portal digital da DUBLON.
+      </p>
+      <div class="coming-soon-ctas">
+        <a href="orcamento.html" class="btn btn-primary" style="padding:14px 28px;font-size:15px;">→ Solicitar Orçamento Agora</a>
+        <a href="contato.html" class="hero-btn-secondary">Falar com um especialista</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ───────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-copy">© 2026 DUBLON Palmilhas Industriais. Todos os direitos reservados.</div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

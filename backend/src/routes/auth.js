@@ -59,6 +59,24 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ error: 'Os campos email e senha são obrigatórios.' });
   }
 
+  // ── MODO DEMONSTRAÇÃO ──────────────────────────────────────────
+  // Credenciais fixas para apresentações sem banco de dados ativo.
+  // Remove ou comente este bloco em produção com banco configurado.
+  if (email === 'demo@dublon.com.br' && password === 'demo1234') {
+    const demoToken = jwt.sign(
+      { id: 0, email: 'demo@dublon.com.br', role: 'admin', name: 'Admin Demo' },
+      JWT_SECRET,
+      { expiresIn: '8h' }
+    );
+    return res.json({
+      message: 'Login de demonstração realizado com sucesso.',
+      user: { id: 0, name: 'Admin Demo', email: 'demo@dublon.com.br', role: 'admin' },
+      token: demoToken,
+      demo: true
+    });
+  }
+  // ─────────────────────────────────────────────────────────────
+
   try {
     // Busca usuário pelo e-mail
     const result = await db.query('SELECT * FROM users WHERE email = $1', [email]);
