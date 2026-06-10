@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="css/navbar.css" />
   <link rel="stylesheet" href="css/sidebar.css" />
   <style>
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(37,99,235,0); }
+    }
     /* ── Filter tabs ───────────────────────────────────────── */
     .filter-bar {
       display: flex;
@@ -936,11 +940,5 @@
       await loadOrders();
     });
   </script>
-  <style>
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.4); }
-      50% { box-shadow: 0 0 0 6px rgba(37,99,235,0); }
-    }
-  </style>
 </body>
 </html>
