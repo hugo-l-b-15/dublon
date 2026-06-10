@@ -237,8 +237,8 @@ function initToggles() {
 // ── Cart Badge (sem API) ─────────────────────────────────────
 function updateCartBadgeLocal() {
   try {
-    const cartData = localStorage.getItem('dublon_cart_count');
-    const count = parseInt(cartData) || 0;
+    const cartItems = JSON.parse(localStorage.getItem('dublon_cart')) || [];
+    const count = cartItems.reduce((s, i) => s + (parseInt(i.quantity) || 0), 0);
     document.querySelectorAll('.cart-badge').forEach(b => {
       b.textContent = count;
       b.style.display = count > 0 ? 'flex' : 'none';

@@ -179,15 +179,103 @@ const OrdersAPI = {
   }
 };
 
-// ── Cart API ─────────────────────────────────────────────────
+// ── Cart LocalStorage helpers ────────────────────────────
+const CART_KEY = 'dublon_cart';
+
+function localCartGet() {
+  try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; }
+}
+
+function localCartSet(items) {
+  localStorage.setItem(CART_KEY, JSON.stringify(items));
+}
+
+function localCartToResponse(items) {
+  const subtotal = items.reduce((s, i) => s + (i.price * i.quantity), 0);
+  return { items, subtotal, count: items.reduce((s, i) => s + i.quantity, 0) };
+}
+
+// ── Cart API ─────────────────────────────────────────────
 const CartAPI = {
-  get()              { return apiGet('/cart'); },
-  add(product_id, quantity, color, size) {
-    return apiPost('/cart', { product_id, quantity, color, size });
+  async get() {
+    try {
+      const res = await apiGet('/cart');
+      // Se API funcionar, sincroniza localStorage
+      if (res && Array.isArray(res.items)) {
+        localCartSet(res.items);
+      }
+      return res;
+    } catch (e) {
+      // Fallback: lê do localStorage
+      const items = localCartGet();
+      return localCartToResponse(items);
+    }
   },
-  update(id, quantity) { return apiPut(`/cart/${id}`, { quantity }); },
-  remove(id)           { return apiDelete(`/cart/${id}`); },
-  clear()              { return apiDelete('/cart'); }
+
+  async add(product_id, quantity, color, size, productData = {}) {
+    try {
+      const res = await apiPost('/cart', { product_id, quantity, color, size });
+      // Sincroniza localStorage após add no servidor
+      try { const fresh = await apiGet('/cart'); if (fresh.items) localCartSet(fresh.items); } catch {}
+      return res;
+    } catch (e) {
+      // Fallback: adiciona ao localStorage
+      const items = localCartGet();
+      const existing = items.find(i => i.product_id === product_id && i.color === color && i.size === size);
+      if (existing) {
+        existing.quantity += quantity;
+      } else {
+        items.push({
+          id: Date.now(),
+          product_id,
+          quantity,
+          color: color || '',
+          size: size || '',
+          name: productData.name || `Produto #${product_id}`,
+          price: productData.price || 0,
+          category_name: productData.category || 'Geral',
+          image_url: productData.image || null,
+          stock_min: productData.stock_min || 50
+        });
+      }
+      localCartSet(items);
+      return { success: true, local: true };
+    }
+  },
+
+  async update(id, quantity) {
+    try {
+      const res = await apiPut(`/cart/${id}`, { quantity });
+      return res;
+    } catch (e) {
+      const items = localCartGet();
+      const item = items.find(i => i.id === id);
+      if (item) { item.quantity = quantity; localCartSet(items); }
+      return { success: true, local: true };
+    }
+  },
+
+  async remove(id) {
+    try {
+      const res = await apiDelete(`/cart/${id}`);
+      return res;
+    } catch (e) {
+      const items = localCartGet().filter(i => i.id !== id);
+      localCartSet(items);
+      return { success: true, local: true };
+    }
+  },
+
+  async clear() {
+    try {
+      const res = await apiDelete('/cart');
+      localCartSet([]);
+      return res;
+    } catch (e) {
+      localCartSet([]);
+      return { success: true, local: true };
+    }
+  }
 };
 
 // ── Coupons API ───────────────────────────────────────────────
@@ -311,19 +399,26 @@ const StatusMap = {
   }
 };
 
-// ── Cart badge updater ────────────────────────────────────────
+// ── Cart badge updater ────────────────────────────────────
 async function updateCartBadge() {
   try {
-    const { count } = await CartAPI.get();
+    const data = await CartAPI.get();
+    const count = data.count || 0;
     const badges = document.querySelectorAll('.cart-badge');
     badges.forEach(b => {
-      b.textContent = count || 0;
+      b.textContent = count;
       b.style.display = count > 0 ? 'flex' : 'none';
     });
-  } catch (e) { 
-    if (typeof updateCartBadgeLocal === 'function') {
-      updateCartBadgeLocal();
-    }
+  } catch (e) {
+    // Lê direto do localStorage como último recurso
+    try {
+      const items = JSON.parse(localStorage.getItem('dublon_cart')) || [];
+      const count = items.reduce((s, i) => s + (i.quantity || 0), 0);
+      document.querySelectorAll('.cart-badge').forEach(b => {
+        b.textContent = count;
+        b.style.display = count > 0 ? 'flex' : 'none';
+      });
+    } catch {}
   }
 }
 

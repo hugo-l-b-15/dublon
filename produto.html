@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -555,7 +555,14 @@
         btnAddToCart.innerHTML = 'Adicionando...';
 
         try {
-          await CartAPI.add(productId, qty, color, size);
+          await CartAPI.add(productId, qty, color, size, {
+            name: currentProduct.name,
+            price: currentProduct.price,
+            category: currentProduct.category_name || currentProduct.category,
+            image: currentProduct.image_url || currentProduct.image,
+            stock_min: currentProduct.stock_min
+          });
+
           Toast.success('Item adicionado ao carrinho com sucesso!');
           if (window.API.updateCartBadge) {
             window.API.updateCartBadge();
