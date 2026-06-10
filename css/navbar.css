@@ -264,3 +264,27 @@
   font-weight: 500;
   color: var(--text-primary);
 }
+
+/* Logout button */
+.navbar-btn-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: #DC2626;
+  background: none;
+  border: 1.5px solid #FCA5A5;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.navbar-btn-logout:hover {
+  background: #FEF2F2;
+  border-color: #DC2626;
+  color: #B91C1C;
+}

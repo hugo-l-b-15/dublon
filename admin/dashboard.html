@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -334,6 +334,9 @@
             <div class="admin-avatar">AD</div>
             <span style="font-size:14px;font-weight:600;color:var(--text-primary);">Administrador</span>
           </div>
+          <button class="btn btn-ghost btn-sm" style="color:var(--red-error); border:1.5px solid var(--red-error); padding:6px 12px; margin-left:10px;" onclick="window.API.Auth.clearSession(); window.location.href='../index.html';">
+            Sair
+          </button>
         </div>
       </header>
 
@@ -532,6 +535,7 @@
     </main>
   </div>
 
+  <script src="../js/api.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/admin.js"></script>
 </body>

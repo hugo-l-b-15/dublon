@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -227,6 +227,201 @@
         <li><a href="catalogo.html">Produtos</a></li>
         <li><a href="servicos.html">Serviços</a></li>
         <li><a href="sobre.html">Sobre</a></li>
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-right: 1px solid var(--border-color);
+      background: var(--white);
+    }
+    .checkout-step:last-child { border-right: none; }
+
+    .checkout-step.done {
+      color: #16A34A;
+    }
+
+    .checkout-step.active {
+      color: var(--blue-vibrant);
+      background: var(--blue-info-bg);
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--gray-200);
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .checkout-step.done .step-num {
+      background: #22C55E;
+      color: var(--white);
+    }
+    .checkout-step.active .step-num {
+      background: var(--blue-vibrant);
+      color: var(--white);
+    }
+
+    .checkout-section {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .checkout-section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Payment methods */
+    .payment-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .payment-method:hover { border-color: var(--blue-vibrant); }
+    .payment-method.selected { border-color: var(--blue-vibrant); background: #EFF6FF; }
+
+    .payment-method input[type="radio"] {
+      accent-color: var(--blue-vibrant);
+    }
+
+    .payment-method-icon {
+      font-size: 22px;
+    }
+
+    .payment-method-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .payment-method-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    /* Order summary right */
+    .checkout-summary {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+    }
+
+    .checkout-summary-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .checkout-summary-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .checkout-item-mini {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .checkout-item-mini:last-of-type { border-bottom: none; }
+
+    .checkout-item-img {
+      width: 48px;
+      height: 48px;
+      background: var(--gray-100);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .checkout-item-info {
+      flex: 1;
+    }
+    .checkout-item-info .name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .checkout-item-info .qty {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .checkout-item-price {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .checkout-total-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 8px 0;
+    }
+    .checkout-total-row .label { color: var(--text-secondary); }
+
+    .checkout-grand-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0 8px;
+      border-top: 2px solid var(--border-color);
+      margin-top: 8px;
+    }
+    .checkout-grand-total .label { font-size: 15px; font-weight: 700; }
+    .checkout-grand-total .value { font-size: 22px; font-weight: 800; color: var(--text-primary); }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <img src="/assets/images/dublon_logo_final.png" alt="Dublon" style="height:40px;display:block;">
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html">Produtos</a></li>
+        <li><a href="servicos.html">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
       </ul>
       <div class="navbar-search">
         <span class="search-icon">🔍</span>
@@ -234,20 +429,12 @@
       </div>
       <div class="navbar-actions">
         <a href="contato.html" class="navbar-btn-contact">Contato</a>
-        
-        <a href="carrinho.html" class="navbar-btn-cart" title="Carrinho">🛒<span class="cart-badge" style="display:none;">0</span></a>
-        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
-        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
-        <a href="perfil.html" class="navbar-user">
+        <a href="login.html" class="navbar-btn-login"><span>👤</span> Entrar</a>
+        <a href="perfil.html" class="navbar-user" style="display:none;">
           <div class="user-avatar">JS</div>
           <span class="navbar-user-name">João Silva</span>
         </a>
-      </div>
-    </div>
-  </nav>
-
-  <div style="background:var(--gray-50);min-height:calc(100vh - 56px);">
-    <div class="checkout-page">
+        <a href="carrinho.html" class="navbar-btn-cart" title="Carrinho">🛒<span class="cart-badge" style="display:none;">0</span></a>
       <!-- Main form -->
       <div>
         <!-- Steps -->
@@ -401,6 +588,7 @@
     </div>
   </div>
 
+  <script src="js/api.js"></script>
   <script src="js/main.js"></script>
   <script>
     document.querySelectorAll('.payment-method').forEach(method => {

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -432,6 +432,201 @@
         <li><a href="catalogo.html">Produtos</a></li>
         <li><a href="servicos.html">Serviços</a></li>
         <li><a href="sobre.html">Sobre</a></li>
+    }
+    .btn-detalhes:hover {
+      border-color: var(--blue-vibrant);
+      color: var(--blue-vibrant);
+    }
+
+    .btn-recomprar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--blue-dark);
+      color: var(--white);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+      border: none;
+    }
+    .btn-recomprar:hover { background: #0D1F3C; }
+
+    .btn-rastrear {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--blue-vibrant);
+      color: var(--white);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+      border: none;
+    }
+    .btn-rastrear:hover { background: var(--blue-vivid); }
+
+    .btn-cancelar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border: 1.5px solid #FECACA;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 600;
+      color: #DC2626;
+      background: var(--white);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+    }
+    .btn-cancelar:hover { background: #FEE2E2; }
+
+    /* ── Right Panel ───────────────────────────────────────── */
+    .orders-right {
+      width: 220px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .orders-content-row {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .orders-main {
+      flex: 1;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .stat-card-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-card-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .stat-card-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat-mini {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .stat-mini-value {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .stat-mini-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .delivery-card {
+      background: linear-gradient(135deg, #1B3A6E 0%, #2563EB 100%);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      color: var(--white);
+    }
+
+    .delivery-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+    }
+
+    .delivery-date {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .delivery-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 16px;
+    }
+
+    .delivery-track-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 16px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--radius-md);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background var(--transition);
+    }
+    .delivery-track-btn:hover { background: rgba(255,255,255,0.25); }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">
+        <img src="/assets/images/dublon_logo_final.png" alt="Dublon" style="height:40px;display:block;">
+      </a>
+      <ul class="navbar-links">
+        <li><a href="catalogo.html">Produtos</a></li>
+        <li><a href="servicos.html">Serviços</a></li>
+        <li><a href="sobre.html">Sobre</a></li>
       </ul>
       <div class="navbar-search">
         <span class="search-icon">🔍</span>
@@ -439,19 +634,12 @@
       </div>
       <div class="navbar-actions">
         <a href="contato.html" class="navbar-btn-contact">Contato</a>
-        
-        <a href="carrinho.html" class="navbar-btn-cart" title="Carrinho">🛒<span class="cart-badge" style="display:none;">0</span></a>
-        <a href="orcamento.html" class="navbar-btn-quote">Solicitar Orçamento</a>
-        <a href="rastreamento.html" class="navbar-btn-track"><span>📦</span> Acompanhe seu pedido</a>
-        <a href="perfil.html" class="navbar-user">
+        <a href="login.html" class="navbar-btn-login"><span>👤</span> Entrar</a>
+        <a href="perfil.html" class="navbar-user" style="display:none;">
           <div class="user-avatar">JS</div>
           <span class="navbar-user-name">João Silva</span>
         </a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- CLIENT LAYOUT -->
+        <a href="carrinho.html" class="navbar-btn-cart" title="Carrinho">🛒<span class="cart-badge" style="display:none;">0</span></a>
   <div class="client-layout">
     <!-- SIDEBAR -->
     <aside class="sidebar">

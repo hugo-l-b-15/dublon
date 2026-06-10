@@ -23,22 +23,67 @@ function initNavbar() {
   const user = Auth.getUser();
   const isLoggedIn = Auth.isLoggedIn();
 
-  // Elementos que mudam com base no estado de auth
   const loginBtn   = document.querySelector('.navbar-btn-login');
-  const userAvatar = document.querySelector('.navbar-user');
+  const actionsEl  = document.querySelector('.navbar-actions');
+
+  // Remove qualquer bloco de usuário injetado anteriormente para evitar duplicatas
+  const oldUserEl   = document.getElementById('navbar-user-block');
+  const oldLogoutEl = document.getElementById('navbar-logout-btn');
+  if (oldUserEl)   oldUserEl.remove();
+  if (oldLogoutEl) oldLogoutEl.remove();
 
   if (isLoggedIn && user) {
+    // Oculta botão "Entrar"
     if (loginBtn) loginBtn.style.display = 'none';
-    if (userAvatar) {
-      userAvatar.style.display = 'flex';
-      const avatarEl = userAvatar.querySelector('.user-avatar');
-      const nameEl   = userAvatar.querySelector('.navbar-user-name');
+
+    // Atualiza .navbar-user estático se existir, senão injeta dinamicamente
+    const staticUser = document.querySelector('.navbar-user');
+    if (staticUser) {
+      staticUser.style.display = 'flex';
+      const avatarEl = staticUser.querySelector('.user-avatar');
+      const nameEl   = staticUser.querySelector('.navbar-user-name');
       if (avatarEl) avatarEl.textContent = user.name ? user.name.slice(0, 2).toUpperCase() : 'U';
       if (nameEl)   nameEl.textContent   = user.name ? user.name.split(' ')[0] : 'Usuário';
+
+      // Injeta botão Sair ao lado do avatar estático, se ainda não existe
+      if (!staticUser.querySelector('.navbar-btn-logout')) {
+        const logoutBtn = document.createElement('button');
+        logoutBtn.className = 'navbar-btn-logout';
+        logoutBtn.id = 'navbar-logout-btn';
+        logoutBtn.textContent = 'Sair';
+        logoutBtn.setAttribute('title', 'Encerrar sessão');
+        logoutBtn.addEventListener('click', handleLogout);
+        staticUser.after(logoutBtn);
+      }
+    } else if (actionsEl && loginBtn) {
+      // Injeta dinamicamente avatar + botão Sair antes do botão "Entrar"
+      const initials  = user.name ? user.name.slice(0, 2).toUpperCase() : 'U';
+      const firstName = user.name ? user.name.split(' ')[0] : 'Usuário';
+
+      const userEl = document.createElement('a');
+      userEl.href = 'perfil.html';
+      userEl.className = 'navbar-user';
+      userEl.id = 'navbar-user-block';
+      userEl.innerHTML = `<div class="user-avatar">${initials}</div><span class="navbar-user-name">${firstName}</span>`;
+
+      const logoutBtn = document.createElement('button');
+      logoutBtn.className = 'navbar-btn-logout';
+      logoutBtn.id = 'navbar-logout-btn';
+      logoutBtn.textContent = 'Sair';
+      logoutBtn.setAttribute('title', 'Encerrar sessão');
+      logoutBtn.addEventListener('click', handleLogout);
+
+      actionsEl.insertBefore(logoutBtn, loginBtn);
+      actionsEl.insertBefore(userEl, logoutBtn);
     }
   } else {
+    // Não logado: mostra "Entrar", oculta avatar estático
     if (loginBtn) loginBtn.style.display = 'flex';
-    if (userAvatar) userAvatar.style.display = 'none';
+    const staticUser = document.querySelector('.navbar-user');
+    if (staticUser) staticUser.style.display = 'none';
+    // Remove botão Sair estático se houver
+    const staticLogout = document.querySelector('.navbar-btn-logout');
+    if (staticLogout) staticLogout.remove();
   }
 
   // Sidebar user info
@@ -54,6 +99,18 @@ function initNavbar() {
 
   // Badge de pedidos no sidebar
   loadSidebarOrderBadge();
+}
+
+// ── Logout ──────────────────────────────────────────────────
+function handleLogout() {
+  if (window.API) {
+    window.API.Auth.clearSession();
+  } else {
+    // Fallback manual caso API não esteja carregada
+    localStorage.removeItem('dublon_token');
+    localStorage.removeItem('dublon_user');
+  }
+  window.location.href = '/index.html';
 }
 
 async function loadSidebarOrderBadge() {
